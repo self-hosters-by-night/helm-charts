@@ -1,0 +1,12 @@
+apiVersion: v2
+name: popeye
+description: "Popeye is a utility that scans live Kubernetes clusters and reports potential issues with deployed resources and configurations."
+type: application
+version: 0.1.0
+appVersion: "v0.21.3"
+icon: https://raw.githubusercontent.com/derailed/popeye/master/assets/popeye_logo.png
+annotations:
+  artifacthub.io/category: security
+maintainers:
+  - name: facorazza
+    email: git@facorazza.com

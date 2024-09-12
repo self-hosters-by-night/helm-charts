@@ -1,0 +1,98 @@
+image:
+  registry: docker.io
+  repository: derailed/popeye
+  pullPolicy: Always
+  tag: ""
+  sha: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # API credentials have to be mounted for Popeye to query the cluster it is running on
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# Additional volumes on the output Deployment definition.
+volumes: []
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+# Additional volumeMounts on the output Deployment definition.
+volumeMounts: []
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+cronJob:
+  clusterName: ""
+  schedule: "* */1 * * *"
+  history:
+    failedJobsHistoryLimit: 1
+    successfulJobsHistoryLimit: 1
+  configuration: {}
+  # Popeye can generate sanitizer reports in a variety of formats: standard, jurassic, yaml, html, json, junit, prometheus, score
+  outputFormat: prometheus
+  # outputFormat: standard
+  prometheus:
+    pushgatewayAddress: ""
+    basicAuth:
+      # Use authentication against Prometheus Pushgateway
+      enabled: false
+      # Name of existing secret to use for authentication against Prometheus Pushgateway
+      # It has to contain the keys user and password
+      existingSecret: ""
+      # Username for authentication against Prometheus Pushgateway
+      user: ""
+      # Password for authentication against Prometheus Pushgateway
+      password: ""
+  s3:
+    bucket: ""
+    endpoint: ""
+    region: ""
+    # Name of existing secret to use for authentication against the S3 server
+    # It has to contain the keys access_token_id and access_secret
+    # existingSecret: ""
+    # access_token_id: ""
+    # access_secret: ""

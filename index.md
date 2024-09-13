@@ -1,5 +1,3 @@
-# Self-Hosters by Night
-
 ## Helm Repository
 
 ### Add the Repository
@@ -16,8 +14,6 @@ helm search repo self-hosters-by-night
 ```
 
 ### Install a Helm Chart
-
-> Please replace <release_name>, <namespace> and <chart_name> with values that match your environment.
 
 #### Using the default configuration
 

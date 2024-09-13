@@ -1,3 +1,21 @@
 apiVersion: v1
-entries: {}
-generated: "2024-09-11T23:09:04.009498464+02:00"
+entries:
+  popeye:
+  - annotations:
+      artifacthub.io/category: security
+    apiVersion: v2
+    appVersion: v0.21.3
+    created: "2024-09-13T23:13:59.870839754+02:00"
+    description: Popeye is a utility that scans live Kubernetes clusters and reports
+      potential issues with deployed resources and configurations.
+    digest: 54b78b86c7980cbe3a57490d5471fae80b4dfacbfce9fa97f4a288f78fdf4b6d
+    icon: https://raw.githubusercontent.com/derailed/popeye/master/assets/popeye_logo.png
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: popeye
+    type: application
+    urls:
+    - popeye-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-09-13T23:13:59.869226414+02:00"

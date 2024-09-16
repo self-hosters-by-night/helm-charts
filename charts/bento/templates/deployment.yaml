@@ -40,18 +40,27 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- with .Values.env }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- with .Values.env }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
+          {{- end }}
+          {{- with .Values.env }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          {{- end }}
+          {{- with .Values.env }}
           env:
-            {{- toYaml .Values.env | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if or .Values.configMapRefs .Values.secretRefs }}
           envFrom:
             {{- range .Values.configMapRefs }}
             - configMapRef:
@@ -61,6 +70,7 @@ spec:
             - secretRef:
                 name: {{ .name }}
             {{- end }}
+          {{- end }}
           volumeMounts:
             - name: bento-config
               mountPath: /bento.yaml

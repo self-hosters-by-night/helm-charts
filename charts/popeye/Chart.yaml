@@ -7,6 +7,19 @@ appVersion: "v0.21.3"
 icon: https://raw.githubusercontent.com/derailed/popeye/master/assets/popeye_logo.png
 annotations:
   artifacthub.io/category: security
+  artifacthub.io/screenshots: |
+    - title: Console Output
+      url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/console.png"
+    - title: HTML Output
+      url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/html.png"
+    - title: JSON Output
+      url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/json.png"
+    - title: Dashboard
+      url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/pop-dash.png"
+    - title: Score A
+      url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/score-a.png"
+    - title: Score D
+      url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/score-d.png"
 maintainers:
   - name: facorazza
     email: git@facorazza.com

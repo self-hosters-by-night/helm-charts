@@ -41,6 +41,23 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/bento-0.1.0/bento-0.1.0.tgz
     version: 0.1.0
+  manyfold:
+  - annotations:
+      artifacthub.io/category: storage
+    apiVersion: v2
+    appVersion: 0.78.1
+    created: "2024-09-24T19:45:08.354052816Z"
+    description: Manyfold A self-hosted digital asset manager for 3d print files.
+    digest: cf24fe2083a1a0560559e5d4a9a0ff391943b792b9e119d3dce9369e2e5601e2
+    icon: https://raw.githubusercontent.com/manyfold3d/manyfold/main/app/assets/images/roundel.svg
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: manyfold
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/manyfold-0.1.0/manyfold-0.1.0.tgz
+    version: 0.1.0
   popeye:
   - annotations:
       artifacthub.io/category: security
@@ -77,4 +94,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/postgres-0.1.0/postgres-0.1.0.tgz
     version: 0.1.0
-generated: "2024-09-24T18:41:28.299741025Z"
+generated: "2024-09-24T19:45:08.354066983Z"

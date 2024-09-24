@@ -59,4 +59,22 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/popeye-0.1.0/popeye-0.1.0.tgz
     version: 0.1.0
-generated: "2024-09-16T17:23:34.86084823Z"
+  postgres:
+  - annotations:
+      artifacthub.io/category: database
+    apiVersion: v2
+    appVersion: "16.4"
+    created: "2024-09-24T18:41:28.299730265Z"
+    description: Postgres is an object-relational database system that provides reliability
+      and data integrity.
+    digest: 8b1f54794023df13830106be885a258a3805ea15df5015c66b7f3853ec357921
+    icon: https://wiki.postgres.org/images/3/30/postgres_logo.3colors.120x120.png
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: postgres
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/postgres-0.1.0/postgres-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-09-24T18:41:28.299741025Z"

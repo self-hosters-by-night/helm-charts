@@ -1,0 +1,96 @@
+image:
+  registry: docker.io
+  repository: postgres
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+# Define environment variables or load specific ones from ConfigMaps and Secrets
+# If all environment variables included in a ConfigMap or Secret need to be included, consider using a configMapRef or secretRef below
+env: []
+# - name: S3_BUCKET
+#   value: bucket
+# - name: S3_BUCKET
+#   valueFrom:
+#   configMapKeyRef:
+#     name: s3-config
+#     key: bucket
+# - name: S3_TOKEN
+#   valueFrom:
+#   secretKeyRef:
+#     name: s3-secrets
+#     key: token
+
+# Include ConfigMap objects
+configMapRefs: []
+# - name: s3-config
+
+# Include Secret objects
+secretRefs: []
+# - name: s3-secrets
+
+service:
+  type: ClusterIP
+  port: 5432
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+livenessProbe:
+  tcpSocket:
+    port: 5432
+  initialDelaySeconds: 5
+  periodSeconds: 10
+
+readinessProbe:
+  exec:
+    command:
+      - bash
+      - -c
+      - "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"
+  initialDelaySeconds: 5
+  periodSeconds: 10
+
+# Additional volumes on the output Deployment definition.
+volumes: []
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+# Additional volumeMounts on the output Deployment definition.
+volumeMounts: []
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true

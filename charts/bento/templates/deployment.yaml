@@ -64,12 +64,8 @@ spec:
               mountPath: /bento.yaml
               subPath: bento.yaml
               readOnly: true
-            {{- range .Values.extraVolumeMounts }}
-            - name: {{ .name }}
-              mountPath: {{ .mountPath }}
-              {{- if .subPath }}
-              subPath: {{ .subPath }}
-              {{- end }}
+            {{- with .Values.extraVolumes }}
+              {{- toYaml . | nindent 12 }}
             {{- end }}
           ports:
             {{- range .Values.service.ports }}
@@ -85,20 +81,6 @@ spec:
         - name: bento-config
           configMap:
             name: {{ .Release.Name }}
-        {{- range .Values.extraVolumes }}
-        - name: {{ .name }}
-          {{- if eq .type "configMap" }}
-          configMap:
-            name: {{ .configMap.name }}
-            {{- if .configMap.items }}
-            items:
-              {{- range .configMap.items }}
-              - key: {{ .key }}
-                path: {{ .path }}
-              {{- end }}
-            {{- end }}
-          {{- else if eq .type "secret" }}
-          secret:
-            secretName: {{ .secret.secretName }}
-          {{- end }}
+        {{- with .Values.extraVolumes }}
+          {{- toYaml . | nindent 8 }}
         {{- end }}

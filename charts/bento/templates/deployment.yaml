@@ -28,34 +28,22 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "bento.serviceAccountName" . }}
-      {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.env }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- with .Values.env }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          {{- end }}
-          {{- with .Values.env }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-          {{- end }}
           {{- with .Values.env }}
           env:
             {{- toYaml . | nindent 12 }}

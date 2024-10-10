@@ -64,7 +64,7 @@ spec:
               mountPath: /bento.yaml
               subPath: bento.yaml
               readOnly: true
-            {{- with .Values.extraVolumes }}
+            {{- with .Values.extraVolumeMounts }}
               {{- toYaml . | nindent 12 }}
             {{- end }}
           ports:

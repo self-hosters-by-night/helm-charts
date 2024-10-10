@@ -29,11 +29,11 @@ spec:
       {{- end }}
       serviceAccountName: {{ include "bento.serviceAccountName" . }}
       nodeSelector:
-        {{- toYaml . | nindent 8 }}
+        {{- toYaml .Values.nodeSelector | nindent 8 }}
       affinity:
-        {{- toYaml . | nindent 8 }}
+        {{- toYaml .Values.affinity | nindent 8 }}
       tolerations:
-        {{- toYaml . | nindent 8 }}
+        {{- toYaml .Values.tolerations | nindent 8 }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -64,7 +64,7 @@ spec:
               mountPath: /bento.yaml
               subPath: bento.yaml
               readOnly: true
-            {{- with .Values.extraVolumes }}
+            {{- with .Values.extraVolumeMounts }}
               {{- toYaml . | nindent 12 }}
             {{- end }}
           ports:

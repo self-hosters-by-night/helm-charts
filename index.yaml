@@ -5,6 +5,26 @@ entries:
       artifacthub.io/category: integration-delivery
     apiVersion: v2
     appVersion: 1.2.0
+    created: "2024-10-10T08:16:23.538181366Z"
+    description: Bento is a declarative data streaming service that solves a wide
+      range of data engineering problems with simple, chained, stateless processing
+      steps. It implements transaction based resiliency with back pressure, so when
+      connecting to at-least-once sources and sinks it's able to guarantee at-least-once
+      delivery without needing to persist messages during transit.
+    digest: 72d8d4bce0a9a01269498e774b0ee7f0b9a994e123cdab65283cec5be5e619b9
+    icon: https://raw.githubusercontent.com/warpstreamlabs/bento/main/icon.png
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: bento
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/bento-0.4.0/bento-0.4.0.tgz
+    version: 0.4.0
+  - annotations:
+      artifacthub.io/category: integration-delivery
+    apiVersion: v2
+    appVersion: 1.2.0
     created: "2024-10-09T18:09:14.789723383Z"
     description: Bento is a declarative data streaming service that solves a wide
       range of data engineering problems with simple, chained, stateless processing
@@ -114,4 +134,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/postgres-0.1.0/postgres-0.1.0.tgz
     version: 0.1.0
-generated: "2024-10-09T18:09:14.789736678Z"
+generated: "2024-10-10T08:16:23.538201714Z"

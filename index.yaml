@@ -121,6 +121,36 @@ entries:
   popeye:
   - annotations:
       artifacthub.io/category: security
+      artifacthub.io/screenshots: |
+        - title: Console Output
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/console.png"
+        - title: HTML Output
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/html.png"
+        - title: JSON Output
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/json.png"
+        - title: Dashboard
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/pop-dash.png"
+        - title: Score A
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/score-a.png"
+        - title: Score D
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/score-d.png"
+    apiVersion: v2
+    appVersion: v0.21.3
+    created: "2024-10-12T14:46:11.434421396Z"
+    description: Popeye is a utility that scans live Kubernetes clusters and reports
+      potential issues with deployed resources and configurations.
+    digest: bb7b60e44a5baac081c21b6cd2a81671d1de9a28d017f8dd74b17d85bcd57348
+    icon: https://raw.githubusercontent.com/derailed/popeye/master/assets/popeye_logo.png
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: popeye
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/popeye-0.2.0/popeye-0.2.0.tgz
+    version: 0.2.0
+  - annotations:
+      artifacthub.io/category: security
     apiVersion: v2
     appVersion: v0.21.3
     created: "2024-09-13T21:24:12.260926268Z"
@@ -154,4 +184,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/postgres-0.1.0/postgres-0.1.0.tgz
     version: 0.1.0
-generated: "2024-10-10T09:17:35.040770273Z"
+generated: "2024-10-12T14:46:11.434443216Z"

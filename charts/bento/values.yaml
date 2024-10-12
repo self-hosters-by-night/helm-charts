@@ -1,5 +1,4 @@
-global:
-  imagePullSecrets: []
+imagePullSecrets: []
 
 serviceAccount:
   # Specifies whether a service account should be created

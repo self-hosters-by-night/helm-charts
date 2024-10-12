@@ -10,7 +10,7 @@ spec:
     {{- range .Values.service.ports }}
     - name: {{ .name }}
       port: {{ .port }}
-      targetPort: {{ .targetPort | default .port }}
+      targetPort: {{ .targetPort | default .name }}
       protocol: {{ .protocol | default "TCP" }}
     {{- end }}
   selector:

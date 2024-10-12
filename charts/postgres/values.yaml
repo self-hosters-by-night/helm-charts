@@ -82,15 +82,20 @@ readinessProbe:
   initialDelaySeconds: 5
   periodSeconds: 10
 
+persistence:
+  data:
+    enabled: false
+    existingClaim: ""
+
 # Additional volumes on the output Deployment definition.
-volumes: []
+extraVolumes: []
 # - name: foo
 #   secret:
 #     secretName: mysecret
 #     optional: false
 
 # Additional volumeMounts on the output Deployment definition.
-volumeMounts: []
+extraVolumeMounts: []
 # - name: foo
 #   mountPath: "/etc/foo"
 #   readOnly: true

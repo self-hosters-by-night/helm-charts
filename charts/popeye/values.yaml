@@ -73,8 +73,7 @@ cronJob:
     successfulJobsHistoryLimit: 1
   configuration: {}
   # Popeye can generate sanitizer reports in a variety of formats: standard, jurassic, yaml, html, json, junit, prometheus, score
-  outputFormat: prometheus
-  # outputFormat: standard
+  outputFormat: standard
   prometheus:
     pushgatewayAddress: ""
     basicAuth:

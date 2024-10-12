@@ -5,6 +5,26 @@ entries:
       artifacthub.io/category: integration-delivery
     apiVersion: v2
     appVersion: 1.2.0
+    created: "2024-10-12T20:25:26.68909131Z"
+    description: Bento is a declarative data streaming service that solves a wide
+      range of data engineering problems with simple, chained, stateless processing
+      steps. It implements transaction based resiliency with back pressure, so when
+      connecting to at-least-once sources and sinks it's able to guarantee at-least-once
+      delivery without needing to persist messages during transit.
+    digest: 407477a9410e2961d87a71d6ad56c2435eb039a33530d7b310c91c8f8fe57857
+    icon: https://raw.githubusercontent.com/warpstreamlabs/bento/main/icon.png
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: bento
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/bento-0.5.1/bento-0.5.1.tgz
+    version: 0.5.1
+  - annotations:
+      artifacthub.io/category: integration-delivery
+    apiVersion: v2
+    appVersion: 1.2.0
     created: "2024-10-10T09:17:35.040694281Z"
     description: Bento is a declarative data streaming service that solves a wide
       range of data engineering problems with simple, chained, stateless processing
@@ -106,6 +126,22 @@ entries:
       artifacthub.io/category: storage
     apiVersion: v2
     appVersion: 0.78.1
+    created: "2024-10-12T20:25:26.885219Z"
+    description: Manyfold A self-hosted digital asset manager for 3d print files.
+    digest: 63909b62edacd48845468cbda01a74ac4060e622907c27f7c023b882a9674b67
+    icon: https://raw.githubusercontent.com/manyfold3d/manyfold/main/app/assets/images/roundel.svg
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: manyfold
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/manyfold-0.1.1/manyfold-0.1.1.tgz
+    version: 0.1.1
+  - annotations:
+      artifacthub.io/category: storage
+    apiVersion: v2
+    appVersion: 0.78.1
     created: "2024-09-24T19:45:08.354052816Z"
     description: Manyfold A self-hosted digital asset manager for 3d print files.
     digest: cf24fe2083a1a0560559e5d4a9a0ff391943b792b9e119d3dce9369e2e5601e2
@@ -184,4 +220,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/postgres-0.1.0/postgres-0.1.0.tgz
     version: 0.1.0
-generated: "2024-10-12T14:46:11.434443216Z"
+generated: "2024-10-12T20:25:27.095145581Z"

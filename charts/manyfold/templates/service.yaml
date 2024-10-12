@@ -12,4 +12,4 @@ spec:
     - name: http
       port: {{ .Values.service.port }}
       protocol: TCP
-      targetPort: 3214
+      targetPort: http

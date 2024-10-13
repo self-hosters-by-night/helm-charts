@@ -207,6 +207,23 @@ entries:
       artifacthub.io/category: database
     apiVersion: v2
     appVersion: "16.4"
+    created: "2024-10-13T17:44:05.981921685Z"
+    description: Postgres is an object-relational database system that provides reliability
+      and data integrity.
+    digest: 2bf6fe426d9d757fc47b7f467ba90b35d137730d70637733337e367bdc4bfa7e
+    icon: https://wiki.postgres.org/images/3/30/postgres_logo.3colors.120x120.png
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: postgres
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/postgres-0.2.1/postgres-0.2.1.tgz
+    version: 0.2.1
+  - annotations:
+      artifacthub.io/category: database
+    apiVersion: v2
+    appVersion: "16.4"
     created: "2024-10-12T20:26:59.591083301Z"
     description: Postgres is an object-relational database system that provides reliability
       and data integrity.
@@ -237,4 +254,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/postgres-0.1.0/postgres-0.1.0.tgz
     version: 0.1.0
-generated: "2024-10-12T20:26:59.591110822Z"
+generated: "2024-10-13T17:44:05.98195619Z"

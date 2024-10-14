@@ -18,7 +18,7 @@ spec:
       labels:
         {{- include "manyfold.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}
-        {{- toYaml . | nindent 8 }}
+          {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
       {{- with .Values.nodeSelector }}
@@ -37,8 +37,10 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- with .Values.podSecurityContext }}
       securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -61,10 +63,14 @@ spec:
             - secretRef:
               name: {{ .name }}
           {{- end }}
+          {{- with .Values.securityContext }}
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.resources }}
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           volumeMounts:
             - name: manyfold-config
               mountPath: /config
@@ -88,6 +94,6 @@ spec:
         - name: manyfold-libraries
           persistentVolumeClaim:
             claimName: manyfold-libraries
-        {{- with .Values.volumes }}
+        {{- with .Values.extraVolumes }}
           {{- toYaml . | nindent 8 }}
         {{- end }}

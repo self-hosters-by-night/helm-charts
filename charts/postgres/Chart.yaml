@@ -4,7 +4,7 @@ description: "Postgres is an object-relational database system that provides rel
 type: application
 version: 0.2.2
 appVersion: "16.4"
-icon: https://wiki.postgres.org/images/3/30/postgres_logo.3colors.120x120.png
+icon: https://raw.githubusercontent.com/self-hosters-by-night/helm-charts/refs/heads/main/assets/postgres.png
 annotations:
   artifacthub.io/category: database
 maintainers:

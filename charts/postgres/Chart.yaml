@@ -2,7 +2,7 @@ apiVersion: v2
 name: postgres
 description: "Postgres is an object-relational database system that provides reliability and data integrity."
 type: application
-version: 0.2.1
+version: 0.2.2
 appVersion: "16.4"
 icon: https://wiki.postgres.org/images/3/30/postgres_logo.3colors.120x120.png
 annotations:

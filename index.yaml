@@ -126,6 +126,22 @@ entries:
       artifacthub.io/category: storage
     apiVersion: v2
     appVersion: 0.78.1
+    created: "2024-10-14T21:43:12.077162537Z"
+    description: Manyfold is a self-hosted digital asset manager for 3d print files.
+    digest: c6c52848a76033aae0c5bddc7d18724b68d4f12b77a678a37db61418952bb62c
+    icon: https://raw.githubusercontent.com/manyfold3d/manyfold/main/app/assets/images/roundel.svg
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: manyfold
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/manyfold-0.1.2/manyfold-0.1.2.tgz
+    version: 0.1.2
+  - annotations:
+      artifacthub.io/category: storage
+    apiVersion: v2
+    appVersion: 0.78.1
     created: "2024-10-12T20:25:26.885219Z"
     description: Manyfold A self-hosted digital asset manager for 3d print files.
     digest: 63909b62edacd48845468cbda01a74ac4060e622907c27f7c023b882a9674b67
@@ -207,6 +223,23 @@ entries:
       artifacthub.io/category: database
     apiVersion: v2
     appVersion: "16.4"
+    created: "2024-10-14T21:43:12.176128336Z"
+    description: Postgres is an object-relational database system that provides reliability
+      and data integrity.
+    digest: 9fb4e6a30acdba0c154d92d5e117c4a302ab83238ff3463b8e9a9fba491e13d3
+    icon: https://raw.githubusercontent.com/self-hosters-by-night/helm-charts/refs/heads/main/assets/postgres.png
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: postgres
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/postgres-0.2.2/postgres-0.2.2.tgz
+    version: 0.2.2
+  - annotations:
+      artifacthub.io/category: database
+    apiVersion: v2
+    appVersion: "16.4"
     created: "2024-10-13T17:44:05.981921685Z"
     description: Postgres is an object-relational database system that provides reliability
       and data integrity.
@@ -254,4 +287,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/postgres-0.1.0/postgres-0.1.0.tgz
     version: 0.1.0
-generated: "2024-10-13T17:44:05.98195619Z"
+generated: "2024-10-14T21:43:12.176156118Z"

@@ -23,6 +23,7 @@ image:
 nodeSelector: {}
 tolerations: []
 affinity: {}
+hostAliases: []
 
 podAnnotations: {}
 podLabels: {}

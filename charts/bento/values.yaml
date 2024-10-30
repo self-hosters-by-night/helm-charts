@@ -23,6 +23,7 @@ image:
 nodeSelector: {}
 tolerations: []
 affinity: {}
+hostAliases: []
 
 podAnnotations: {}
 podLabels: {}
@@ -70,14 +71,14 @@ env: []
 #   value: bucket
 # - name: S3_BUCKET
 #   valueFrom:
-#   configMapKeyRef:
-#     name: s3-config
-#     key: bucket
+#     configMapKeyRef:
+#       name: s3-config
+#       key: bucket
 # - name: S3_TOKEN
 #   valueFrom:
-#   secretKeyRef:
-#     name: s3-secrets
-#     key: token
+#     secretKeyRef:
+#       name: s3-secrets
+#       key: token
 
 # Include ConfigMap objects
 configMapRefs: []

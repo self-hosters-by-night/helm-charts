@@ -56,6 +56,25 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- with .Values.command }}
+          command:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if .Values.args }}
+          args:
+            {{- toYaml .Values.args | nindent 12 }}
+          {{- else }}
+          args:
+            - "-c"
+            - "/bento.yaml"
+            {{- if and .Values.streams.enabled .Values.streams.streamsConfigMap }}
+            - "streams"
+            {{- if eq .Values.streams.api.enable false }}
+            - "--no-api"
+            {{- end }}
+            - /streams/*.yaml
+            {{- end }}
+          {{- end }}
           {{- with .Values.securityContext }}
           securityContext:
             {{- toYaml . | nindent 12 }}
@@ -87,6 +106,11 @@ spec:
             {{- with .Values.extraVolumeMounts }}
               {{- toYaml . | nindent 12 }}
             {{- end }}
+            {{- if and .Values.streams.enabled .Values.streams.streamsConfigMap }}
+            - name: streams
+              mountPath: "/streams"
+              readOnly: true
+            {{- end }}
           ports:
             {{- range .Values.service.ports }}
             - name: {{ .name }}
@@ -103,4 +127,9 @@ spec:
             name: {{ .Release.Name }}
         {{- with .Values.extraVolumes }}
           {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- if and .Values.streams.enabled .Values.streams.streamsConfigMap }}
+        - name: streams
+          configMap:
+            name: {{ .Values.streams.streamsConfigMap }}
         {{- end }}

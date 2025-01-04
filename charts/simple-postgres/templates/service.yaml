@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "simple-postgres.fullname" . }}
+  labels:
+    {{- include "simple-postgres.labels" . | nindent 4 }}
+spec:
+  selector:
+    {{- include "simple-postgres.selectorLabels" . | nindent 4 }}
+  type: {{ .Values.service.type }}
+  ports:
+    - name: simple-postgres
+      port: {{ .Values.service.port }}
+      protocol: TCP
+      targetPort: simple-postgres

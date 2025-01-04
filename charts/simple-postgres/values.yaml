@@ -86,6 +86,9 @@ persistence:
   data:
     enabled: false
     existingClaim: ""
+  backups:
+    enabled: false
+    existingClaim: ""
 
 # Additional volumes on the output Deployment definition.
 extraVolumes: []

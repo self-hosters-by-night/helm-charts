@@ -1,5 +1,5 @@
 apiVersion: v2
-name: postgres
+name: simple-postgres
 description: "Postgres is an object-relational database system that provides reliability and data integrity."
 type: application
 version: 0.2.2

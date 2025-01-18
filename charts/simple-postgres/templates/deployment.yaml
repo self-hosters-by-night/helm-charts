@@ -78,7 +78,7 @@ spec:
             {{- toYaml .Values.readinessProbe | nindent 12 }}
           volumeMounts:
             - name: data
-              mountPath: /var/lib/simple-postgresql/data
+              mountPath: /var/lib/postgresql/data
             {{- with .Values.extraVolumeMounts }}
               {{- toYaml . | nindent 12 }}
             {{- end }}

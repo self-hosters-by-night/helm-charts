@@ -2,7 +2,7 @@ apiVersion: v2
 name: simple-postgres
 description: "Postgres is an object-relational database system that provides reliability and data integrity."
 type: application
-version: 0.3.0
+version: 0.3.1
 appVersion: "17"
 icon: https://raw.githubusercontent.com/self-hosters-by-night/helm-charts/refs/heads/main/assets/postgres.png
 annotations:

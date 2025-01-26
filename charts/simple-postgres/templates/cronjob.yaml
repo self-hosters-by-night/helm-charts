@@ -38,10 +38,14 @@ spec:
               env:
                 {{- toYaml . | nindent 16 }}
               {{- end }}
-              {{- if or .Values.configMapRefs .Values.secretRefs }}
+              {{- if or .Values.configMapRefs .Values.credentials.externalSecret .Values.secretRefs }}
               envFrom:
                 {{- range .Values.configMapRefs }}
                 - configMapRef:
+                    name: {{ .name }}
+                {{- end }}
+                {{- with .Values.credentials.externalSecret }}
+                - secretRef:
                     name: {{ .name }}
                 {{- end }}
                 {{- range .Values.secretRefs }}

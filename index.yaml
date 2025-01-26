@@ -391,6 +391,23 @@ entries:
   - annotations:
       artifacthub.io/category: database
     apiVersion: v2
+    appVersion: "17"
+    created: "2025-01-26T11:39:08.055697481Z"
+    description: Postgres is an object-relational database system that provides reliability
+      and data integrity.
+    digest: 11ea9b09852680da704bc7cd998bc48150928eb3c8a5dec3d0c3d1379af09fd5
+    icon: https://raw.githubusercontent.com/self-hosters-by-night/helm-charts/refs/heads/main/assets/postgres.png
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: simple-postgres
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/simple-postgres-0.3.0/simple-postgres-0.3.0.tgz
+    version: 0.3.0
+  - annotations:
+      artifacthub.io/category: database
+    apiVersion: v2
     appVersion: "16.4"
     created: "2025-01-08T11:09:12.959218858Z"
     description: Postgres is an object-relational database system that provides reliability
@@ -405,4 +422,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/simple-postgres-0.2.2/simple-postgres-0.2.2.tgz
     version: 0.2.2
-generated: "2025-01-08T11:10:53.847507647Z"
+generated: "2025-01-26T11:39:08.055735903Z"

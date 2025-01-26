@@ -1,61 +1,53 @@
-image:
-  registry: docker.io
-  repository: postgres
-  pullPolicy: Always
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+global:
+  nameOverride: ""
+  imagePullSecrets: []
+  image:
+    registry: docker.io
+    repository: postgres
+    pullPolicy: Always
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: ""
 
-nodeSelector: {}
-tolerations: []
-affinity: {}
+  labels: []
+  annotations: []
 
-imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
 
-podAnnotations: {}
-podLabels: {}
-
-podSecurityContext: {}
-  # fsGroup: 2000
-
-securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+  securityContext:
+    allowPrivilegeEscalation: false
 
 # Define environment variables or load specific ones from ConfigMaps and Secrets
-# If all environment variables included in a ConfigMap or Secret need to be included, consider using a configMapRef or secretRef below
 env: []
-# - name: S3_BUCKET
-#   value: bucket
-# - name: S3_BUCKET
-#   valueFrom:
-#   configMapKeyRef:
-#     name: s3-config
-#     key: bucket
-# - name: S3_TOKEN
-#   valueFrom:
-#   secretKeyRef:
-#     name: s3-secrets
-#     key: token
+  # If configuring postgre credentials as env vars set credentials.externalSecret.enabled: false
+  # Useful for development instance
+  # - name: POSTGRES_USER
+  #   value: "postgres"
+  # - name: POSTGRES_PASSWORD
+  #   value: "password"
+  # - name: POSTGRES_DB
+  #   value: "database"
 
-# Include ConfigMap objects
 configMapRefs: []
 # - name: s3-config
 
-# Include Secret objects
 secretRefs: []
-# - name: s3-secrets
+#  - name: s3-config
 
-service:
-  type: ClusterIP
-  port: 5432
+credentials:
+  # Use external secret
+  externalSecret:
+    enabled: false
+    name: "simple-postgres-credentials"
 
-resources: {}
+postgres:
+  replicaCount: 1
+
+  extraConfigMapRefs: []
+  extraSecretRefs: []
+
+  resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -67,38 +59,86 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
-livenessProbe:
-  tcpSocket:
+  persistence:
+    enabled: true
+    annotations:
+    storageClassName: ""
+    accessModes:
+      - ReadWriteOnce
+    size: "10Gi"
+    selector: null
+
+  # Additional volumes on the output StatefulSet definition.
+  extraVolumes: []
+  # - name: foo
+  #   secret:
+  #     secretName: mysecret
+  #     optional: false
+
+  # Additional volumeMounts on the output StatefulSet definition.
+  extraVolumeMounts: []
+  # - name: foo
+  #   mountPath: "/etc/foo"
+  #   readOnly: true
+
+  service:
+    type: ClusterIP
     port: 5432
-  initialDelaySeconds: 5
-  periodSeconds: 10
 
-readinessProbe:
-  exec:
-    command:
-      - bash
-      - -c
-      - "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"
-  initialDelaySeconds: 5
-  periodSeconds: 10
+  # Health checks
+  livenessProbe:
+    tcpSocket:
+      port: 5432
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 6
 
-persistence:
-  data:
-    enabled: false
-    existingClaim: ""
-  backups:
-    enabled: false
-    existingClaim: ""
+  readinessProbe:
+    exec:
+      command:
+        - "/bin/sh"
+        - "-c"
+        - "exec pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    timeoutSeconds: 5
+    successThreshold: 1
+    failureThreshold: 6
 
-# Additional volumes on the output Deployment definition.
-extraVolumes: []
-# - name: foo
-#   secret:
-#     secretName: mysecret
-#     optional: false
+backup:
+  enabled: true
+  schedule: "54 2 * * *"
 
-# Additional volumeMounts on the output Deployment definition.
-extraVolumeMounts: []
-# - name: foo
-#   mountPath: "/etc/foo"
-#   readOnly: true
+  resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+  persistence:
+    enabled: true
+    annotations:
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+    size: "10Gi"
+
+  # Additional volumes on the output StatefulSet definition.
+  extraVolumes: []
+  # - name: foo
+  #   secret:
+  #     secretName: mysecret
+  #     optional: false
+
+  # Additional volumeMounts on the output StatefulSet definition.
+  extraVolumeMounts: []
+  # - name: foo
+  #   mountPath: "/etc/foo"
+  #   readOnly: true

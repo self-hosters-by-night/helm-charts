@@ -1,0 +1,67 @@
+{{- if .Values.backup.enabled -}}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "simple-postgres.name" . }}-backup
+  {{- with .Values.global.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "simple-postgres.selectorLabels" . | nindent 4 }}
+    {{- with .Values.postgres.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  schedule: {{ .Values.backup.schedule }}
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            {{- include "simple-postgres.selectorLabels" . | nindent 12 }}
+            {{- with .Values.postgres.labels }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: backup
+              image: "{{ .Values.global.image.registry }}/{{ .Values.global.image.repository }}:{{ .Values.global.image.tag | default .Chart.AppVersion }}"
+              imagePullPolicy: {{ .Values.global.image.pullPolicy }}
+              command:
+                - "/bin/sh"
+                - "-c"
+                - |
+                  pg_dump postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@{{ include "simple-postgres.name" . }}:5432 -Fc -f /backups/$(date '+%Y-%m-%dT%H:%M:%SZ').sql
+              {{- with .Values.env }}
+              env:
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
+              {{- if or .Values.configMapRefs .Values.secretRefs }}
+              envFrom:
+                {{- range .Values.configMapRefs }}
+                - configMapRef:
+                    name: {{ .name }}
+                {{- end }}
+                {{- range .Values.secretRefs }}
+                - secretRef:
+                    name: {{ .name }}
+                {{- end }}
+              {{- end }}
+              volumeMounts:
+                - name: backups
+                  mountPath: /backups
+              {{- with .Values.global.securityContext }}
+              securityContext:
+                {{- toYaml . | nindent 16 }}
+              {{- end }}
+          volumes:
+            - name: backups
+              {{- if .Values.backup.persistence.enabled }}
+              persistentVolumeClaim:
+                claimName: {{ include "simple-postgres.name" . }}-backups
+              {{- else }}
+              emptyDir: {}
+              {{- end }}
+{{- end }}

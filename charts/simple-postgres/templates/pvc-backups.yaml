@@ -1,0 +1,13 @@
+{{- if .Values.backup.persistence.enabled -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "simple-postgres.name" . }}-backups
+spec:
+  storageClassName: {{ .Values.backup.persistence.storageClass | quote }}
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.backup.persistence.size }}
+{{- end }}

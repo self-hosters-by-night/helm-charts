@@ -9,3 +9,9 @@ helm repo add self-hosters-by-night https://self-hosters-by-night.github.io/helm
 helm repo update self-hosters-by-night
 helm install bento self-hosters-by-night/bento
 ```
+
+## Upgrading
+
+A major chart version change can indicate that there is an incompatible breaking change needing manual actions.
+
+_No recent breaking changes needing manual actions._

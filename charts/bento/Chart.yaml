@@ -2,8 +2,8 @@ apiVersion: v2
 name: bento
 description: "Bento is a declarative data streaming service that solves a wide range of data engineering problems with simple, chained, stateless processing steps. It implements transaction based resiliency with back pressure, so when connecting to at-least-once sources and sinks it's able to guarantee at-least-once delivery without needing to persist messages during transit."
 type: application
-version: 0.8.0
-appVersion: "1.4.1"
+version: 0.9.0
+appVersion: "1.8.1"
 icon: https://raw.githubusercontent.com/warpstreamlabs/bento/main/icon.png
 annotations:
   artifacthub.io/category: integration-delivery

@@ -1,0 +1,15 @@
+apiVersion: v2
+name: lldap
+description: A Helm chart for LLDAP, a lightweight authentication server that provides an opinionated and simplified LDAP interface for authentication.
+type: application
+version: 0.1.0
+appVersion: "2025-05-19"
+annotations:
+  artifacthub.io/category: security
+maintainers:
+  - name: facorazza
+    email: git@facorazza.com
+dependencies:
+  - name: postgresql
+    version: "16.7.14"
+    repository: "https://charts.bitnami.com/bitnami"

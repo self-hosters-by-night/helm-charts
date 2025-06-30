@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "lldap.fullname" . }}
+  labels:
+    {{- include "lldap.labels" . | nindent 4 }}
+  {{- with .Values.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  {{- if and (eq .Values.service.type "LoadBalancer") .Values.service.loadBalancerIP }}
+  loadBalancerIP: {{ .Values.service.loadBalancerIP }}
+  {{- end }}
+  {{- if and (eq .Values.service.type "LoadBalancer") .Values.service.loadBalancerSourceRanges }}
+  loadBalancerSourceRanges:
+    {{- range .Values.service.loadBalancerSourceRanges }}
+    - {{ . }}
+    {{- end }}
+  {{- end }}
+  ports:
+    - name: ldap
+      port: {{ .Values.service.ldap.port }}
+      protocol: TCP
+      targetPort: ldap
+      {{- if and (or (eq .Values.service.type "NodePort") (eq .Values.service.type "LoadBalancer")) .Values.service.ldap.nodePort }}
+      nodePort: {{ .Values.service.ldap.nodePort }}
+      {{- end }}
+    - name: ldaps
+      port: {{ .Values.service.ldaps.port }}
+      protocol: TCP
+      targetPort: ldaps
+      {{- if and (or (eq .Values.service.type "NodePort") (eq .Values.service.type "LoadBalancer")) .Values.service.ldaps.nodePort }}
+      nodePort: {{ .Values.service.ldaps.nodePort }}
+      {{- end }}
+    - name: webui
+      port: {{ .Values.service.webui.port }}
+      protocol: TCP
+      targetPort: webui
+      {{- if and (or (eq .Values.service.type "NodePort") (eq .Values.service.type "LoadBalancer")) .Values.service.webui.nodePort }}
+      nodePort: {{ .Values.service.webui.nodePort }}
+      {{- end }}
+  selector:
+    {{- include "lldap.selectorLabels" . | nindent 4 }}

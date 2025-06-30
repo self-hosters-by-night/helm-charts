@@ -243,6 +243,15 @@ entries:
     version: 0.1.0
   fission-crds:
   - apiVersion: v2
+    created: "2025-06-30T20:18:42.946335487Z"
+    description: A Helm chart containing the CRDs for the Fission serverless framework.
+    digest: aacfdd6f4f230a77f81728282acf28806bda7fe8d7febfd00db360c5cd8715af
+    name: fission-crds
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/fission-crds-1.21.0/fission-crds-1.21.0.tgz
+    version: 1.21.0
+  - apiVersion: v2
     created: "2025-06-30T20:16:11.20933199Z"
     description: A Helm chart containing the CRDs for the Fission serverless framework.
     digest: b5aaf646a4f8e282bc482d30ea532080d42426b2beecb3701448eaf88f249936
@@ -507,4 +516,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/simple-postgres-0.2.2/simple-postgres-0.2.2.tgz
     version: 0.2.2
-generated: "2025-06-30T20:16:11.423436297Z"
+generated: "2025-06-30T20:18:42.946382015Z"

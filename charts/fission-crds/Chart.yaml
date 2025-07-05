@@ -3,3 +3,8 @@ name: fission-crds
 description: A Helm chart containing the CRDs for the Fission serverless framework.
 type: application
 version: 1.21.0
+annotations:
+  artifacthub.io/category: integration-delivery
+maintainers:
+  - name: facorazza
+    email: git@facorazza.com

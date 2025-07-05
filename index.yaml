@@ -347,6 +347,36 @@ entries:
         - title: Score D
           url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/score-d.png"
     apiVersion: v2
+    appVersion: v0.21.7
+    created: "2025-07-05T18:30:00.512862008Z"
+    description: Popeye is a utility that scans live Kubernetes clusters and reports
+      potential issues with deployed resources and configurations.
+    digest: f60687398e3d9018f77d7ba210eb4f69c13f9ee5a9d3e57b05c3e849bc3393ea
+    icon: https://raw.githubusercontent.com/derailed/popeye/master/assets/popeye_logo.png
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: popeye
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/popeye-0.2.1/popeye-0.2.1.tgz
+    version: 0.2.1
+  - annotations:
+      artifacthub.io/category: security
+      artifacthub.io/screenshots: |
+        - title: Console Output
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/console.png"
+        - title: HTML Output
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/html.png"
+        - title: JSON Output
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/json.png"
+        - title: Dashboard
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/pop-dash.png"
+        - title: Score A
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/score-a.png"
+        - title: Score D
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/score-d.png"
+    apiVersion: v2
     appVersion: v0.21.3
     created: "2024-10-12T14:46:11.434421396Z"
     description: Popeye is a utility that scans live Kubernetes clusters and reports
@@ -516,4 +546,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/simple-postgres-0.2.2/simple-postgres-0.2.2.tgz
     version: 0.2.2
-generated: "2025-06-30T20:18:42.946382015Z"
+generated: "2025-07-05T18:30:00.512934202Z"

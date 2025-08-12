@@ -18,6 +18,9 @@ spec:
       namespace: {{ .Release.Namespace }}
     spec:
       template:
+        metadata:
+          labels:
+            {{- include "popeye.labels" . | nindent 12 }}
         spec:
           {{- with .Values.imagePullSecrets }}
           imagePullSecrets:

@@ -348,6 +348,36 @@ entries:
           url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/score-d.png"
     apiVersion: v2
     appVersion: v0.22.1
+    created: "2025-08-12T23:42:59.684387148Z"
+    description: Popeye is a utility that scans live Kubernetes clusters and reports
+      potential issues with deployed resources and configurations.
+    digest: de97dbefdff0423704cf2d27bc877f111ac69e60b18fe6231e8af815225966cb
+    icon: https://raw.githubusercontent.com/derailed/popeye/master/assets/popeye_logo.png
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: popeye
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/popeye-0.4.0/popeye-0.4.0.tgz
+    version: 0.4.0
+  - annotations:
+      artifacthub.io/category: security
+      artifacthub.io/screenshots: |
+        - title: Console Output
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/console.png"
+        - title: HTML Output
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/html.png"
+        - title: JSON Output
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/json.png"
+        - title: Dashboard
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/pop-dash.png"
+        - title: Score A
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/score-a.png"
+        - title: Score D
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/score-d.png"
+    apiVersion: v2
+    appVersion: v0.22.1
     created: "2025-07-05T18:31:16.364057578Z"
     description: Popeye is a utility that scans live Kubernetes clusters and reports
       potential issues with deployed resources and configurations.
@@ -576,4 +606,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/simple-postgres-0.2.2/simple-postgres-0.2.2.tgz
     version: 0.2.2
-generated: "2025-07-05T18:31:16.364145202Z"
+generated: "2025-08-12T23:42:59.684461417Z"

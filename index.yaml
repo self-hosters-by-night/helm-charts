@@ -241,6 +241,16 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/bento-0.1.0/bento-0.1.0.tgz
     version: 0.1.0
+  boilerplate:
+  - apiVersion: v2
+    created: "2025-08-13T09:23:02.224439518Z"
+    description: Boilerplate templates
+    digest: 49be6987251cec2921cb6f41bf0fe685ec9fb4d3d2826d95b1343709aad2830f
+    name: boilerplate
+    type: library
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/boilerplate-0.1.0/boilerplate-0.1.0.tgz
+    version: 0.1.0
   fission-crds:
   - apiVersion: v2
     created: "2025-06-30T20:18:42.946335487Z"
@@ -606,4 +616,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/simple-postgres-0.2.2/simple-postgres-0.2.2.tgz
     version: 0.2.2
-generated: "2025-08-12T23:42:59.684461417Z"
+generated: "2025-08-13T09:23:02.224546137Z"

@@ -1,14 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "lldap.fullname" . }}
+  name: {{ include "boilerplate.fullname" . }}
   labels:
-    {{- include "lldap.labels" . | nindent 4 }}
+    {{- include "boilerplate.labels.standard" . | nindent 4 }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      {{- include "lldap.selectorLabels" . | nindent 6 }}
+      {{- include "boilerplate.labels.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -16,7 +16,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "lldap.labels" . | nindent 8 }}
+        {{- include "boilerplate.labels.standard" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -35,17 +35,13 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: {{ include "boilerplate.images.image" (dict "imageRoot" .Values.image "global" .Values.global) }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           envFrom:
             - configMapRef:
-                name: {{ if .Values.config.existingConfigMap }}{{ else }}{{ .Values.config.existingConfigMap }}{{ include "lldap.fullname" . }}-config{{ end }}
+                name: {{ if .Values.config.existingConfigMap }}{{ .Values.config.existingConfigMap }}{{ else }}{{ include "boilerplate.fullname" . }}-config{{ end }}
             - secretRef:
-                name: {{ if .Values.secrets.existingSecret }}{{ else }}{{ .Values.secrets.existingSecret }}{{ include "lldap.fullname" . }}-secret{{ end }}
-          resources:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- with .Values.volumeMounts }}
+                name: {{ if .Values.secrets.existingSecret }}{{ .Values.secrets.existingSecret }}{{ else }}{{ include "boilerplate.fullname" . }}-secret{{ end }}
           ports:
             - name: ldap
               containerPort: 3890
@@ -65,28 +61,26 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           {{- with .Values.resources }}
-          volumeMounts:
+          resources:
             {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
             {{- if .Values.persistence.enabled }}
             - name: data
               mountPath: /data
             {{- end }}
-            {{- if .Values.extraVolumeMounts}}
-            {{- toYaml .Values.extraVolumeMounts | nindent 12}}
+            {{- with .Values.extraVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
             {{- end }}
-          {{- end }}
-      {{- with .Values.volumes }}
       volumes:
-        {{- toYaml . | nindent 8 }}
-        {{- if .Values.persistence.enabled}}
+        {{- if .Values.persistence.enabled }}
         - name: data
           persistentVolumeClaim:
-            claimName: {{ include "lldap-chart.fullname" . }}-data
+            claimName: {{ if .Values.persistence.existingClaim }}{{ .Values.persistence.existingClaim }}{{ else }}{{ include "boilerplate.fullname" . }}-data{{ end }}
         {{- end }}
-        {{- if .Values.extraVolumes}}
-        {{- toYaml .Values.extraVolumes | nindent 8}}
+        {{- with .Values.extraVolumes }}
+        {{- toYaml . | nindent 8 }}
         {{- end }}
-      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

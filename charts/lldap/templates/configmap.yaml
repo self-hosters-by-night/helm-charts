@@ -2,9 +2,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "lldap.fullname" . }}-config
+  name: {{ include "boilerplate.fullname" . }}-config
   labels:
-    {{- include "lldap.labels" . | nindent 4 }}
+    {{- include "boilerplate.labels.standard" . | nindent 4 }}
 data:
   UID: {{ .Values.config.uid | quote }}
   GID: {{ .Values.config.gid | quote }}

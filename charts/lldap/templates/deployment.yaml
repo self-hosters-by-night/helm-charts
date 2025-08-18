@@ -37,6 +37,15 @@ spec:
           {{- end }}
           image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ if .Values.config.existingConfigMap }}{{ else }}{{ .Values.config.existingConfigMap }}{{ include "lldap.fullname" . }}-config{{ end }}
+            - secretRef:
+                name: {{ if .Values.secrets.existingSecret }}{{ else }}{{ .Values.secrets.existingSecret }}{{ include "lldap.fullname" . }}-secret{{ end }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.volumeMounts }}
           ports:
             - name: ldap
               containerPort: 3890
@@ -56,17 +65,12 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           {{- with .Values.resources }}
-          resources:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- with .Values.volumeMounts }}
           volumeMounts:
             {{- toYaml . | nindent 12 }}
             {{- if .Values.persistence.enabled }}
             - name: data
               mountPath: /data
             {{- end }}
-
             {{- if .Values.extraVolumeMounts}}
             {{- toYaml .Values.extraVolumeMounts | nindent 12}}
             {{- end }}
@@ -79,7 +83,6 @@ spec:
           persistentVolumeClaim:
             claimName: {{ include "lldap-chart.fullname" . }}-data
         {{- end }}
-
         {{- if .Values.extraVolumes}}
         {{- toYaml .Values.extraVolumes | nindent 8}}
         {{- end }}

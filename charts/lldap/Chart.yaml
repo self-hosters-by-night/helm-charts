@@ -10,6 +10,14 @@ maintainers:
   - name: facorazza
     email: git@facorazza.com
 dependencies:
-  - name: postgresql
-    version: "16.7.14"
+  - name: boilerplate
+    version: "0.1.0"
     repository: "https://charts.bitnami.com/bitnami"
+  - name: postgresql
+    version: "17"
+    repository: "https://charts.bitnami.com/bitnami"
+
+keywords:
+  - ldap
+  - authentication
+  - directory

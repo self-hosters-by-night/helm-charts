@@ -16,7 +16,6 @@ dependencies:
   - name: postgresql
     version: "17"
     repository: "https://charts.bitnami.com/bitnami"
-
 keywords:
   - ldap
   - authentication

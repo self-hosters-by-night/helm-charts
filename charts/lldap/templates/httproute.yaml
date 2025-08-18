@@ -1,0 +1,53 @@
+# templates/httproute.yaml
+{{- if .Values.httproute.webui.enabled -}}
+{{- $fullName := include "lldap.fullname" . -}}
+{{- $svcPort := .Values.service.webui.port -}}
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "lldap.labels" . | nindent 4 }}
+  {{- with .Values.httproute.webui.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  parentRefs:
+  - name: {{ .Values.httproute.webui.gatewayName }}
+    {{- if .Values.httproute.webui.namespace }}
+    namespace: {{ .Values.httproute.webui.namespace }}
+    {{- end }}
+    {{- if .Values.httproute.webui.sectionName }}
+    sectionName: {{ .Values.httproute.webui.sectionName }}
+    {{- end }}
+  {{- if .Values.httproute.webui.hostnames }}
+  hostnames:
+  {{- range .Values.httproute.webui.hostnames }}
+  - {{ . | quote }}
+  {{- end }}
+  {{- end }}
+  rules:
+  - matches:
+    {{- range .Values.httproute.webui.matches | default (list (dict "path" (dict "type" "PathPrefix" "value" "/"))) }}
+    - path:
+        type: {{ .path.type }}
+        value: {{ .path.value }}
+      {{- if .method }}
+      method: {{ .method }}
+      {{- end }}
+      {{- if .headers }}
+      headers:
+      {{- range .headers }}
+      - name: {{ .name }}
+        value: {{ .value }}
+      {{- end }}
+      {{- end }}
+    {{- end }}
+    backendRefs:
+    - name: {{ $fullName }}
+      port: {{ $svcPort }}
+      {{- if .Values.httproute.webui.weight }}
+      weight: {{ .Values.httproute.webui.weight }}
+      {{- end }}
+{{- end -}}

@@ -137,6 +137,36 @@ service:
     port: 17170
     # nodePort: 30171  # Only used if service.type is NodePort or LoadBalancer
 
+httproute:
+  webui:
+    enabled: true
+    gatewayName: ""
+    namespace: ""
+    sectionName: ""
+    hostnames: []
+    annotations: {}
+    matches:
+      - path:
+          type: PathPrefix
+          value: "/"
+    weight: 1
+
+tcproute:
+  ldap:
+    enabled: true
+    gatewayName: ""
+    namespace: ""
+    sectionName: ""
+    annotations: {}
+    weight: 1
+  ldaps:
+    enabled: true
+    gatewayName: ""
+    namespace: ""
+    sectionName: ""
+    annotations: {}
+    weight: 1
+
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little

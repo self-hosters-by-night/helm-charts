@@ -1,0 +1,62 @@
+---
+{{- if .Values.tcproute.ldap.enabled -}}
+{{- $fullName := include "lldap.fullname" . -}}
+{{- $svcPort := .Values.service.ldap.port -}}
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TCPRoute
+metadata:
+  name: {{ $fullName }}-ldap
+  labels:
+    {{- include "lldap.labels" . | nindent 4 }}
+  {{- with .Values.tcproute.ldap.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  parentRefs:
+  - name: {{ .Values.tcproute.ldap.gatewayName }}
+    {{- if .Values.tcproute.ldap.namespace }}
+    namespace: {{ .Values.tcproute.ldap.namespace }}
+    {{- end }}
+    {{- if .Values.tcproute.ldap.sectionName }}
+    sectionName: {{ .Values.tcproute.ldap.sectionName }}
+    {{- end }}
+  rules:
+  - backendRefs:
+    - name: {{ $fullName }}
+      port: {{ $svcPort }}
+      {{- if .Values.tcproute.ldap.weight }}
+      weight: {{ .Values.tcproute.ldap.weight }}
+      {{- end }}
+{{- end -}}
+---
+{{- if .Values.tcproute.ldaps.enabled -}}
+{{- $fullName := include "lldap.fullname" . -}}
+{{- $svcPort := .Values.service.ldaps.port -}}
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TCPRoute
+metadata:
+  name: {{ $fullName }}-ldaps
+  labels:
+    {{- include "lldap.labels" . | nindent 4 }}
+  {{- with .Values.tcproute.ldaps.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  parentRefs:
+  - name: {{ .Values.tcproute.ldaps.gatewayName }}
+    {{- if .Values.tcproute.ldaps.namespace }}
+    namespace: {{ .Values.tcproute.ldaps.namespace }}
+    {{- end }}
+    {{- if .Values.tcproute.ldaps.sectionName }}
+    sectionName: {{ .Values.tcproute.ldaps.sectionName }}
+    {{- end }}
+  rules:
+  - backendRefs:
+    - name: {{ $fullName }}
+      port: {{ $svcPort }}
+      {{- if .Values.tcproute.ldaps.weight }}
+      weight: {{ .Values.tcproute.ldaps.weight }}
+      {{- end }}
+{{- end -}}

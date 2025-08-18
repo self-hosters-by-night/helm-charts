@@ -1,16 +1,16 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "simple-postgres.name" . }}
+  name: {{ include "boilerplate.name" . }}
   {{- with .Values.global.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   labels:
-    {{- include "simple-postgres.labels" . | nindent 4 }}
+    {{- include "boilerplate.labels.standard" . | nindent 4 }}
 spec:
   selector:
-    {{- include "simple-postgres.selectorLabels" . | nindent 4 }}
+    {{- include "boilerplate.labels.selectorLabels" . | nindent 4 }}
   type: {{ .Values.postgres.service.type }}
   ports:
     - name: simple-postgres

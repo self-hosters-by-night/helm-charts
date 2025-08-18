@@ -2,13 +2,13 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ include "simple-postgres.name" . }}-backup
+  name: {{ include "boilerplate.name" . }}-backup
   {{- with .Values.global.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   labels:
-    {{- include "simple-postgres.selectorLabels" . | nindent 4 }}
+    {{- include "boilerplate.labels.selectorLabels" . | nindent 4 }}
     {{- with .Values.postgres.labels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
@@ -19,7 +19,7 @@ spec:
       template:
         metadata:
           labels:
-            {{- include "simple-postgres.selectorLabels" . | nindent 12 }}
+            {{- include "boilerplate.labels.selectorLabels" . | nindent 12 }}
             {{- with .Values.postgres.labels }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
@@ -27,13 +27,13 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: backup
-              image: "{{ .Values.global.image.registry }}/{{ .Values.global.image.repository }}:{{ .Values.global.image.tag | default .Chart.AppVersion }}"
+              image: {{ include "boilerplate.images.image" (dict "imageRoot" .Values.global.image "global" .Values.global) }}
               imagePullPolicy: {{ .Values.global.image.pullPolicy }}
               command:
                 - "/bin/sh"
                 - "-c"
                 - |
-                  pg_dump postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@{{ include "simple-postgres.name" . }}:5432 -Fc -f /backups/$(date '+%Y-%m-%dT%H:%M:%SZ').sql
+                  pg_dump postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@{{ include "boilerplate.name" . }}:5432 -Fc -f /backups/$(date '+%Y-%m-%dT%H:%M:%SZ').sql
               {{- with .Values.env }}
               env:
                 {{- toYaml . | nindent 16 }}
@@ -64,7 +64,7 @@ spec:
             - name: backups
               {{- if .Values.backup.persistence.enabled }}
               persistentVolumeClaim:
-                claimName: {{ include "simple-postgres.name" . }}-backups
+                claimName: {{ include "boilerplate.name" . }}-backups
               {{- else }}
               emptyDir: {}
               {{- end }}

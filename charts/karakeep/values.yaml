@@ -14,7 +14,7 @@ affinity: {}
 imagePullSecrets: []
 
 image:
-  repository: nginx
+  repository: ghcr.io/karakeep-app/karakeep
   # This sets the pull policy for images.
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.

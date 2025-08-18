@@ -1,0 +1,84 @@
+nameOverride: ""
+fullnameOverride: ""
+
+replicaCount: 1
+
+image:
+  repository: zenika/alpine-chrome
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+imagePullSecrets: []
+
+podAnnotations: {}
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
+
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: false
+  runAsNonRoot: true
+  runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 9222
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+  requests:
+    cpu: 100m
+    memory: 256Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+# Chrome specific configuration
+chrome:
+  # Chrome flags (common ones for headless mode)
+  args:
+    - "--no-sandbox"
+    - "--headless=new"
+    - "--disable-gpu"
+    - "--disable-dev-shm-usage"
+    - "--remote-debugging-address=0.0.0.0"
+    - "--remote-debugging-port=9222"
+    - "--disable-extensions"
+    - "--disable-background-timer-throttling"
+    - "--disable-backgrounding-occluded-windows"
+    - "--disable-renderer-backgrounding"
+
+  # Environment variables
+  env: []
+    # - name: DISPLAY
+    #   value: ":99"
+
+# Persistence for downloads/cache
+persistence:
+  enabled: false
+  storageClass: ""
+  accessMode: ReadWriteOnce
+  size: 1Gi
+
+# Init containers for setup
+initContainers: []
+
+# Additional containers
+sidecars: []

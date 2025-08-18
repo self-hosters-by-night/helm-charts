@@ -1,8 +1,8 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: { { include "alpine-chrome.fullname" . } }
-  labels: { { - include "alpine-chrome.labels" . | nindent 4 } }
+  name: { { include "boilerplate.fullname" . } }
+  labels: { { - include "boilerplate.labels.standard" . | nindent 4 } }
 spec:
   type: { { .Values.service.type } }
   ports:
@@ -10,4 +10,4 @@ spec:
       targetPort: debug
       protocol: TCP
       name: debug
-  selector: { { - include "alpine-chrome.selectorLabels" . | nindent 4 } }
+  selector: { { - include "boilerplate.labels.selectorLabels" . | nindent 4 } }

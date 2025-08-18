@@ -70,15 +70,19 @@ chrome:
     # - name: DISPLAY
     #   value: ":99"
 
-# Persistence for downloads/cache
-persistence:
-  enabled: false
-  storageClass: ""
-  accessMode: ReadWriteOnce
-  size: 1Gi
-
 # Init containers for setup
 initContainers: []
 
 # Additional containers
 sidecars: []
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts:
+    - host: chrome.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []

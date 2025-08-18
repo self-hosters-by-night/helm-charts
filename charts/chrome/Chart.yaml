@@ -1,6 +1,6 @@
 apiVersion: v2
 name: chrome
-description: A Helm chart for Chrome
+description: A Helm chart for headless Chrome
 type: application
 version: 0.1.0
 appVersion: "124"
@@ -10,4 +10,4 @@ maintainers:
 dependencies:
   - name: boilerplate
     version: "0.1.0"
-    repository: "https://github.com/self-hosters-by-night/helm-charts"
+    repository: "https://self-hosters-by-night.github.io/helm-charts"

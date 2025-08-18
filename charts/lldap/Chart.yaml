@@ -16,7 +16,7 @@ maintainers:
 dependencies:
   - name: boilerplate
     version: "0.1.0"
-    repository: "https://github.com/self-hosters-by-night/helm-charts"
+    repository: "https://self-hosters-by-night.github.io/helm-charts"
   - name: postgresql
     version: "16.7.26"
     repository: "https://charts.bitnami.com/bitnami"

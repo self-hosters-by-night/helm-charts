@@ -4,7 +4,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ include "boilerplate.fullname" . }}-data
   labels:
-    {{- include "boilerplate.labels" . | nindent 4 }}
+    {{- include "boilerplate.labels.standard" . | nindent 4 }}
 spec:
   accessModes:
     - {{ .Values.persistence.accessMode }}

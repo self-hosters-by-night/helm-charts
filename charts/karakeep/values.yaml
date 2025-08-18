@@ -4,8 +4,6 @@ nameOverride: ""
 
 fullnameOverride: ""
 
-replicaCount: 1
-
 nodeSelector: {}
 
 tolerations: []

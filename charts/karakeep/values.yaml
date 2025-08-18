@@ -6,6 +6,11 @@ fullnameOverride: ""
 
 replicaCount: 1
 
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
 
 # This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []
@@ -35,6 +40,9 @@ securityContext: {}
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
   # runAsUser: 1000
+
+env: []
+  # OPENAI_API_KEY: ""
 
 # This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
 service:
@@ -96,9 +104,32 @@ readinessProbe:
   periodSeconds: 10
   timeoutSeconds: 5
 
+chrome:
+  enabled: false
 
-nodeSelector: {}
+meilisearch:
+  enabled: false
+  environment:
+    MEILI_NO_ANALYTICS: true
+  persistence:
+    # -- Enable persistence using PVC
+    enabled: false
+    # -- PVC Access Mode
+    accessMode: ReadWriteOnce
+    ## Persistent Volume Storage Class
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+    ##   GKE, AWS & OpenStack)
+    ##
+    # -- PVC Storage Class
+    storageClass: ~
 
-tolerations: []
-
-affinity: {}
+    ## Data Persistent Volume existing claim name
+    ## Requires persistence.enabled: true
+    ## If defined, PVC must be created manually before volume will be bound
+    # -- Existing PVC
+    existingClaim: ""
+    # -- PVC Storage Request
+    size: 10Gi

@@ -3,13 +3,13 @@ Return the proper image name
 {{ include "boilerplate.images.image" . }}
 */}}
 {{- define "boilerplate.images.image" -}}
-{{- $registryName := default .image.registry ($.Values.global.imageRegistry) -}}
-{{- $repositoryName := .image.repository -}}
+{{- $registry := default .image.registry ($.Values.global.imageRegistry) -}}
+{{- $repository := .image.repository -}}
 {{- $version := include "boilerplate.images.version" . -}}
-{{- if $registryName }}
-{{- printf "%s/%s%s" $registryName $repositoryName $version -}}
+{{- if $registry }}
+{{- printf "%s/%s%s" $registry $repository $version -}}
 {{- else -}}
-{{- printf "%s%s" $repositoryName $version -}}
+{{- printf "%s%s" $repository $version -}}
 {{- end -}}
 {{- end -}}
 

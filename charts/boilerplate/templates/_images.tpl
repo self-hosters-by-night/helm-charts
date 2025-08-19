@@ -1,9 +1,10 @@
 {{/*
 Return the proper image name
-{{ include "boilerplate.images.image" . }}
+{{ include "boilerplate.images.image" ( dict "image" .Values.path.to.the.image "global" .Values.global "chart" .Chart ) }}
 */}}
 {{- define "boilerplate.images.image" -}}
-{{- $registry := coalesce ($.Values.global).imageRegistry .image.registry "" -}}
+{{- $globalRegistry := (.global.imageRegistry) | default "" -}}
+{{- $registry := coalesce .image.registry $globalRegistry "" -}}
 {{- $repository := .image.repository -}}
 {{- $version := include "boilerplate.images.version" . -}}
 {{- if $registry }}
@@ -14,7 +15,7 @@ Return the proper image name
 {{- end -}}
 
 {{/*
-Return the proper image version. Falls back to Chart.AppVersion if no tag or digest is specified.
+Return the proper image version. Falls back to Chart.appVersion if no tag or digest is specified.
 {{ include "boilerplate.images.version" . }}
 */}}
 {{- define "boilerplate.images.version" -}}
@@ -23,7 +24,7 @@ Return the proper image version. Falls back to Chart.AppVersion if no tag or dig
 {{- else if .image.tag }}
 {{- printf ":%s" (.image.tag | toString) -}}
 {{- else -}}
-{{- printf ":%s" $.Chart.AppVersion -}}
+{{- printf ":%s" .chart.appVersion -}}
 {{- end -}}
 {{- end -}}
 
@@ -32,10 +33,10 @@ Validate image configuration
 {{ include "boilerplate.images.validate" . }}
 */}}
 {{- define "boilerplate.images.validate" -}}
-{{- if not .repository -}}
+{{- if not .image.repository -}}
 {{- fail "Image repository is required" -}}
 {{- end -}}
-{{- if and (not .tag) (not .digest) -}}
+{{- if and (not .image.tag) (not .image.digest) -}}
 {{- fail "Either image tag or digest must be specified" -}}
 {{- end -}}
 {{- end -}}
@@ -45,7 +46,8 @@ Return the proper image pull policy
 {{ include "boilerplate.images.pullPolicy" . }}
 */}}
 {{- define "boilerplate.images.pullPolicy" -}}
-{{- coalesce ($.Values.global).imagePullPolicy .image.pullPolicy "IfNotPresent" -}}
+{{- $globalImagePullPolicy := (.global.imagePullPolicy) | default "" -}}
+{{- coalesce .image.pullPolicy $globalImagePullPolicy "IfNotPresent" -}}
 {{- end -}}
 
 {{/*
@@ -54,13 +56,13 @@ Return the proper image pull secrets
 */}}
 {{- define "boilerplate.images.pullSecrets" -}}
 {{- $pullSecrets := list -}}
-{{- $globalSecrets := ($.Values.global).imagePullSecrets | default list -}}
-{{- $imageSecrets := .image.pullSecrets | default list -}}
+{{- $globalSecrets := (.global.imagePullSecrets) | default list -}}
+{{- $imageSecrets := (.image.pullSecrets) | default list -}}
 {{- $pullSecrets = concat $pullSecrets $globalSecrets $imageSecrets -}}
 {{- if $pullSecrets -}}
 imagePullSecrets:
 {{- range $pullSecrets }}
-  - name: {{ . }}
+- name: {{ . }}
 {{- end -}}
 {{- end -}}
 {{- end -}}

@@ -243,6 +243,15 @@ entries:
     version: 0.1.0
   boilerplate:
   - apiVersion: v2
+    created: "2025-08-19T10:20:32.286182365Z"
+    description: Boilerplate templates
+    digest: 39551cfd279d222e31758f1b4816ba4c99866816077c9787c3198ed080fc2441
+    name: boilerplate
+    type: library
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/boilerplate-0.2.0/boilerplate-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
     created: "2025-08-13T09:23:02.224439518Z"
     description: Boilerplate templates
     digest: 49be6987251cec2921cb6f41bf0fe685ec9fb4d3d2826d95b1343709aad2830f
@@ -250,6 +259,24 @@ entries:
     type: library
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/boilerplate-0.1.0/boilerplate-0.1.0.tgz
+    version: 0.1.0
+  chrome:
+  - apiVersion: v2
+    appVersion: "124"
+    created: "2025-08-19T10:20:32.54732338Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.1.0
+    description: A Helm chart for headless Chrome
+    digest: 1ff21b59ae0a9c3673eca7321885665ec10de3ae224dcfe63d6711f33d856273
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: chrome
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/chrome-0.1.0/chrome-0.1.0.tgz
     version: 0.1.0
   fission-crds:
   - apiVersion: v2
@@ -270,6 +297,27 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/fission-crds-1.20.5/fission-crds-1.20.5.tgz
     version: 1.20.5
+  karakeep:
+  - apiVersion: v2
+    appVersion: 0.26.0
+    created: "2025-08-19T10:20:33.06703842Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.1.0
+    - name: meilisearch
+      repository: https://meilisearch.github.io/meilisearch-kubernetes
+      version: 0.15.0
+    description: A Helm chart for Karakeep
+    digest: 019401de88a503b352da8b3a025f95f2ee8f9d0173f3aac9cf3cae569a64b2ed
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: karakeep
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/karakeep-0.1.0/karakeep-0.1.0.tgz
+    version: 0.1.0
   lldap:
   - annotations:
       artifacthub.io/category: security
@@ -616,4 +664,23 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/simple-postgres-0.2.2/simple-postgres-0.2.2.tgz
     version: 0.2.2
-generated: "2025-08-13T09:23:02.224546137Z"
+  template:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2025-08-19T10:20:34.29706248Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.1.0
+    description: A template Helm chart to demostrate the usage of the boilerplate
+      library chart.
+    digest: 5c355655155f2f6517a5994a93673596727cb5e137ed737daa88f9aba06a1535
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: template
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.1.0/template-0.1.0.tgz
+    version: 0.1.0
+generated: "2025-08-19T10:20:34.297120709Z"

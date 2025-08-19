@@ -1,10 +1,10 @@
 {{/*
 Return the proper image name
-{{ include "boilerplate.images.image" ( dict "imageRoot" .Values.path.to.the.image "global" .Values.global ) }}
+{{ include "boilerplate.images.image" . }}
 */}}
 {{- define "boilerplate.images.image" -}}
-{{- $registryName := default .imageRoot.registry ((.global).imageRegistry) -}}
-{{- $repositoryName := .imageRoot.repository -}}
+{{- $registryName := default .image.registry ($.Values.global.imageRegistry) -}}
+{{- $repositoryName := .image.repository -}}
 {{- $version := include "boilerplate.images.version" . -}}
 {{- if $registryName }}
 {{- printf "%s/%s%s" $registryName $repositoryName $version -}}
@@ -14,21 +14,16 @@ Return the proper image name
 {{- end -}}
 
 {{/*
-Return the proper image version with separator (tag with : or digest with @, fallbacks to chart appVersion)
-{{ include "boilerplate.images.version" ( dict "imageRoot" .Values.path.to.the.image "chart" .Chart ) }}
+Return the proper image version. Falls back to Chart.AppVersion if no tag or digest is specified.
+{{ include "boilerplate.images.version" . }}
 */}}
 {{- define "boilerplate.images.version" -}}
-{{- if .imageRoot.digest }}
-{{- printf "@%s" (.imageRoot.digest | toString) -}}
-{{- else if .imageRoot.tag }}
-{{- $imageTag := .imageRoot.tag | toString -}}
-{{- if regexMatch `^v?([0-9]+)(\.[0-9]+)?(\.[0-9]+)?(-([0-9A-Za-z\-]+(\.[0-9A-Za-z\-]+)*))?(\+([0-9A-Za-z\-]+(\.[0-9A-Za-z\-]+)*))?$` $imageTag -}}
-{{- printf ":%s" $imageTag -}}
+{{- if .image.digest }}
+{{- printf "@%s" (.image.digest | toString) -}}
+{{- else if .image.tag }}
+{{- printf ":%s" (.image.tag | toString) -}}
 {{- else -}}
-{{- printf ":%s" $imageTag -}}
-{{- end -}}
-{{- else -}}
-{{- printf ":%s" .chart.AppVersion -}}
+{{- printf ":%s" $.Chart.AppVersion -}}
 {{- end -}}
 {{- end -}}
 

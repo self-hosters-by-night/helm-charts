@@ -21,16 +21,15 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      {{- include "boilerplate.images.pullSecrets" .Values.app | nindent 6 }}
+      {{- include "boilerplate.images.pullSecrets" (dict "global" .Values.global "image" .Values.image) | nindent 6 }}
       {{- with .Values.podSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          image: {{ include "boilerplate.images.image" .Values }}
-          imagePullPolicy: {{ include "boilerplate.images.pullPolicy" .Values }}
-          {{ include "boilerplate.images.pullSecrets" .Values }}
+          image: {{ include "boilerplate.images.image" (dict "image" .Values.image "global" .Values.global "chart" .Chart) }}
+          imagePullPolicy: {{ include "boilerplate.images.pullPolicy" (dict "image" .Values.image "global" .Values.global) }}
           {{- with .Values.securityContext }}
           securityContext:
             {{- toYaml . | nindent 12 }}

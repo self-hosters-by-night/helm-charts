@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: { { include "boilerplate.fullname" . } }
+  labels: { { - include "boilerplate.labels.standard" . | nindent 4 } }
+spec:
+  type: { { .Values.service.type } }
+  selector: { { - include "boilerplate.labels.selectorLabels" . | nindent 4 } }
+  ports:
+    - name: http
+      port: { { .Values.service.port } }
+      protocol: TCP
+      targetPort: http

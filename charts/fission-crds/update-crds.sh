@@ -2,20 +2,21 @@
 
 set -euo pipefail
 
-VERSION=${1:-}
+echo "Fetching latest Fission version..."
+VERSION=$(curl -s https://api.github.com/repos/fission/fission/releases/latest | jq -r '.tag_name' | sed 's/^v//')
 
-if [[ -z "$VERSION" ]]; then
-    echo "Usage: $0 <version>" >&2
-    echo "Example: $0 1.21.0" >&2
+if [[ -z "$VERSION" || "$VERSION" == "null" ]]; then
+    echo "Error: Failed to fetch latest version" >&2
     exit 1
 fi
 
 # Validate version format (basic check)
 if [[ ! "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-    echo "Error: Version must be in format X.Y.Z (e.g., 1.21.0)" >&2
+    echo "Error: Version must be in format X.Y.Z (got: $VERSION)" >&2
     exit 1
 fi
 
+echo "Latest version: $VERSION"
 echo "Updating CRDs to version $VERSION..."
 
 rm -rf crds
@@ -29,6 +30,6 @@ fi
 sed -i "s/^version: .*/version: $VERSION/" Chart.yaml
 
 git add crds Chart.yaml
-git commit -m "Update CRDs to version $VERSION"
+git commit -m "Update Fission CRDs to version $VERSION"
 
 echo "Successfully updated CRDs to version $VERSION"

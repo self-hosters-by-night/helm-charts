@@ -1,5 +1,5 @@
 {{- if .Values.ingress.webui.enabled -}}
-{{- $fullName := include "lldap.fullname" . -}}
+{{- $fullName := include "boilerplate.fullname" . -}}
 {{- $svcPort := .Values.service.webui.port -}}
 {{- if and .Values.ingress.webui.className (not (hasKey .Values.ingress.webui.annotations "kubernetes.io/ingress.class")) }}
   {{- $_ := set .Values.ingress.webui.annotations "kubernetes.io/ingress.class" .Values.ingress.webui.className}}
@@ -9,13 +9,15 @@ kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-    {{- include "lldap.labels" . | nindent 4 }}
+    {{- include "boilerplate.labels.standard" . | nindent 4 }}
   {{- with .Values.ingress.webui.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
+  {{- if .Values.ingress.webui.className }}
   ingressClassName: {{ .Values.ingress.webui.className }}
+  {{- end }}
   {{- if .Values.ingress.webui.tls }}
   tls:
     {{- range .Values.ingress.webui.tls }}
@@ -29,7 +31,7 @@ spec:
   rules:
     {{- range .Values.ingress.webui.hosts }}
     - host: {{ .host | quote }}
-      webui:
+      http:
         paths:
           {{- range .paths }}
           - path: {{ .path }}

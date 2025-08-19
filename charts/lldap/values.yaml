@@ -42,6 +42,70 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
+config:
+  # If "" create configMap with Helm values, otherwise specify existing configmap name
+  existingConfigMap: ""
+
+  # LLDAP configuration values
+  uid: 1000
+  gid: 1000
+  timezone: "UTC"
+
+  ## Base DN for LDAP.
+  ## This is usually your domain name, and is used as a
+  ## namespace for your users. The choice is arbitrary, but will be needed
+  ## to configure the LDAP integration with other services.
+  ## The sample value is for "example.com", but you can extend it with as
+  ## many "dc" as you want, and you don't actually need to own the domain
+  ## name.
+  ldapBaseDn: "dc=example,dc=com"
+  ## Admin username.
+  ## For the LDAP interface, a value of "admin" here will create the LDAP
+  ## user "cn=admin,ou=people,dc=example,dc=com" (with the base DN above).
+  ## For the administration interface, this is the username.
+  ldapUserDn: "admin" # i.e. cn=admin,ou=people,dc=example,dc=com
+  ## Admin email.
+  ## Email for the admin account. It is only used when initially creating
+  ## the admin user, and can safely be omitted.
+  ldapUserEmail: "admin@example.com"
+
+  # LDAPS configuration
+  ldaps:
+    enabled: false
+    certFile: "/path/to/certfile.crt"
+    keyFile: "/path/to/keyfile.key"
+
+  # Database configuration
+  database:
+    # Options: sqlite, postgres (TODO)
+    type: "sqlite"
+    # For external databases, configure URL
+    url: ""
+    # Example URLs:
+    # postgres://postgres-user:password@postgres-server/my-database
+
+  # SMTP configuration
+  smtp:
+    enablePasswordReset: false
+    server: "smtp.example.com"
+    port: 465
+    # Options: NONE, TLS, STARTTLS
+    encryption: "TLS"
+    user: "no-reply@example.com"
+    from: "no-reply <no-reply@example.com>"
+    to: "admin <admin@example.com>"
+
+# Secret configuration
+secrets:
+  # If "" create secret with Helm values, otherwise specify existing secret name
+  existingSecret: ""
+
+  # Secret values
+  jwtSecret: "REPLACE_WITH_RANDOM"
+  keySeed: "REPLACE_WITH_RANDOM"
+  ldapUserPass: "adminPas$word"
+  smtpPassword: "PasswordGoesHere"
+
 # Service configuration
 service:
   # Service type
@@ -73,6 +137,36 @@ service:
     port: 17170
     # nodePort: 30171  # Only used if service.type is NodePort or LoadBalancer
 
+httproute:
+  webui:
+    enabled: true
+    gatewayName: ""
+    namespace: ""
+    sectionName: ""
+    hostnames: []
+    annotations: {}
+    matches:
+      - path:
+          type: PathPrefix
+          value: "/"
+    weight: 1
+
+tcproute:
+  ldap:
+    enabled: true
+    gatewayName: ""
+    namespace: ""
+    sectionName: ""
+    annotations: {}
+    weight: 1
+  ldaps:
+    enabled: true
+    gatewayName: ""
+    namespace: ""
+    sectionName: ""
+    annotations: {}
+    weight: 1
+
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
@@ -90,22 +184,43 @@ livenessProbe:
   httpGet:
     path: /
     port: http
+
 readinessProbe:
   httpGet:
     path: /
     port: http
 
+persistence:
+  # This is to enable persistence for the LDAP data.
+  enabled: true
+  # This is to use an existing PersistentVolumeClaim.
+  existingClaim: ""
+  # This is to set the storage class for the PersistentVolumeClaim.
+  storageClass: ""
+  # This is to set the access mode for the PersistentVolumeClaim.
+  accessMode: ReadWriteOnce
+  # This is to set the size of the PersistentVolumeClaim.
+  size: 10Gi
+  # This is to set annotations for the PersistentVolumeClaim.
+  annotations: {}
+
 # Additional volumes on the output Deployment definition.
 extraVolumes: []
-# - name: foo
+# - name: cert-file
 #   secret:
-#     secretName: mysecret
+#     secretName: ldap-cert
 #     optional: false
+# - name: cert-file
+#   configMap:
+#     name: myconfigmap
 
 # Additional volumeMounts on the output Deployment definition.
 extraVolumeMounts: []
-# - name: foo
-#   mountPath: "/etc/foo"
+#  - name:  cert-file
+#    mountPath: "/path/to/certfile.crt"
+#   readOnly: true
+#  - name: key-file
+#    mountPath: "/path/to/keyfile.key"
 #   readOnly: true
 
 nodeSelector: {}

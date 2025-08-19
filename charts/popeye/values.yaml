@@ -3,7 +3,6 @@ image:
   repository: derailed/popeye
   pullPolicy: Always
   tag: ""
-  sha: ""
 
 imagePullSecrets: []
 nameOverride: ""

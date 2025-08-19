@@ -1,9 +1,9 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ include "popeye.fullname" . }}
+  name: {{ include "boilerplate.fullname" . }}
   labels:
-    {{- include "popeye.labels" . | nindent 4 }}
+    {{- include "boilerplate.labels.standard" . | nindent 4 }}
   namespace: {{ .Release.Namespace }}
 spec:
   schedule: "{{ .Values.cronJob.schedule }}"
@@ -14,19 +14,19 @@ spec:
   jobTemplate:
     metadata:
       labels:
-        {{- include "popeye.labels" . | nindent 8 }}
+        {{- include "boilerplate.labels.standard" . | nindent 8 }}
       namespace: {{ .Release.Namespace }}
     spec:
       template:
         metadata:
           labels:
-            {{- include "popeye.labels" . | nindent 12 }}
+            {{- include "boilerplate.labels.selectorLabels" . | nindent 12 }}
         spec:
           {{- with .Values.imagePullSecrets }}
           imagePullSecrets:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          serviceAccountName: {{ include "popeye.serviceAccountName" . }}
+          serviceAccountName: {{ include "boilerplate.serviceAccountName" . }}
           {{- with .Values.securityContext }}
           securityContext:
             {{- toYaml . | nindent 12 }}
@@ -34,7 +34,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: {{ .Chart.Name }}
-              image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+              image: {{ include "boilerplate.images.image" (dict "imageRoot" .Values.image "global" .Values.global) }}
               imagePullPolicy: {{ .Values.image.pullPolicy }}
               args:
                 {{- if .Values.cronJob.configuration }}
@@ -66,7 +66,7 @@ spec:
                 - name: PUSHGATEWAY_BASIC_AUTH_PASSWORD
                   valueFrom:
                     secretKeyRef:
-                      name: {{ include "popeye.prometheus.secretName" . }}
+                      name: {{ include "boilerplate.fullname" . }}-prometheus
                       key: pushgateway-password
               {{- end }}
               {{- with .Values.resources }}
@@ -94,5 +94,5 @@ spec:
           volumes:
             - name: configuration
               configMap:
-                name: {{ include "popeye.fullname" . }}
+                name: {{ include "boilerplate.fullname" . }}
           {{- end }}

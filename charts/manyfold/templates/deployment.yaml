@@ -1,14 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "manyfold.fullname" . }}
+  name: {{ include "boilerplate.fullname" . }}
   labels:
-    {{- include "manyfold.labels" . | nindent 4 }}
+    {{- include "boilerplate.labels.standard" . | nindent 4 }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      {{- include "manyfold.selectorLabels" . | nindent 6 }}
+      {{- include "boilerplate.labels.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -16,7 +16,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "manyfold.labels" . | nindent 8 }}
+        {{- include "boilerplate.labels.standard" . | nindent 8 }}
         {{- with .Values.podLabels }}
           {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -43,7 +43,7 @@ spec:
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.registry }}/{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: {{ include "boilerplate.images.image" (dict "imageRoot" .Values.image "global" .Values.global) }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           {{- if or .Values.secret_key_base.secret .Values.secret_key_base.secretKeyRef }}
           env:
@@ -51,7 +51,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   {{- if .Values.secret_key_base.secret }}
-                    name: {{ include "manyfold.fullname" . }}
+                    name: {{ include "boilerplate.fullname" . }}
                     key: "SECRET_KEY_BASE"
                   {{- else }}
                     name: {{ .Values.secret_key_base.secretKeyRef.name }}

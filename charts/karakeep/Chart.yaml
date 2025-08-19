@@ -1,0 +1,16 @@
+apiVersion: v2
+name: karakeep
+description: A Helm chart for Karakeep
+type: application
+version: 0.1.0
+appVersion: 0.26.0
+maintainers:
+  - name: facorazza
+    email: git@facorazza.com
+dependencies:
+  - name: boilerplate
+    version: 0.1.0
+    repository: "https://self-hosters-by-night.github.io/helm-charts"
+  - name: meilisearch
+    version: 0.15.0
+    repository: https://meilisearch.github.io/meilisearch-kubernetes

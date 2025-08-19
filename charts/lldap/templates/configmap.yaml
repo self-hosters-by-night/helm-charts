@@ -1,0 +1,34 @@
+{{- if empty .Values.config.existingConfigMap }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "boilerplate.fullname" . }}-config
+  labels:
+    {{- include "boilerplate.labels.standard" . | nindent 4 }}
+data:
+  UID: {{ .Values.config.uid | quote }}
+  GID: {{ .Values.config.gid | quote }}
+  TZ: {{ .Values.config.timezone | quote }}
+  LLDAP_LDAP_BASE_DN: {{ .Values.config.ldapBaseDn | quote }}
+  LLDAP_LDAP_USER_DN: {{ .Values.config.ldapUserDn | quote }}
+
+  {{- if .Values.config.ldaps.enabled }}
+  LLDAP_LDAPS_OPTIONS__ENABLED: "true"
+  LLDAP_LDAPS_OPTIONS__CERT_FILE: {{ .Values.config.ldaps.certFile | quote }}
+  LLDAP_LDAPS_OPTIONS__KEY_FILE: {{ .Values.config.ldaps.keyFile | quote }}
+  {{- end }}
+
+  {{- if and (ne .Values.config.database.type "sqlite") (.Values.config.database.url) }}
+  LLDAP_DATABASE_URL: {{ .Values.config.database.url | quote }}
+  {{- end }}
+
+  {{- if .Values.config.smtp.enablePasswordReset }}
+  LLDAP_SMTP_OPTIONS__ENABLE_PASSWORD_RESET: "true"
+  LLDAP_SMTP_OPTIONS__SERVER: {{ .Values.config.smtp.server | quote }}
+  LLDAP_SMTP_OPTIONS__PORT: {{ .Values.config.smtp.port | quote }}
+  LLDAP_SMTP_OPTIONS__SMTP_ENCRYPTION: {{ .Values.config.smtp.encryption | quote }}
+  LLDAP_SMTP_OPTIONS__USER: {{ .Values.config.smtp.user | quote }}
+  LLDAP_SMTP_OPTIONS__FROM: {{ .Values.config.smtp.from | quote }}
+  LLDAP_SMTP_OPTIONS__TO: {{ .Values.config.smtp.to | quote }}
+  {{- end }}
+{{- end -}}

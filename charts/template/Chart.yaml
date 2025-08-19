@@ -9,5 +9,5 @@ maintainers:
     email: git@facorazza.com
 dependencies:
   - name: boilerplate
-    version: 0.2.0
+    version: 0.1.0
     repository: "https://self-hosters-by-night.github.io/helm-charts"

@@ -3,7 +3,7 @@ Return the proper image name
 {{ include "boilerplate.images.image" . }}
 */}}
 {{- define "boilerplate.images.image" -}}
-{{- $registry := default .image.registry ($.Values.global.imageRegistry) -}}
+{{- $registry := coalesce ($.Values.global).imageRegistry .image.registry "" -}}
 {{- $repository := .image.repository -}}
 {{- $version := include "boilerplate.images.version" . -}}
 {{- if $registry }}
@@ -45,7 +45,7 @@ Return the proper image pull policy
 {{ include "boilerplate.images.pullPolicy" . }}
 */}}
 {{- define "boilerplate.images.pullPolicy" -}}
-{{- default .image.pullPolicy ($.Values.global.imagePullPolicy) | default "IfNotPresent" -}}
+{{- coalesce ($.Values.global).imagePullPolicy .image.pullPolicy "IfNotPresent" -}}
 {{- end -}}
 
 {{/*
@@ -54,12 +54,9 @@ Return the proper image pull secrets
 */}}
 {{- define "boilerplate.images.pullSecrets" -}}
 {{- $pullSecrets := list -}}
-{{- if $.Values.global.imagePullSecrets -}}
-{{- $pullSecrets = concat $pullSecrets $.Values.global.imagePullSecrets -}}
-{{- end -}}
-{{- if .image.pullSecrets -}}
-{{- $pullSecrets = concat $pullSecrets .image.pullSecrets -}}
-{{- end -}}
+{{- $globalSecrets := ($.Values.global).imagePullSecrets | default list -}}
+{{- $imageSecrets := .image.pullSecrets | default list -}}
+{{- $pullSecrets = concat $pullSecrets $globalSecrets $imageSecrets -}}
 {{- if $pullSecrets -}}
 imagePullSecrets:
 {{- range $pullSecrets }}

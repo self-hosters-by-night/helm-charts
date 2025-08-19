@@ -29,7 +29,7 @@ Return the proper image version. Falls back to Chart.AppVersion if no tag or dig
 
 {{/*
 Validate image configuration
-{{ include "boilerplate.images.validate" .Values.path.to.the.image }}
+{{ include "boilerplate.images.validate" . }}
 */}}
 {{- define "boilerplate.images.validate" -}}
 {{- if not .repository -}}
@@ -37,5 +37,33 @@ Validate image configuration
 {{- end -}}
 {{- if and (not .tag) (not .digest) -}}
 {{- fail "Either image tag or digest must be specified" -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Return the proper image pull policy
+{{ include "boilerplate.images.pullPolicy" . }}
+*/}}
+{{- define "boilerplate.images.pullPolicy" -}}
+{{- default .image.pullPolicy ($.Values.global.imagePullPolicy) | default "IfNotPresent" -}}
+{{- end -}}
+
+{{/*
+Return the proper image pull secrets
+{{ include "boilerplate.images.pullSecrets" . }}
+*/}}
+{{- define "boilerplate.images.pullSecrets" -}}
+{{- $pullSecrets := list -}}
+{{- if $.Values.global.imagePullSecrets -}}
+{{- $pullSecrets = concat $pullSecrets $.Values.global.imagePullSecrets -}}
+{{- end -}}
+{{- if .image.pullSecrets -}}
+{{- $pullSecrets = concat $pullSecrets .image.pullSecrets -}}
+{{- end -}}
+{{- if $pullSecrets -}}
+imagePullSecrets:
+{{- range $pullSecrets }}
+  - name: {{ . }}
+{{- end -}}
 {{- end -}}
 {{- end -}}

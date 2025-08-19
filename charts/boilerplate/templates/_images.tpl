@@ -6,7 +6,7 @@ Return the proper image name
 {{- $globalRegistry := (.global.imageRegistry) | default "" -}}
 {{- $registry := coalesce .image.registry $globalRegistry "" -}}
 {{- $repository := .image.repository -}}
-{{- $version := include "boilerplate.images.version" . -}}
+{{- $version := include "boilerplate.images.version" ( dict "image" .image "global" .global "chart" .chart ) -}}
 {{- if $registry }}
 {{- printf "%s/%s%s" $registry $repository $version -}}
 {{- else -}}
@@ -16,13 +16,13 @@ Return the proper image name
 
 {{/*
 Return the proper image version. Falls back to Chart.appVersion if no tag or digest is specified.
-{{ include "boilerplate.images.version" . }}
+{{ include "boilerplate.images.version" ( dict "image" .image "global" .Values.global "chart" .Chart ) }}
 */}}
 {{- define "boilerplate.images.version" -}}
-{{- if .image.digest }}
-{{- printf "@%s" (.image.digest | toString) -}}
-{{- else if .image.tag }}
-{{- printf ":%s" (.image.tag | toString) -}}
+{{- if .digest }}
+{{- printf "@%s" (.digest | toString) -}}
+{{- else if .tag }}
+{{- printf ":%s" (.tag | toString) -}}
 {{- else -}}
 {{- printf ":%s" .chart.appVersion -}}
 {{- end -}}
@@ -30,20 +30,20 @@ Return the proper image version. Falls back to Chart.appVersion if no tag or dig
 
 {{/*
 Validate image configuration
-{{ include "boilerplate.images.validate" . }}
+{{ include "boilerplate.images.validate" ( dict "image" .image "global" .global "chart" .chart ) }}
 */}}
 {{- define "boilerplate.images.validate" -}}
-{{- if not .image.repository -}}
+{{- if not .repository -}}
 {{- fail "Image repository is required" -}}
 {{- end -}}
-{{- if and (not .image.tag) (not .image.digest) -}}
-{{- fail "Either image tag or digest must be specified" -}}
+{{- if and (not .tag) (not .digest) (not .chart.AppVersion) -}}
+{{- fail "Either image tag, digest, or chart appVersion must be specified" -}}
 {{- end -}}
 {{- end -}}
 
 {{/*
 Return the proper image pull policy
-{{ include "boilerplate.images.pullPolicy" . }}
+{{ include "boilerplate.images.pullPolicy" ( dict "image" .Values.path.to.the.image "global" .Values.global "chart" .Chart ) }}
 */}}
 {{- define "boilerplate.images.pullPolicy" -}}
 {{- $globalImagePullPolicy := (.global.imagePullPolicy) | default "" -}}
@@ -52,7 +52,7 @@ Return the proper image pull policy
 
 {{/*
 Return the proper image pull secrets
-{{ include "boilerplate.images.pullSecrets" . }}
+{{ include "boilerplate.images.pullSecrets" ( dict "image" .Values.path.to.the.image "global" .Values.global "chart" .Chart ) }}
 */}}
 {{- define "boilerplate.images.pullSecrets" -}}
 {{- $pullSecrets := list -}}

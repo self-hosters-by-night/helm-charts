@@ -2,12 +2,12 @@ apiVersion: v2
 name: chrome
 description: A Helm chart for headless Chrome
 type: application
-version: 0.1.0
+version: 0.2.0
 appVersion: "124"
 maintainers:
   - name: facorazza
     email: git@facorazza.com
 dependencies:
   - name: boilerplate
-    version: 0.2.0
+    version: 0.2.4
     repository: "https://self-hosters-by-night.github.io/helm-charts"

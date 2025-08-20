@@ -2,7 +2,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ include "boilerplate.fullname" . }}
+  name: {{ include "boilerplate.names.fullname" . }}
   labels:
     {{- include "boilerplate.labels.standard" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
@@ -35,7 +35,7 @@ spec:
             {{- end }}
             backend:
               service:
-                name: {{ include "boilerplate.fullname" $ }}
+                name: {{ include "boilerplate.names.fullname" $ }}
                 port:
                   number: {{ $.Values.service.port }}
           {{- end }}

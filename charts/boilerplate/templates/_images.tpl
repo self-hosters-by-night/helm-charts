@@ -24,7 +24,7 @@ Return the proper image version. Falls back to Chart.appVersion if no tag or dig
 {{- else if .tag }}
 {{- printf ":%s" (.tag | toString) -}}
 {{- else -}}
-{{- printf ":%s" .chart.appVersion -}}
+{{- printf ":%s" .chart.AppVersion -}}
 {{- end -}}
 {{- end -}}
 
@@ -36,7 +36,7 @@ Validate image configuration
 {{- if not .repository -}}
 {{- fail "Image repository is required" -}}
 {{- end -}}
-{{- if and (not .tag) (not .digest) (not .chart.AppVersion) -}}
+{{- if and (not .image.tag) (not .image.digest) (not .chart.AppVersion) -}}
 {{- fail "Either image tag, digest, or chart appVersion must be specified" -}}
 {{- end -}}
 {{- end -}}

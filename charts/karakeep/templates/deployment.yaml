@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "boilerplate.fullname" . }}
+  name: {{ include "boilerplate.names.fullname" . }}
   labels:
     {{- include "boilerplate.labels.standard" . | nindent 4 }}
 spec:
@@ -36,7 +36,7 @@ spec:
           {{- end }}
           ports:
             - name: http
-              containerPort: {{ .Values.service.port }}
+              containerPort: {{ .Values.containerPort | default 8080 }}
               protocol: TCP
           env:
             - name: DATA_DIR
@@ -73,7 +73,7 @@ spec:
       {{- if .Values.persistence.enabled }}
         - name: data
           persistentVolumeClaim:
-            claimName: {{ include "boilerplate.fullname" . }}-data
+            claimName: {{ include "boilerplate.names.fullname" . }}-data
       {{- end }}
       {{- with .Values.extraVolumes }}
       {{- toYaml . | nindent 8 }}

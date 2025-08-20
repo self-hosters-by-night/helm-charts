@@ -47,7 +47,6 @@ jobs:
       - name: Run chart-releaser # Generate new version of helm chart along with some file with extension .prov
         uses: helm/chart-releaser-action@a0d2dc62c5e491af8ef6ba64a2e02bcf3fb33aa1 # v1.7.0
         with:
-          charts_dir: charts
           config: .github/config/chart-release.yaml
         env:
           CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}

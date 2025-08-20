@@ -299,6 +299,23 @@ entries:
   chrome:
   - apiVersion: v2
     appVersion: "124"
+    created: "2025-08-20T13:08:59.972859266Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.2.4
+    description: A Helm chart for headless Chrome
+    digest: 1800742441681ddc3216b40d935a1660996a89eea195cc241b8fc9d55ebb5912
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: chrome
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/chrome-0.2.0/chrome-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: "124"
     created: "2025-08-19T10:20:32.54732338Z"
     dependencies:
     - name: boilerplate
@@ -719,4 +736,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.1.0/template-0.1.0.tgz
     version: 0.1.0
-generated: "2025-08-20T12:49:04.652445288Z"
+generated: "2025-08-20T13:09:00.090499535Z"

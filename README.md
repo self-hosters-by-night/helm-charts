@@ -12,6 +12,6 @@
 
 ## Application Charts
 
-| Chart                                                                                         | Description                                                                                                              |
-| --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| [karakeep](https://github.com/self-hosters-by-night/helm-charts/tree/develop/charts/karakeep) | A Helm chart for deploying Karakeep, a self-hosted knowledge management and bookmark organizer with AI-powered features. |
+| Chart                                                                                         | Description                                                                       |
+| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| [karakeep](https://github.com/self-hosters-by-night/helm-charts/tree/develop/charts/karakeep) | Self-hosted knowledge management and bookmark organizer with AI-powered features. |

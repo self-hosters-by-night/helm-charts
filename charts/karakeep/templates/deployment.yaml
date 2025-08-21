@@ -41,10 +41,12 @@ spec:
           env:
             - name: DATA_DIR
               value: /data
+            - name: NEXTAUTH_URL
+              value: "{{ .Values.applicationProtocol }}://{{ .Values.applicationHost }}"
             - name: MEILI_ADDR
-              value: "http://meilisearch:7700"
+              value: "http://{{ .Release.Name }}-meilisearch:7700"
             - name: BROWSER_WEB_URL
-              value: "http://chrome:9222"
+              value: "http://{{ .Release.Name }}-chrome:9222"
             {{- range $key, $value := .Values.env }}
             - name: {{ $key }}
               value: {{ $value | quote }}

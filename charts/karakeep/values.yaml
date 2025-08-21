@@ -24,7 +24,7 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
   digest: ""
-  imagePullSecrets: []
+  pullSecrets: []
   pullPolicy: IfNotPresent
 
 # This is for setting Kubernetes Annotations to a Pod.

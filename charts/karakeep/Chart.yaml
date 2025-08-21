@@ -12,7 +12,7 @@ dependencies:
     version: 0.2.4
     repository: "https://self-hosters-by-night.github.io/helm-charts"
   - name: chrome
-    version: 0.3.0
+    version: 0.3.1
     repository: https://self-hosters-by-night.github.io/helm-charts
   - name: meilisearch
     version: 0.15.0

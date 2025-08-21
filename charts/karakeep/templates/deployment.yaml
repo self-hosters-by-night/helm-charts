@@ -42,9 +42,9 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ include "boilerplate.names.fullname" . }}
-            - secretKeyRef:
+            - secretRef:
                 name: {{ include "boilerplate.names.fullname" . }}
-            - secretKeyRef:
+            - secretRef:
                 name: meilisearch
           ports:
             - name: http

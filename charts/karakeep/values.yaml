@@ -47,13 +47,186 @@ securityContext: {}
 
 ## @param env Environment variables to add to the container
 env: {}
-  # OPENAI_API_KEY: "your-api-key-here"
 
-## @section Application parameters
-## @param applicationProtocol Protocol for the application (http or https)
-applicationProtocol: "http"
-## @param applicationHost Hostname for the application
-applicationHost: ""
+## @section configuration
+## Karakeep configuration
+## Check https://docs.karakeep.app/configuration#crawler-configs for default values
+configuration:
+  ## @section Application parameters
+  ## @param configuration.protocol Protocol for the application (http or https)
+  protocol: "http"
+  ## @param applicationHost Hostname for the application
+  hostname: ""
+
+  ## @param configuration.dataDir The path for the persistent data directory
+  dataDir: "/data"
+  ## @param configuration.assetsDir The path where crawled assets will be stored
+  assetsDir: ""
+  ## @param configuration.disableNewReleaseCheck Disable latest release check in admin panel
+  disableNewReleaseCheck: ""
+  ## @param configuration.rateLimitingEnabled Enable API rate limiting
+  rateLimitingEnabled: ""
+  ## @param configuration.maxAssetSizeMb Maximum allowed asset size in MB
+  maxAssetSizeMb: ""
+  ## @param configuration.dbWalMode Enables WAL mode for the sqlite database
+  dbWalMode: ""
+  ## @param configuration.searchNumWorkers Number of concurrent workers for search indexing
+  searchNumWorkers: ""
+  ## @param configuration.assetPreprocessingNumWorkers Number of workers for asset preprocessing
+  assetPreprocessingNumWorkers: ""
+  ## @param configuration.ruleEngineNumWorkers Number of workers for rule engine processing
+  ruleEngineNumWorkers: ""
+
+  ## @section S3 Storage configuration
+  ## Configuration for S3-compatible object storage
+  s3:
+    ## @param s3.endpoint The S3 endpoint URL
+    endpoint: ""
+    ## @param s3.region The S3 region to use
+    region: ""
+    ## @param s3.bucket The S3 bucket name where assets will be stored
+    bucket: ""
+    ## @param s3.secretAccessKeyId The S3 access key ID for authentication
+    secretAccessKeyId: ""
+    ## @param s3.forcePathStyle Whether to force path-style URLs for S3 requests
+    forcePathStyle: ""
+
+  ## @section Authentication configuration
+  ## Configuration for user authentication and signups
+  auth:
+    ## @param auth.disableSignups If enabled, no new signups will be allowed
+    disableSignups: ""
+    ## @param auth.disablePasswordAuth If enabled, only OAuth signups/logins are allowed
+    disablePasswordAuth: ""
+    ## @param auth.emailVerificationRequired Whether email verification is required during signup
+    emailVerificationRequired: ""
+
+  ## @section OAuth configuration
+  ## Configuration for OAuth authentication
+  oauth:
+    ## @param oauth.wellknownUrl The wellknown URL for openid-configuration
+    wellknownUrl: ""
+    ## @param oauth.clientId The OAuth Client ID
+    clientId: ""
+    ## @param oauth.scope Full list of scopes to request (space delimited)
+    scope: ""
+    ## @param oauth.providerName The name of your OAuth provider
+    providerName: ""
+    ## @param oauth.allowDangerousEmailAccountLinking Whether to allow automatic account linking
+    allowDangerousEmailAccountLinking: ""
+    ## @param oauth.timeout The wait time in milliseconds for OAuth provider response
+    timeout: ""
+
+  ## @section AI/Inference configuration
+  ## Configuration for automatic tagging and AI features
+  ai:
+    ## @param ai.openaiApiKey The OpenAI API key for automatic tagging
+    openaiApiKey: ""
+    ## @param ai.openaiBaseUrl OpenAI-compatible API base URL
+    openaiBaseUrl: ""
+    ## @param ai.ollamaBaseUrl Ollama API address for local inference
+    ollamaBaseUrl: ""
+    ## @param ai.ollamaKeepAlive How long the model will stay loaded in memory
+    ollamaKeepAlive: ""
+    ## @param ai.textModel The model to use for text inference
+    textModel: ""
+    ## @param ai.imageModel The model to use for image inference
+    imageModel: ""
+    ## @param ai.embeddingModel The model for generating text embeddings
+    embeddingModel: ""
+    ## @param ai.contextLength Max tokens to pass to the inference model
+    contextLength: ""
+    ## @param ai.language The language for tag generation
+    language: ""
+    ## @param ai.numWorkers Number of concurrent workers for AI inference
+    numWorkers: ""
+    ## @param ai.enableAutoTagging Whether automatic AI tagging is enabled
+    enableAutoTagging: ""
+    ## @param ai.enableAutoSummarization Whether automatic AI summarization is enabled
+    enableAutoSummarization: ""
+    ## @param ai.jobTimeoutSec How long to wait for inference job to finish
+    jobTimeoutSec: ""
+    ## @param ai.fetchTimeoutSec The timeout for fetch requests to Ollama server
+    fetchTimeoutSec: ""
+    ## @param ai.outputSchema Output schema format (structured, json, plain)
+    outputSchema: ""
+
+  ## @section Crawler configuration
+  ## Configuration for the web crawler
+  crawler:
+    ## @param crawler.numWorkers Number of concurrent crawling jobs
+    numWorkers: ""
+    ## @param crawler.browserWebsocketUrl Browser websocket debugging console address
+    browserWebsocketUrl: ""
+    ## @param crawler.browserConnectOndemand Connect to browser on demand
+    browserConnectOndemand: ""
+    ## @param crawler.downloadBannerImage Whether to cache banner images locally
+    downloadBannerImage: ""
+    ## @param crawler.storeScreenshot Whether to store screenshots
+    storeScreenshot: ""
+    ## @param crawler.fullPageScreenshot Whether to store full page screenshots
+    fullPageScreenshot: ""
+    ## @param crawler.screenshotTimeoutSec Screenshot timeout in seconds
+    screenshotTimeoutSec: ""
+    ## @param crawler.fullPageArchive Whether to store full local copy of pages
+    fullPageArchive: ""
+    ## @param crawler.jobTimeoutSec Crawler job timeout in seconds
+    jobTimeoutSec: ""
+    ## @param crawler.navigateTimeoutSec Page navigation timeout in seconds
+    navigateTimeoutSec: ""
+    ## @param crawler.videoDownload Whether to download videos using yt-dlp
+    videoDownload: ""
+    ## @param crawler.videoDownloadMaxSize Maximum video file size
+    videoDownloadMaxSize: ""
+    ## @param crawler.videoDownloadTimeoutSec Video download timeout in seconds
+    videoDownloadTimeoutSec: ""
+    ## @param crawler.enableAdblocker Whether to enable adblocker in crawler
+    enableAdblocker: ""
+    ## @param crawler.ytdlpArgs Additional yt-dlp arguments
+    ytdlpArgs: ""
+
+  ## @section OCR configuration
+  ## Configuration for text extraction from images
+  ocr:
+    ## @param ocr.cacheDir Directory for tesseract models
+    cacheDir: ""
+    ## @param ocr.languages Comma separated list of language codes
+    languages: ""
+    ## @param ocr.confidenceThreshold Minimum acceptable confidence from tesseract
+    confidenceThreshold: ""
+
+  ## @section Webhook configuration
+  ## Configuration for webhook notifications
+  webhooks:
+    ## @param webhooks.timeoutSec Webhook request timeout in seconds
+    timeoutSec: ""
+    ## @param webhooks.retryTimes Number of times to retry webhook requests
+    retryTimes: ""
+    ## @param webhooks.numWorkers Number of concurrent workers for webhook delivery
+    numWorkers: ""
+
+  ## @section SMTP configuration
+  ## Configuration for email functionality
+  smtp:
+    ## @param smtp.host SMTP server hostname or IP address
+    host: ""
+    ## @param smtp.port SMTP server port
+    port: ""
+    ## @param smtp.secure Whether to use SSL/TLS encryption
+    secure: ""
+    ## @param smtp.user Username for SMTP authentication
+    user: ""
+    ## @param smtp.from From email address for sent emails
+    from: ""
+
+  ## @section Proxy configuration
+  proxy:
+    ## @param crawler.httpProxy HTTP proxy server URL
+    httpProxy: ""
+    ## @param crawler.httpsProxy HTTPS proxy server URL
+    httpsProxy: ""
+    ## @param crawler.noProxy Hostnames/IPs to bypass proxy
+    noProxy: ""
 
 service:
   type: ClusterIP

@@ -11,10 +11,11 @@ spec:
       {{- include "boilerplate.labels.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
       annotations:
+        checksum/configmap: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- end }}
       labels:
         {{- include "boilerplate.labels.podLabels" . | nindent 8 }}
     spec:
@@ -32,27 +33,23 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           env:
-            - name: DATA_DIR
-              value: /data
-            - name: NEXTAUTH_URL
-              value: "{{ .Values.applicationProtocol | default "http" }}://{{ .Values.applicationHost }}"
             - name: NEXTAUTH_SECRET
               valueFrom:
                 secretKeyRef:
                   name: {{ include "boilerplate.names.fullname" . }}
                   key: NEXTAUTH_SECRET
-            {{- if .Values.chrome.enabled }}
-            - name: BROWSER_WEB_URL
-              value: "http://{{ .Release.Name }}-chrome:9222"
-            {{- end }}
-            {{- if .Values.meilisearch.enabled }}
-            - name: MEILI_ADDR
-              value: "http://{{ .Release.Name }}-meilisearch:7700"
-            {{- end }}
+            - name: MEILI_MASTER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "boilerplate.names.fullname" . }}
+                  key: MEILI_MASTER_KEY
             {{- range $key, $value := .Values.env }}
             - name: {{ $key }}
               value: {{ $value | quote }}
             {{- end }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "boilerplate.names.fullname" . }}
           ports:
             - name: http
               containerPort: {{ .Values.containerPort }}

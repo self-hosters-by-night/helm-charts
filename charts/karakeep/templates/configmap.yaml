@@ -1,0 +1,234 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "boilerplate.names.fullname" . }}
+  labels:
+    {{- include "boilerplate.labels.standard" . | nindent 4 }}
+data:
+  {{- /* General Configuration */}}
+  {{- with .Values.configuration.dataDir }}
+  DATA_DIR: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.assetsDir }}
+  ASSETS_DIR: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration }}
+  NEXTAUTH_URL: {{ .protocol | default "http" }}://{{ required "Please define a hostname" .hostname }}
+  {{- end }}
+  {{- if .Values.meilisearch.enabled }}
+  MEILI_ADDR: "http://{{ .Release.Name }}-meilisearch:7700"
+  {{- end }}
+  {{- with .Values.configuration.maxAssetSizeMb }}
+  MAX_ASSET_SIZE_MB: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.disableNewReleaseCheck }}
+  DISABLE_NEW_RELEASE_CHECK: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.rateLimitingEnabled }}
+  RATE_LIMITING_ENABLED: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.dbWalMode }}
+  DB_WAL_MODE: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.searchNumWorkers }}
+  SEARCH_NUM_WORKERS: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.assetPreprocessingNumWorkers }}
+  ASSET_PREPROCESSING_NUM_WORKERS: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.ruleEngineNumWorkers }}
+  RULE_ENGINE_NUM_WORKERS: {{ . | quote }}
+  {{- end }}
+
+  {{- /* S3 Storage Configuration */}}
+  {{- with .Values.configuration.s3.endpoint }}
+  ASSET_STORE_S3_ENDPOINT: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.s3.region }}
+  ASSET_STORE_S3_REGION: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.s3.bucket }}
+  ASSET_STORE_S3_BUCKET: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.s3.secretAccessKeyId }}
+  ASSET_STORE_S3_SECRET_ACCESS_KEY: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.s3.forcePathStyle }}
+  ASSET_STORE_S3_FORCE_PATH_STYLE: {{ . | quote }}
+  {{- end }}
+
+  {{- /* Authentication Configuration */}}
+  {{- with .Values.configuration.auth.disableSignups }}
+  DISABLE_SIGNUPS: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.auth.disablePasswordAuth }}
+  DISABLE_PASSWORD_AUTH: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.auth.emailVerificationRequired }}
+  EMAIL_VERIFICATION_REQUIRED: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.oauth.wellknownUrl }}
+  OAUTH_WELLKNOWN_URL: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.oauth.clientId }}
+  OAUTH_CLIENT_ID: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.oauth.scope }}
+  OAUTH_SCOPE: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.oauth.providerName }}
+  OAUTH_PROVIDER_NAME: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.oauth.allowDangerousEmailAccountLinking }}
+  OAUTH_ALLOW_DANGEROUS_EMAIL_ACCOUNT_LINKING: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.oauth.timeout }}
+  OAUTH_TIMEOUT: {{ . | quote }}
+  {{- end }}
+
+  {{- /* AI/Inference Configuration */}}
+  {{- with .Values.configuration.ai.openaiApiKey }}
+  OPENAI_API_KEY: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.ai.openaiBaseUrl }}
+  OPENAI_BASE_URL: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.ai.ollamaBaseUrl }}
+  OLLAMA_BASE_URL: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.ai.ollamaKeepAlive }}
+  OLLAMA_KEEP_ALIVE: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.ai.textModel }}
+  INFERENCE_TEXT_MODEL: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.ai.imageModel }}
+  INFERENCE_IMAGE_MODEL: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.ai.embeddingModel }}
+  EMBEDDING_TEXT_MODEL: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.ai.contextLength }}
+  INFERENCE_CONTEXT_LENGTH: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.ai.language }}
+  INFERENCE_LANG: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.ai.numWorkers }}
+  INFERENCE_NUM_WORKERS: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.ai.enableAutoTagging }}
+  INFERENCE_ENABLE_AUTO_TAGGING: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.ai.enableAutoSummarization }}
+  INFERENCE_ENABLE_AUTO_SUMMARIZATION: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.ai.jobTimeoutSec }}
+  INFERENCE_JOB_TIMEOUT_SEC: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.ai.fetchTimeoutSec }}
+  INFERENCE_FETCH_TIMEOUT_SEC: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.ai.outputSchema }}
+  INFERENCE_OUTPUT_SCHEMA: {{ . | quote }}
+  {{- end }}
+
+  {{- /* Extended Crawler Configuration */}}
+  {{- with .Values.configuration.crawler.numWorkers }}
+  CRAWLER_NUM_WORKERS: {{ . | quote }}
+  {{- end }}
+  {{- if .Values.chrome.enabled }}
+  BROWSER_WEB_URL: "http://{{ .Release.Name }}-chrome:9222"
+  {{- end }}
+  {{- with .Values.configuration.crawler.browserWebsocketUrl }}
+  BROWSER_WEBSOCKET_URL: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.crawler.browserConnectOndemand }}
+  BROWSER_CONNECT_ONDEMAND: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.crawler.downloadBannerImage }}
+  CRAWLER_DOWNLOAD_BANNER_IMAGE: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.crawler.storeScreenshot }}
+  CRAWLER_STORE_SCREENSHOT: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.crawler.fullPageScreenshot }}
+  CRAWLER_FULL_PAGE_SCREENSHOT: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.crawler.screenshotTimeoutSec }}
+  CRAWLER_SCREENSHOT_TIMEOUT_SEC: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.crawler.fullPageArchive }}
+  CRAWLER_FULL_PAGE_ARCHIVE: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.crawler.jobTimeoutSec }}
+  CRAWLER_JOB_TIMEOUT_SEC: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.crawler.navigateTimeoutSec }}
+  CRAWLER_NAVIGATE_TIMEOUT_SEC: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.crawler.videoDownload }}
+  CRAWLER_VIDEO_DOWNLOAD: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.crawler.videoDownloadMaxSize }}
+  CRAWLER_VIDEO_DOWNLOAD_MAX_SIZE: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.crawler.videoDownloadTimeoutSec }}
+  CRAWLER_VIDEO_DOWNLOAD_TIMEOUT_SEC: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.crawler.enableAdblocker }}
+  CRAWLER_ENABLE_ADBLOCKER: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.crawler.ytdlpArgs }}
+  CRAWLER_YTDLP_ARGS: {{ . | quote }}
+  {{- end }}
+
+  {{- /* OCR Configuration */}}
+  {{- with .Values.configuration.ocr.cacheDir }}
+  OCR_CACHE_DIR: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.ocr.languages }}
+  OCR_LANGS: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.ocr.confidenceThreshold }}
+  OCR_CONFIDENCE_THRESHOLD: {{ . | quote }}
+  {{- end }}
+
+  {{- /* Webhook Configuration */}}
+  {{- with .Values.configuration.webhooks.timeoutSec }}
+  WEBHOOK_TIMEOUT_SEC: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.webhooks.retryTimes }}
+  WEBHOOK_RETRY_TIMES: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.webhooks.numWorkers }}
+  WEBHOOK_NUM_WORKERS: {{ . | quote }}
+  {{- end }}
+
+  {{- /* SMTP Configuration */}}
+  {{- with .Values.configuration.smtp.host }}
+  SMTP_HOST: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.smtp.port }}
+  SMTP_PORT: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.smtp.secure }}
+  SMTP_SECURE: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.smtp.user }}
+  SMTP_USER: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.smtp.from }}
+  SMTP_FROM: {{ . | quote }}
+  {{- end }}
+
+  {{- /* Proxy Configuration */}}
+  {{- with .Values.configuration.crawler.httpProxy }}
+  CRAWLER_HTTP_PROXY: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.crawler.httpsProxy }}
+  CRAWLER_HTTPS_PROXY: {{ . | quote }}
+  {{- end }}
+  {{- with .Values.configuration.crawler.noProxy }}
+  CRAWLER_NO_PROXY: {{ . | quote }}
+  {{- end }}

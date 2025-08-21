@@ -154,10 +154,7 @@ chrome:
 meilisearch:
   enabled: false
   environment:
-    MEILI_ENV: production
     MEILI_NO_ANALYTICS: true
-  auth:
-    existingMasterKeySecret: "{{ .Release.Name }}-meilesearch"
   persistence:
     # -- Enable persistence using PVC
     enabled: false

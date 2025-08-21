@@ -1,54 +1,42 @@
+{{- if .Values.statefulset.enabled }}
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ include "boilerplate.names.fullname" . }}
   labels:
     {{- include "boilerplate.labels.standard" . | nindent 4 }}
 spec:
-  replicas: 1
+  serviceName: {{ include "boilerplate.names.fullname" . }}
+  replicas: {{ .Values.statefulset.replicaCount | default .Values.replicaCount }}
   selector:
     matchLabels:
       {{- include "boilerplate.labels.selectorLabels" . | nindent 6 }}
   template:
     metadata:
+      {{- with .Values.podAnnotations }}
       annotations:
-        checksum/configmap: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
-        {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
-        {{- end }}
+      {{- end }}
       labels:
         {{- include "boilerplate.labels.podLabels" . | nindent 8 }}
     spec:
-      {{- include "boilerplate.images.pullSecrets" (dict "global" .Values.global "image" .Values.image) | nindent 6 }}
+      {{- include "boilerplate.images.pullSecrets" (dict "image" .Values.myapp.image "global" .Values.global) | nindent 6 }}
+      serviceAccountName: {{ include "boilerplate.names.serviceAccountName" . }}
       {{- with .Values.podSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          image: {{ include "boilerplate.images.image" (dict "image" .Values.image "global" .Values.global "chart" .Chart) }}
-          imagePullPolicy: {{ include "boilerplate.images.pullPolicy" (dict "image" .Values.image "global" .Values.global) }}
+          image: {{ include "boilerplate.images.image" (dict "image" .Values.myapp.image "global" .Values.global "chart" .Chart) }}
+          imagePullPolicy: {{ include "boilerplate.images.pullPolicy" (dict "image" .Values.myapp.image "global" .Values.global) }}
           {{- with .Values.securityContext }}
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- if and .env (gt (len .env) 0) -}}
-          env:
-            {{- range $key, $value := .Values.env }}
-            - name: {{ $key }}
-              value: {{ $value | quote }}
-            {{- end }}
-          {{- end }}
-          envFrom:
-            - configMapRef:
-                name: {{ include "boilerplate.names.fullname" . }}
-            - secretRef:
-                name: {{ include "boilerplate.names.fullname" . }}
-            - secretRef:
-                name: meilisearch
           ports:
             - name: http
-              containerPort: {{ .Values.containerPort }}
+              containerPort: {{ .Values.service.port }}
               protocol: TCP
           {{- with .Values.livenessProbe }}
           livenessProbe:
@@ -63,18 +51,15 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           volumeMounts:
-            {{- if .Values.persistence.enabled }}
-            - name: data
-              mountPath: /data
-            {{- end }}
-            {{- include "boilerplate.storage.extraVolumeMounts" . }}
+            {{- include "boilerplate.storage.extraVolumeMounts" . | nindent 12 }}
+          {{- with .Values.volumeMounts }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
       volumes:
-      {{- if .Values.persistence.enabled }}
-        - name: data
-          persistentVolumeClaim:
-            claimName: {{ include "boilerplate.names.fullname" . }}-data
+        {{- include "boilerplate.storage.extraVolumes" . | nindent 8 }}
+      {{- with .Values.volumes }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- include "boilerplate.storage.extraVolumes" . }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -87,3 +72,8 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+  {{- with .Values.statefulset.volumeClaimTemplates }}
+  volumeClaimTemplates:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}

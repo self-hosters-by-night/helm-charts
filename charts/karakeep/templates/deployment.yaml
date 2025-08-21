@@ -45,13 +45,13 @@ spec:
             - name: NEXTAUTH_URL
               value: "{{ .Values.applicationProtocol | default "http" }}://{{ .Values.applicationHost }}"
             {{- end }}
-            {{- if .Values.meilisearch.enabled }}
-            - name: MEILI_ADDR
-              value: "http://{{ .Release.Name }}-meilisearch:7700"
-            {{- end }}
             {{- if .Values.chrome.enabled }}
             - name: BROWSER_WEB_URL
               value: "http://{{ .Release.Name }}-chrome:9222"
+            {{- end }}
+            {{- if .Values.meilisearch.enabled }}
+            - name: MEILI_ADDR
+              value: "http://{{ .Release.Name }}-meilisearch:7700"
             {{- end }}
             {{- range $key, $value := .Values.env }}
             - name: {{ $key }}
@@ -74,18 +74,14 @@ spec:
             - name: data
               mountPath: /data
             {{- end }}
-            {{- with .Values.extraVolumeMounts }}
-            {{- toYaml . | nindent 12 }}
-            {{- end }}
+            {{- include "boilerplate.storage.extraVolumeMounts" . }}
       volumes:
       {{- if .Values.persistence.enabled }}
         - name: data
           persistentVolumeClaim:
             claimName: {{ include "boilerplate.names.fullname" . }}-data
       {{- end }}
-      {{- with .Values.extraVolumes }}
-      {{- toYaml . | nindent 8 }}
-      {{- end }}
+      {{- include "boilerplate.storage.extraVolumes" . }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

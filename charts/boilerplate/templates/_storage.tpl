@@ -1,6 +1,6 @@
 {{/*
 Render extra volumes
-{{ include "boilerplate.storage.extraVolumes" . }}
+{{- include "boilerplate.storage.extraVolumes" . }}
 */}}
 {{- define "boilerplate.storage.extraVolumes" -}}
 {{- if .Values.extraVolumes -}}
@@ -67,7 +67,7 @@ Render extra volumes
 
 {{/*
 Render extra volume mounts
-{{ include "boilerplate.storage.extraVolumeMounts" . }}
+{{- include "boilerplate.storage.extraVolumeMounts" . }}
 */}}
 {{- define "boilerplate.storage.extraVolumeMounts" -}}
 {{- if .Values.extraVolumeMounts -}}

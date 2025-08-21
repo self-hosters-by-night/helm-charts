@@ -8,14 +8,16 @@ global:
   ## @param global.defaultStorageClass Global default StorageClass for Persistent Volume(s)
   defaultStorageClass: ""
 
+## @section Common parameters
+## @param nameOverride String to partially override karakeep.fullname template
 nameOverride: ""
-
+## @param fullnameOverride String to fully override karakeep.fullname template
 fullnameOverride: ""
-
+## @param nodeSelector Node labels for pod assignment
 nodeSelector: {}
-
+## @param tolerations Tolerations for pod assignment
 tolerations: []
-
+## @param affinity Affinity for pod assignment
 affinity: {}
 
 image:
@@ -24,8 +26,8 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
   digest: ""
-  imagePullSecrets: []
   pullPolicy: IfNotPresent
+  pullSecrets: []
 
 # This is for setting Kubernetes Annotations to a Pod.
 podAnnotations: {}
@@ -43,8 +45,9 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
-env: []
-  # OPENAI_API_KEY: ""
+## @param env Environment variables to add to the container
+env: {}
+  # OPENAI_API_KEY: "your-api-key-here"
 
 service:
   type: ClusterIP
@@ -64,6 +67,35 @@ ingress:
         - path: /
           pathType: ImplementationSpecific
   tls: []
+  #  - secretName: karakeep-tls
+  #    hosts:
+  #      - karakeep.local
+
+## @section Gateway API HTTPRoute parameters
+## HTTPRoute configuration for Gateway API
+httproute:
+  ## @param httproute.enabled Enable HTTPRoute for Gateway API
+  enabled: false
+  ## @param httproute.annotations Additional annotations for HTTPRoute
+  annotations: {}
+  ## @param httproute.parentRefs References to parent Gateway resources
+  parentRefs:
+    - name: gateway
+      namespace: gateway-system
+  ## @param httproute.hostnames Hostnames for HTTPRoute
+  hostnames:
+    - karakeep.local
+  ## @param httproute.rules HTTPRoute rules configuration
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      # filters:
+      #   - type: RequestRedirect
+      #     requestRedirect:
+      #       scheme: https
+      # weight: 100
 
 persistence:
   enabled: true

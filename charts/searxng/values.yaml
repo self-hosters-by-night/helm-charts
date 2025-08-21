@@ -8,26 +8,29 @@ global:
   ## @param global.defaultStorageClass Global default StorageClass for Persistent Volume(s)
   defaultStorageClass: ""
 
+## @section Common parameters
+## @param nameOverride String to partially override karakeep.fullname template
 nameOverride: ""
-
+## @param fullnameOverride String to fully override karakeep.fullname template
 fullnameOverride: ""
-
+## @param nodeSelector Node labels for pod assignment
 nodeSelector: {}
-
+## @param tolerations Tolerations for pod assignment
 tolerations: []
-
+## @param affinity Affinity for pod assignment
 affinity: {}
 
+## @param replicaCount Number of replicas to deploy
 replicaCount: 1
 
 image:
+  registry: ""
   repository: searxng/searxng
-  # This sets the pull policy for images.
-  pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
   digest: ""
-  imagePullSecrets: []
+  pullPolicy: IfNotPresent
+  pullSecrets: []
 
 # Container port (different from service port)
 containerPort: 80

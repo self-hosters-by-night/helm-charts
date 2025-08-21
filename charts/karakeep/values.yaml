@@ -47,7 +47,6 @@ securityContext: {}
 
 ## @param env Environment variables to add to the container
 env: {}
-  # OPENAI_API_KEY: "your-api-key-here"
 
 ## @section configuration
 ## Karakeep configuration
@@ -63,11 +62,11 @@ configuration:
   dataDir: "/data"
   ## @param configuration.assetsDir The path where crawled assets will be stored
   assetsDir: ""
-  ## @param configuration.maxAssetSizeMb Maximum allowed asset size in MB
   ## @param configuration.disableNewReleaseCheck Disable latest release check in admin panel
   disableNewReleaseCheck: ""
   ## @param configuration.rateLimitingEnabled Enable API rate limiting
   rateLimitingEnabled: ""
+  ## @param configuration.maxAssetSizeMb Maximum allowed asset size in MB
   maxAssetSizeMb: ""
   ## @param configuration.dbWalMode Enables WAL mode for the sqlite database
   dbWalMode: ""

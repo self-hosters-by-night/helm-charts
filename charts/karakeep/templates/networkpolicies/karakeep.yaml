@@ -16,10 +16,9 @@ spec:
   ingress:
     - from: []
       ports:
-        - protocol: TCP
-          port: 8080
+        - port: 8080
+          protocol: TCP
   egress:
-    # DNS resolution
     - to:
         - namespaceSelector:
             matchLabels:
@@ -28,29 +27,28 @@ spec:
             matchLabels:
               k8s-app: kube-dns
       ports:
-        - protocol: TCP
-          port: 53
-        - protocol: UDP
-          port: 53
-    # External HTTPS for GitHub raw content
+        - port: 53
+          protocol: TCP
+        - port: 53
+          protocol: UDP
     - to: []
       ports:
-        - protocol: TCP
-          port: 443
+        - port: 443
+          protocol: TCP
     # Chrome service
     - to:
         - podSelector:
             matchLabels:
               app.kubernetes.io/name: chrome
       ports:
-        - protocol: TCP
-          port: 9222
+        - port: 9222
+          protocol: TCP
     # Meilisearch service
     - to:
         - podSelector:
             matchLabels:
               app.kubernetes.io/name: meilisearch
       ports:
-        - protocol: TCP
-          port: 7700
+        - port: 7700
+          protocol: TCP
 {{- end }}

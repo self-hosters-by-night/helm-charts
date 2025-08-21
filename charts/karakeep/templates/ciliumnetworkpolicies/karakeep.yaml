@@ -21,10 +21,10 @@ spec:
         protocol: UDP
       rules:
         dns:
-        # Required to fetch https://raw.githubusercontent.com/ghostery/adblocker/master/packages/adblocker/assets/peter-lowe/serverlist.txt
-        - matchName: "raw.githubusercontent.com"
+        # Required to fetch webpages and resources
+        - matchPattern: "*"
   - toFQDNs:
-    - matchName: "raw.githubusercontent.com"
+    - matchPattern: "*"
     toPorts:
     - ports:
       - port: "443"

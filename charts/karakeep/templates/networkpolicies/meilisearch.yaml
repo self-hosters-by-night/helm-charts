@@ -18,6 +18,6 @@ spec:
             matchLabels:
               {{- include "boilerplate.labels.selectorLabels" . | nindent 14 }}
       ports:
-        - protocol: TCP
-          port: 7700
+        - port: 7700
+          protocol: TCP
 {{- end }}

@@ -32,11 +32,13 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+          {{- if .env -}}
           env:
             {{- range $key, $value := .Values.env }}
             - name: {{ $key }}
               value: {{ $value | quote }}
             {{- end }}
+          {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ include "boilerplate.names.fullname" . }}

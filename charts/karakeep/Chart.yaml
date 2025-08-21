@@ -2,7 +2,7 @@ apiVersion: v2
 name: karakeep
 description: A Helm chart for Karakeep - AI-powered knowledge management and bookmark organizer
 type: application
-version: 0.5.0
+version: 1.0.0
 appVersion: 0.26.0
 maintainers:
   - name: facorazza

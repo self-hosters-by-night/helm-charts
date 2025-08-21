@@ -2,7 +2,7 @@ apiVersion: v2
 name: chrome
 description: A Helm chart for headless Chrome
 type: application
-version: 0.2.1
+version: 0.3.0
 appVersion: "124"
 maintainers:
   - name: facorazza

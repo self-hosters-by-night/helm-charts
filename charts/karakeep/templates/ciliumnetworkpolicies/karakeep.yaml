@@ -34,14 +34,14 @@ spec:
         k8s:app.kubernetes.io/name: chrome
     toPorts:
     - ports:
-      - port: http
+      - port: "9222"
         protocol: TCP
   - toEndpoints:
     - matchLabels:
         k8s:app.kubernetes.io/name: meilisearch
     toPorts:
     - ports:
-      - port: http
+      - port: "7700"
         protocol: TCP
   ingress:
   - fromEntities:

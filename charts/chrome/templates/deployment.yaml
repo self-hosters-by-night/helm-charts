@@ -36,22 +36,22 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: {{ include "boilerplate.images.image" (dict "image" .Values.image "global" .Values.global "chart" .Chart) }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- if .Values.chrome.args }}
+          {{- if .Values.args }}
           args:
-            {{- toYaml .Values.chrome.args | nindent 12 }}
+            {{- toYaml .Values.args | nindent 12 }}
           {{- end }}
           ports:
-            - name: debug
+            - name: http
               containerPort: 9222
               protocol: TCP
-          {{- if .Values.chrome.env }}
+          {{- if .Values.env }}
           env:
-            {{- toYaml .Values.chrome.env | nindent 12 }}
+            {{- toYaml .Values.env | nindent 12 }}
           {{- end }}
           livenessProbe:
             httpGet:
               path: /json/version
-              port: debug
+              port: http
             initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 5

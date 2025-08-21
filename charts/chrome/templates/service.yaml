@@ -7,9 +7,9 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: debug
+    - name: http
+      port: {{ .Values.service.port }}
+      targetPort: http
       protocol: TCP
-      name: debug
   selector:
     {{- include "boilerplate.labels.selectorLabels" . | nindent 4 }}

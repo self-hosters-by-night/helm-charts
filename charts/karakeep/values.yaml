@@ -55,12 +55,11 @@ applicationProtocol: "http"
 ## @param applicationHost Hostname for the application
 applicationHost: ""
 
-
 service:
   type: ClusterIP
   port: 80
 
-containerPort: 8080
+containerPort: 3000
 
 ingress:
   enabled: false
@@ -142,13 +141,23 @@ readinessProbe:
   periodSeconds: 10
   timeoutSeconds: 5
 
+## @section Network policies
+networkPolicies:
+  # -- Enable network policies
+  enabled: false
+  # -- Flavor of network policies to use, either "kubernetes" or "cilium"
+  flavor: kubernetes
+
 chrome:
   enabled: false
 
 meilisearch:
   enabled: false
   environment:
+    MEILI_ENV: production
     MEILI_NO_ANALYTICS: true
+  auth:
+    existingMasterKeySecret: "{{ .Release.Name }}-meilesearch"
   persistence:
     # -- Enable persistence using PVC
     enabled: false

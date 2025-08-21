@@ -1,0 +1,56 @@
+{{- if and .Values.networkPolicies.enabled (eq .Values.networkPolicies.flavor "kubernetes") -}}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "boilerplate.names.fullname" . }}
+  labels:
+    {{- include "boilerplate.labels.standard" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "boilerplate.labels.selectorLabels" . | nindent 8 }}
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from: []
+      ports:
+        - protocol: TCP
+          port: 8080
+  egress:
+    # DNS resolution
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              name: kube-system
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - protocol: TCP
+          port: 53
+        - protocol: UDP
+          port: 53
+    # External HTTPS for GitHub raw content
+    - to: []
+      ports:
+        - protocol: TCP
+          port: 443
+    # Chrome service
+    - to:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: chrome
+      ports:
+        - protocol: TCP
+          port: 9222
+    # Meilisearch service
+    - to:
+        - podSelector:
+            matchLabels:
+              app.kubernetes.io/name: meilisearch
+      ports:
+        - protocol: TCP
+          port: 7700
+{{- end }}

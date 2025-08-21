@@ -1,0 +1,23 @@
+{{- if and .Values.networkPolicies.enabled (eq .Values.networkPolicies.flavor "kubernetes") -}}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "boilerplate.names.fullname" . }}-meilisearch
+  labels:
+    {{- include "boilerplate.labels.standard" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: meilisearch
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              {{- include "boilerplate.labels.selectorLabels" . | nindent 14 }}
+      ports:
+        - protocol: TCP
+          port: 7700
+{{- end }}

@@ -33,16 +33,6 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           env:
-            - name: NEXTAUTH_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "boilerplate.names.fullname" . }}
-                  key: NEXTAUTH_SECRET
-            - name: MEILI_MASTER_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "boilerplate.names.fullname" . }}
-                  key: MEILI_MASTER_KEY
             {{- range $key, $value := .Values.env }}
             - name: {{ $key }}
               value: {{ $value | quote }}
@@ -50,6 +40,10 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ include "boilerplate.names.fullname" . }}
+            - secretKeyRef:
+                name: {{ include "boilerplate.names.fullname" . }}
+            - secretKeyRef:
+                name: meilisearch
           ports:
             - name: http
               containerPort: {{ .Values.containerPort }}

@@ -328,6 +328,9 @@ meilisearch:
   enabled: false
   environment:
     MEILI_NO_ANALYTICS: true
+    MEILI_ENV: production
+  auth:
+    existingMasterKeySecret: "meilisearch"
   persistence:
     # -- Enable persistence using PVC
     enabled: false

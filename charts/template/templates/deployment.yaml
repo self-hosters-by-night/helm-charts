@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "template.fullname" . }}
+  name: {{ include "boilerplate.names.fullname" . }}
   labels:
-    {{- include "template.labels" . | nindent 4 }}
+    {{- include "boilerplate.labels.standard" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "template.selectorLabels" . | nindent 6 }}
+      {{- include "boilerplate.labels.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,22 +18,19 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "template.labels" . | nindent 8 }}
-        {{- with .Values.podLabels }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
+        {{- include "boilerplate.labels.podLabels" . | nindent 8 }}
     spec:
-      {{- include "boilerplate.images.pullSecrets" .Values.app | nindent 6 }}
-      serviceAccountName: {{ include "template.serviceAccountName" . }}
+      {{- include "boilerplate.images.pullSecrets" (dict "image" .Values.myapp.image "global" .Values.global) | nindent 6 }}
+      serviceAccountName: {{ include "boilerplate.names.serviceAccountName" . }}
       {{- with .Values.podSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
         - name: myapp
-          image: {{ include "boilerplate.images.image" .Values.myapp }}
-          imagePullPolicy: {{ include "boilerplate.images.pullPolicy" .Values.myapp }}
-          {{ include "boilerplate.images.pullSecrets" .Values.myapp }}
+          image: {{ include "boilerplate.images.image" (dict "image" .Values.myapp.image "global" .Values.global "chart" .Chart) }}
+          imagePullPolicy: {{ include "boilerplate.images.pullPolicy" (dict "image" .Values.myapp.image "global" .Values.global) }}
+
           {{- with .Values.securityContext }}
           securityContext:
             {{- toYaml . | nindent 12 }}
@@ -54,12 +51,14 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.volumeMounts }}
           volumeMounts:
+            {{- include "boilerplate.storage.extraVolumeMounts" . | nindent 12 }}
+          {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
           {{- end }}
-      {{- with .Values.volumes }}
       volumes:
+        {{- include "boilerplate.storage.extraVolumes" . | nindent 8 }}
+      {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.nodeSelector }}

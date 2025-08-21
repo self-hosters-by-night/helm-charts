@@ -1,0 +1,19 @@
+{{- if and .Values.networkPolicies.enabled (eq .Values.networkPolicies.flavor "cilium") -}}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: {{ include "boilerplate.names.fullname" . }}-meilisearch
+spec:
+  endpointSelector:
+    matchLabels:
+      k8s:app.kubernetes.io/name: meilisearch
+  ingress:
+  - fromEndpoints:
+    - matchLabels:
+        {{- include "boilerplate.labels.selectorLabels" . | nindent 8 }}
+    toPorts:
+    - ports:
+      - port: http
+        protocol: TCP
+{{- end }}

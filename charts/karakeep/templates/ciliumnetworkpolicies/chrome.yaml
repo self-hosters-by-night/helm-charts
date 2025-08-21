@@ -1,0 +1,40 @@
+{{- if and .Values.networkPolicies.enabled (eq .Values.networkPolicies.flavor "cilium") -}}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: {{ include "boilerplate.names.fullname" . }}-chrome
+spec:
+  endpointSelector:
+    matchLabels:
+      k8s:app.kubernetes.io/name: chrome
+  egress:
+  - toEndpoints:
+    - matchLabels:
+        k8s:io.kubernetes.pod.namespace: kube-system
+        k8s:k8s-app: kube-dns
+    toPorts:
+    - ports:
+      - port: "53"
+        protocol: TCP
+      - port: "53"
+        protocol: UDP
+      rules:
+        dns:
+        # Required to fetch webpages and resources
+        - matchPattern: "*"
+  - toFQDNs:
+    - matchPattern: "*"
+    toPorts:
+    - ports:
+      - port: "443"
+        protocol: TCP
+  ingress:
+  - fromEndpoints:
+    - matchLabels:
+        {{- include "boilerplate.labels.selectorLabels" . | nindent 8 }}
+    toPorts:
+    - ports:
+      - port: http
+        protocol: TCP
+{{- end }}

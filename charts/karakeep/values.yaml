@@ -49,11 +49,17 @@ securityContext: {}
 env: {}
   # OPENAI_API_KEY: "your-api-key-here"
 
+## @section Application parameters
+## @param applicationProtocol Protocol for the application (http or https)
+applicationProtocol: "http"
+## @param applicationHost Hostname for the application
+applicationHost: ""
+
 service:
   type: ClusterIP
   port: 80
 
-containerPort: 8080
+containerPort: 3000
 
 ingress:
   enabled: false
@@ -134,6 +140,13 @@ readinessProbe:
   initialDelaySeconds: 5
   periodSeconds: 10
   timeoutSeconds: 5
+
+## @section Network policies
+networkPolicies:
+  # -- Enable network policies
+  enabled: false
+  # -- Flavor of network policies to use, either "kubernetes" or "cilium"
+  flavor: kubernetes
 
 chrome:
   enabled: false

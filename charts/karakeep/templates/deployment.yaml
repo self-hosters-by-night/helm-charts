@@ -32,7 +32,7 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- if .env -}}
+          {{- if and .env (gt (len .env) 0) -}}
           env:
             {{- range $key, $value := .Values.env }}
             - name: {{ $key }}

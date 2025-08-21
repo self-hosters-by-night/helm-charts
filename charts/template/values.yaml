@@ -101,10 +101,142 @@ readinessProbe:
 
 autoscaling:
   enabled: false
+  targetKind: Deployment
   minReplicas: 1
   maxReplicas: 100
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
+  customMetrics: []
+  behavior: {}
+
+# StatefulSet configuration
+statefulset:
+  enabled: false
+  replicaCount: 1
+  volumeClaimTemplates: []
+  # - metadata:
+  #     name: data
+  #   spec:
+  #     accessModes: ["ReadWriteOnce"]
+  #     storageClassName: fast-ssd
+  #     resources:
+  #       requests:
+  #         storage: 10Gi
+
+# HTTPRoute configuration for Gateway API
+httproute:
+  enabled: false
+  annotations: {}
+  parentRefs:
+    - name: gateway
+  hostnames: []
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: ""
+          port: 80
+          weight: 100
+
+# TCPRoute configuration for Gateway API
+tcproute:
+  enabled: false
+  annotations: {}
+  parentRefs:
+    - name: gateway
+  rules:
+    - backendRefs:
+        - name: ""
+          port: 80
+          weight: 100
+
+# Persistence configuration
+persistence:
+  enabled: false
+  size: 8Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClass: ""
+  annotations: {}
+  selector: {}
+  volumeName: ""
+  volumeMode: ""
+
+# Secret configuration
+secret:
+  create: false
+  type: Opaque
+  annotations: {}
+  data: {}
+  # data:
+  #   key1: value1
+  stringData: {}
+  # stringData:
+  #   key2: value2
+
+# ConfigMap configuration
+configMap:
+  create: false
+  annotations: {}
+  data: {}
+  # data:
+  #   config.yaml: |
+  #     key: value
+  binaryData: {}
+  # binaryData:
+  #   binary-key: base64-encoded-data
+
+# CronJob configuration
+cronjob:
+  enabled: false
+  schedule: "0 2 * * *"
+  timeZone: ""
+  concurrencyPolicy: Allow
+  suspend: false
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  startingDeadlineSeconds: 300
+  backoffLimit: 3
+  activeDeadlineSeconds: 3600
+  ttlSecondsAfterFinished: 86400
+  restartPolicy: OnFailure
+  annotations: {}
+  jobAnnotations: {}
+  podAnnotations: {}
+  podSecurityContext: {}
+  securityContext: {}
+  image:
+    registry: docker.io
+    repository: busybox
+    tag: latest
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+  command: []
+  args: []
+  env: []
+  resources: {}
+  volumeMounts: []
+  volumes: []
+  nodeSelector: {}
+  affinity: {}
+  tolerations: []
+
+# RBAC configuration
+rbac:
+  create: false
+  annotations: {}
+  rules: []
+  # rules:
+  # - apiGroups: [""]
+  #   resources: ["pods"]
+  #   verbs: ["get", "list"]
+  extraSubjects: []
+  # extraSubjects:
+  # - kind: User
+  #   name: system:serviceaccount:default:my-user
+  #   apiGroup: rbac.authorization.k8s.io
 
 # Additional volumes on the output Deployment definition.
 volumes: []

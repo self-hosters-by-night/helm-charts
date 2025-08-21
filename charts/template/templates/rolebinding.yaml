@@ -1,0 +1,30 @@
+{{- if .Values.rbac.create }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "boilerplate.names.fullname" . }}
+  labels:
+    {{- include "boilerplate.labels.standard" . | nindent 4 }}
+  {{- with .Values.rbac.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "boilerplate.names.fullname" . }}
+subjects:
+- kind: ServiceAccount
+  name: {{ include "boilerplate.names.serviceAccountName" . }}
+  namespace: {{ .Release.Namespace }}
+{{- range .Values.rbac.extraSubjects }}
+- kind: {{ .kind }}
+  name: {{ .name }}
+  {{- with .namespace }}
+  namespace: {{ . }}
+  {{- end }}
+  {{- with .apiGroup }}
+  apiGroup: {{ . }}
+  {{- end }}
+{{- end }}
+{{- end }}

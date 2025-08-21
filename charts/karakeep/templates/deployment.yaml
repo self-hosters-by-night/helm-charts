@@ -38,10 +38,13 @@ spec:
           env:
             - name: DATA_DIR
               value: /data
-            {{- if .Values.applicationHost }}
             - name: NEXTAUTH_URL
               value: "{{ .Values.applicationProtocol | default "http" }}://{{ .Values.applicationHost }}"
-            {{- end }}
+            - name: NEXTAUTH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "boilerplate.names.fullname" . }}
+                  key: NEXTAUTH_SECRET
             {{- if .Values.chrome.enabled }}
             - name: BROWSER_WEB_URL
               value: "http://{{ .Release.Name }}-chrome:9222"

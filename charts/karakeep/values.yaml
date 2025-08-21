@@ -49,6 +49,13 @@ securityContext: {}
 env: {}
   # OPENAI_API_KEY: "your-api-key-here"
 
+## @section Application parameters
+## @param applicationProtocol Protocol for the application (http or https)
+applicationProtocol: "http"
+## @param applicationHost Hostname for the application
+applicationHost: ""
+
+
 service:
   type: ClusterIP
   port: 80

@@ -422,6 +422,31 @@ entries:
   karakeep:
   - apiVersion: v2
     appVersion: 0.26.0
+    created: "2025-08-21T12:49:18.217668459Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.4.0
+    - condition: chrome.enabled
+      name: chrome
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.3.1
+    - condition: meilisearch.enabled
+      name: meilisearch
+      repository: https://meilisearch.github.io/meilisearch-kubernetes
+      version: 0.15.0
+    description: A Helm chart for Karakeep
+    digest: 2da6037dbaed94cbcf0eecae70556de1919cfb12b9fca00b2fca5904307ef646
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: karakeep
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/karakeep-0.3.0/karakeep-0.3.0.tgz
+    version: 0.3.0
+  - apiVersion: v2
+    appVersion: 0.26.0
     created: "2025-08-20T13:24:40.016810247Z"
     dependencies:
     - name: boilerplate
@@ -830,6 +855,24 @@ entries:
   template:
   - apiVersion: v2
     appVersion: 1.16.0
+    created: "2025-08-21T12:49:18.365862322Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.4.0
+    description: A template Helm chart to demostrate the usage of the boilerplate
+      library chart.
+    digest: 8c25f01fa22eb0cc35901ba16b99daa22ae1f9525a79d0d97affcddf257d9e9d
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: template
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.4.0/template-0.4.0.tgz
+    version: 0.4.0
+  - apiVersion: v2
+    appVersion: 1.16.0
     created: "2025-08-19T10:20:34.29706248Z"
     dependencies:
     - name: boilerplate
@@ -846,4 +889,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.1.0/template-0.1.0.tgz
     version: 0.1.0
-generated: "2025-08-21T08:57:00.912290047Z"
+generated: "2025-08-21T12:49:18.365955577Z"

@@ -119,6 +119,17 @@ volumeMounts: []
 #   mountPath: "/etc/foo"
 #   readOnly: true
 
+# Extra volumes using boilerplate templates
+extraVolumes: []
+# - name: config-volume
+#   configMap:
+#     name: my-config
+
+# Extra volume mounts using boilerplate templates
+extraVolumeMounts: []
+# - name: config-volume
+#   mountPath: /etc/config
+
 nodeSelector: {}
 
 tolerations: []

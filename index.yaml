@@ -299,6 +299,23 @@ entries:
   chrome:
   - apiVersion: v2
     appVersion: "124"
+    created: "2025-08-21T07:36:14.693472066Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.2.4
+    description: A Helm chart for headless Chrome
+    digest: 272fffee318f5d3a072c8e35abd144a03f79f9275fbf8b761cf1fec9a61c309e
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: chrome
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/chrome-0.3.1/chrome-0.3.1.tgz
+    version: 0.3.1
+  - apiVersion: v2
+    appVersion: "124"
     created: "2025-08-21T06:50:07.505840309Z"
     dependencies:
     - name: boilerplate
@@ -705,6 +722,24 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/postgres-0.1.0/postgres-0.1.0.tgz
     version: 0.1.0
+  searxng:
+  - apiVersion: v2
+    appVersion: 2025.8.20-41a4a3e
+    created: "2025-08-21T07:36:15.006293289Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.2.4
+    description: A Helm chart for Kubernetes
+    digest: 56dd3c2ba3c8405bb654c79da8f249ef89733ec1261fae64d819fddb2c5e1a7a
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: searxng
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/searxng-0.1.0/searxng-0.1.0.tgz
+    version: 0.1.0
   simple-postgres:
   - annotations:
       artifacthub.io/category: database
@@ -793,4 +828,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.1.0/template-0.1.0.tgz
     version: 0.1.0
-generated: "2025-08-21T06:50:07.653328156Z"
+generated: "2025-08-21T07:36:15.006390189Z"

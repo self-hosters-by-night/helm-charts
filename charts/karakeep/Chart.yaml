@@ -4,6 +4,7 @@ description: A Helm chart for Karakeep - AI-powered knowledge management and boo
 type: application
 version: 1.1.0
 appVersion: 0.26.0
+icon: https://avatars.githubusercontent.com/u/202258986
 maintainers:
   - name: facorazza
     email: git@facorazza.com

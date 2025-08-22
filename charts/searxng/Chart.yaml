@@ -1,9 +1,10 @@
 apiVersion: v2
 name: searxng
-description: A Helm chart for Kubernetes
+description: A Helm chart SearXNG, a free internet metasearch engine which aggregates results from various search services and databases. Users are neither tracked nor profiled.
 type: application
-version: 0.4.0
+version: 1.0.0
 appVersion: 2025.8.20-41a4a3e
+icon: https://avatars.githubusercontent.com/u/80454229
 maintainers:
   - name: facorazza
     email: git@facorazza.com

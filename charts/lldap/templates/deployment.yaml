@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "boilerplate.fullname" . }}
+  name: {{ include "boilerplate.names.fullname" . }}
   labels:
     {{- include "boilerplate.labels.standard" . | nindent 4 }}
 spec:
@@ -35,13 +35,13 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          image: {{ include "boilerplate.images.image" (dict "imageRoot" .Values.image "global" .Values.global) }}
+          image: {{ include "boilerplate.images.image" (dict "image" .Values.image "global" .Values.global "chart" .Chart) }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           envFrom:
             - configMapRef:
-                name: {{ if .Values.config.existingConfigMap }}{{ .Values.config.existingConfigMap }}{{ else }}{{ include "boilerplate.fullname" . }}-config{{ end }}
+                name: {{ if .Values.config.existingConfigMap }}{{ .Values.config.existingConfigMap }}{{ else }}{{ include "boilerplate.names.fullname" . }}-config{{ end }}
             - secretRef:
-                name: {{ if .Values.secrets.existingSecret }}{{ .Values.secrets.existingSecret }}{{ else }}{{ include "boilerplate.fullname" . }}-secret{{ end }}
+                name: {{ if .Values.secrets.existingSecret }}{{ .Values.secrets.existingSecret }}{{ else }}{{ include "boilerplate.names.fullname" . }}-secret{{ end }}
           ports:
             - name: ldap
               containerPort: 3890
@@ -76,7 +76,7 @@ spec:
         {{- if .Values.persistence.enabled }}
         - name: data
           persistentVolumeClaim:
-            claimName: {{ if .Values.persistence.existingClaim }}{{ .Values.persistence.existingClaim }}{{ else }}{{ include "boilerplate.fullname" . }}-data{{ end }}
+            claimName: {{ if .Values.persistence.existingClaim }}{{ .Values.persistence.existingClaim }}{{ else }}{{ include "boilerplate.names.fullname" . }}-data{{ end }}
         {{- end }}
         {{- with .Values.extraVolumes }}
         {{- toYaml . | nindent 8 }}

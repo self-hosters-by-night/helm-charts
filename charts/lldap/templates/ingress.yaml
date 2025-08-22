@@ -1,5 +1,5 @@
 {{- if .Values.ingress.webui.enabled -}}
-{{- $fullName := include "boilerplate.fullname" . -}}
+{{- $fullName := include "boilerplate.names.fullname" . -}}
 {{- $svcPort := .Values.service.webui.port -}}
 {{- if and .Values.ingress.webui.className (not (hasKey .Values.ingress.webui.annotations "kubernetes.io/ingress.class")) }}
   {{- $_ := set .Values.ingress.webui.annotations "kubernetes.io/ingress.class" .Values.ingress.webui.className}}

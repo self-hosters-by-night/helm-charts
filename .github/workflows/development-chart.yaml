@@ -1,0 +1,46 @@
+name: Helm Chart Testing
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - "charts/**"
+
+jobs:
+  lint-and-validate:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Set up Helm
+      uses: azure/setup-helm@v3
+
+    - name: Add Helm repositories
+      run: |
+        for chart in charts/*/; do
+          if [ -f "$chart/Chart.yaml" ]; then
+            echo "Install charts $chart"
+            helm dependency update "$chart"
+          fi
+        done
+
+    - name: Helm Lint
+      run: |
+        for chart in charts/*/; do
+          if [ -f "$chart/Chart.yaml" ]; then
+            echo "Linting $chart"
+            helm lint "$chart" --strict
+          fi
+        done
+
+    - name: Helm Template Validation
+      run: |
+        for chart in charts/*/; do
+          if [ -f "$chart/Chart.yaml" ]; then
+            echo "Templating $chart"
+            helm template test-release "$chart" --debug --dry-run
+          fi
+        done

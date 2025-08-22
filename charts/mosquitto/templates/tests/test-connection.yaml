@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "boilerplate.names.fullname" . }}-test-connection"
+  labels:
+    {{- include "boilerplate.labels.standard" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: mosquitto-test
+      image: eclipse-mosquitto:latest
+      command: ['mosquitto_pub']
+      args: ['-h', '{{ include "boilerplate.names.fullname" . }}', '-p', '{{ .Values.service.port }}', '-t', 'test/topic', '-m', 'test message']
+  restartPolicy: Never

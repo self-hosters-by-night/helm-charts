@@ -7,7 +7,7 @@ Return the proper image name
 {{- $registry := coalesce .image.registry $globalRegistry "" -}}
 {{- $repository := .image.repository -}}
 {{- $version := include "boilerplate.images.version" ( dict "image" .image "global" .global "chart" .chart ) -}}
-{{- if $registry }}
+{{- if $registry -}}
 {{- printf "%s/%s%s" $registry $repository $version -}}
 {{- else -}}
 {{- printf "%s%s" $repository $version -}}
@@ -19,10 +19,11 @@ Return the proper image version. Falls back to Chart.appVersion if no tag or dig
 {{ include "boilerplate.images.version" ( dict "image" .image "global" .Values.global "chart" .Chart ) }}
 */}}
 {{- define "boilerplate.images.version" -}}
-{{- if .digest }}
-{{- printf "@%s" (.digest | toString) -}}
+{{ include "boilerplate.images.validate" ( dict "image" .image "global" .global "chart" .chart ) }}
+{{- if .image.digest }}
+{{- printf "@%s" (.image.digest | toString) -}}
 {{- else if .tag }}
-{{- printf ":%s" (.tag | toString) -}}
+{{- printf ":%s" (.image.tag | toString) -}}
 {{- else -}}
 {{- printf ":%s" .chart.AppVersion -}}
 {{- end -}}
@@ -33,7 +34,7 @@ Validate image configuration
 {{ include "boilerplate.images.validate" ( dict "image" .image "global" .global "chart" .chart ) }}
 */}}
 {{- define "boilerplate.images.validate" -}}
-{{- if not .repository -}}
+{{- if not .image.repository -}}
 {{- fail "Image repository is required" -}}
 {{- end -}}
 {{- if and (not .image.tag) (not .image.digest) (not .chart.AppVersion) -}}

@@ -184,3 +184,11 @@ limiter: |
   # Activate passlist of (hardcoded) IPs from the SearXNG organization,
   # e.g. `check.searx.space`.
   pass_searxng_org = true
+
+## @section Network Policy parameters
+networkPolicy:
+  ## @param networkPolicy.enabled Enable NetworkPolicy
+  enabled: false
+  ## @param networkPolicy.flavor Network policy flavor (kubernetes or cilium)
+  ## Options: "kubernetes" or "cilium"
+  flavor: "kubernetes"

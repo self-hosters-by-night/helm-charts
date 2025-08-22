@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ include "boilerplate.fullname" . }}
+  name: {{ include "boilerplate.names.fullname" . }}
   labels:
     {{- include "boilerplate.labels.standard" . | nindent 4 }}
   namespace: {{ .Release.Namespace }}

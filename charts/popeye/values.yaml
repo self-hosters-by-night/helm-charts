@@ -1,8 +1,10 @@
 image:
   registry: docker.io
   repository: derailed/popeye
-  pullPolicy: Always
   tag: ""
+  digest: ""
+  pullPolicy: IfNotPresent
+  pullSecrets: []
 
 imagePullSecrets: []
 nameOverride: ""

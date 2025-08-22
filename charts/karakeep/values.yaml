@@ -279,6 +279,7 @@ httproute:
 persistence:
   enabled: true
   storageClass: ""
+  # volumeName: ""
   accessMode: ReadWriteOnce
   size: 10Gi
   # existingClaim: ""

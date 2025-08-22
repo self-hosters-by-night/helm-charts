@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "boilerplate.names.fullname" . }}
+  labels:
+    {{- include "boilerplate.labels.standard" . | nindent 4 }}
+    {{- include "boilerplate.labels.commonAnnotations" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "boilerplate.labels.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "boilerplate.labels.podLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "boilerplate.names.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: {{ include "boilerplate.images.image" ( dict "image" .Values.image "global" .Values.global "chart" .Chart ) }}
+          imagePullPolicy: {{ include "boilerplate.images.pullPolicy" ( dict "image" .Values.image "global" .Values.global "chart" .Chart ) }}
+          ports:
+            - name: mqtt
+              containerPort: 1883
+              protocol: TCP
+            - name: websocket
+              containerPort: 9001
+              protocol: TCP
+          livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            {{- include "boilerplate.storage.extraVolumeMounts" . | nindent 12 }}
+          {{- include "boilerplate.environment.env" ( dict "env" .Values.env "global" .Values.global ) | nindent 10 }}
+      volumes:
+        {{- include "boilerplate.storage.extraVolumes" . | nindent 8 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

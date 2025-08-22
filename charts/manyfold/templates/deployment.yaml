@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "boilerplate.fullname" . }}
+  name: {{ include "boilerplate.names.fullname" . }}
   labels:
     {{- include "boilerplate.labels.standard" . | nindent 4 }}
 spec:
@@ -43,25 +43,26 @@ spec:
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          image: {{ include "boilerplate.images.image" (dict "imageRoot" .Values.image "global" .Values.global) }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: {{ include "boilerplate.images.image" (dict "image" .Values.image "global" .Values.global "chart" .Chart) }}
+          imagePullPolicy: {{ include "boilerplate.images.pullPolicy" (dict "image" .Values.image "global" .Values.global "chart" .Chart) }}
           {{- if or .Values.secret_key_base.secret .Values.secret_key_base.secretKeyRef }}
           env:
             - name: SECRET_KEY_BASE
               valueFrom:
                 secretKeyRef:
                   {{- if .Values.secret_key_base.secret }}
-                    name: {{ include "boilerplate.fullname" . }}
+                    name: {{ include "boilerplate.names.fullname" . }}
                     key: "SECRET_KEY_BASE"
                   {{- else }}
                     name: {{ .Values.secret_key_base.secretKeyRef.name }}
                     key: {{ .Values.secret_key_base.secretKeyRef.key }}
                   {{- end }}
           {{- end }}
+          {{- include "boilerplate.environment.env" (dict "env" .Values.env "global" .Values.global) | nindent 10 }}
           {{- with .Values.secret_key_base.secretName }}
           envFrom:
             - secretRef:
-              name: {{ .name }}
+                name: {{ . }}
           {{- end }}
           {{- with .Values.securityContext }}
           securityContext:
@@ -72,28 +73,36 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           volumeMounts:
-            - name: manyfold-config
-              mountPath: /config
-            - name: manyfold-libraries
-              mountPath: /libraries
-            {{- with .Values.extraVolumeMounts }}
-              {{- toYaml . | nindent 12 }}
+            {{- if .Values.persistence.config.enabled }}
+            - name: {{ .Values.persistence.config.name | default "config" }}
+              mountPath: {{ .Values.persistence.config.mountPath | default "/config" }}
             {{- end }}
+            {{- if .Values.persistence.libraries.enabled }}
+            - name: {{ .Values.persistence.libraries.name | default "libraries" }}
+              mountPath: {{ .Values.persistence.libraries.mountPath | default "/libraries" }}
+            {{- end }}
+            {{- include "boilerplate.storage.extraVolumeMounts" . | nindent 12 }}
           ports:
             - name: http
               containerPort: 3214
               protocol: TCP
+          {{- with .Values.livenessProbe }}
           livenessProbe:
-            {{- toYaml .Values.livenessProbe | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
           readinessProbe:
-            {{- toYaml .Values.readinessProbe | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
       volumes:
-        - name: manyfold-config
+        {{- if .Values.persistence.config.enabled }}
+        - name: {{ .Values.persistence.config.name | default "config" }}
           persistentVolumeClaim:
-            claimName: manyfold-config
-        - name: manyfold-libraries
-          persistentVolumeClaim:
-            claimName: manyfold-libraries
-        {{- with .Values.extraVolumes }}
-          {{- toYaml . | nindent 8 }}
+            claimName: {{ .Values.persistence.config.existingClaim | default (printf "%s-config" (include "boilerplate.names.fullname" .)) }}
         {{- end }}
+        {{- if .Values.persistence.libraries.enabled }}
+        - name: {{ .Values.persistence.libraries.name | default "libraries" }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.libraries.existingClaim | default (printf "%s-libraries" (include "boilerplate.names.fullname" .)) }}
+        {{- end }}
+        {{- include "boilerplate.storage.extraVolumes" . | nindent 8 }}

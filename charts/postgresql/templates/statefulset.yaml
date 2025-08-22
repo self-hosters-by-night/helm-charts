@@ -14,13 +14,13 @@ spec:
       {{- include "boilerplate.labels.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.postgres.annotations }}
+      {{- with .Values.annotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
         {{- include "boilerplate.labels.selectorLabels" . | nindent 8 }}
-        {{- with .Values.postgres.labels }}
+        {{- with .Values.labels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
@@ -42,9 +42,9 @@ spec:
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          image: {{ include "boilerplate.images.image" (dict "image" .Values.global.image "global" .Values.global "chart" .Chart) }}
-          imagePullPolicy: {{ .Values.global.image.pullPolicy }}
-          {{- with .Values.global.securityContext }}
+          image: {{ include "boilerplate.images.image" (dict "image" .Values.image "global" .Values.global "chart" .Chart) }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- with .Values.image.securityContext }}
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
@@ -56,13 +56,13 @@ spec:
           env:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- if or .Values.configMapRefs .Values.postgres.extraConfigMapRefs .Values.credentials.externalSecret.enabled .Values.secretRefs .Values.postgres.extraSecretRefs }}
+          {{- if or .Values.configMapRefs .Values.extraConfigMapRefs .Values.credentials.externalSecret.enabled .Values.secretRefs .Values.extraSecretRefs }}
           envFrom:
             {{- range .Values.configMapRefs }}
             - configMapRef:
                 name: {{ .name }}
             {{- end }}
-            {{- range .Values.postgres.extraConfigMapRefs }}
+            {{- range .Values.extraConfigMapRefs }}
             - configMapRef:
                 name: {{ .name }}
             {{- end }}
@@ -74,7 +74,7 @@ spec:
             - secretRef:
                 name: {{ .name }}
             {{- end }}
-            {{- range .Values.postgres.extraSecretRefs }}
+            {{- range .Values.extraSecretRefs }}
             - secretRef:
                 name: {{ .name }}
             {{- end }}
@@ -82,38 +82,50 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /var/lib/postgresql/data
-            {{- with .Values.postgres.extraVolumeMounts }}
+            {{- with .Values.extraVolumeMounts }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
           ports:
             - name: postgres
               containerPort: 5432
               protocol: TCP
-          {{- with .Values.postgres.livenessProbe }}
+          {{- with .Values.livenessProbe }}
           livenessProbe:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.postgres.readinessProbe }}
+          {{- with .Values.readinessProbe }}
           readinessProbe:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+      {{- if not .Values.persistence.enabled }}
+      volumes:
+        - name: data
+          emptyDir: {}
+      {{- end }}
+      {{- with .Values.extraVolumes }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
-    {{- if not .Values.postgres.persistence.existingClaim }}
+    {{- if not .Values.persistence.existingClaim }}
     - metadata:
         name: data
-        {{- with .Values.postgres.persistence.annotations }}
+        {{- with .Values.persistence.annotations }}
         annotations:
           {{- toYaml . | nindent 10 }}
         {{- end }}
       spec:
-        storageClassName: {{ .Values.postgres.persistence.storageClass | quote }}
+        storageClassName: {{ .Values.persistence.storageClass | quote }}
         accessModes:
-          - ReadWriteOnce
+          {{- range .Values.persistence.accessModes }}
+          - {{ . }}
+          {{- end }}
         resources:
           requests:
-            storage: {{ .Values.postgres.persistence.size }}
-        {{- with .Values.postgres.persistence.selector}}
+            storage: {{ .Values.persistence.size }}
+        {{- with .Values.persistence.selector}}
         selector:
           {{- toYaml . | nindent 10 }}
         {{- end }}
     {{- end }}
+  {{- end }}

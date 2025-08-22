@@ -2,7 +2,7 @@ apiVersion: v2
 name: manyfold
 description: "Manyfold is a self-hosted digital asset manager for 3d print files."
 type: application
-version: 0.1.2
+version: 0.2.0
 appVersion: "0.78.1"
 icon: https://raw.githubusercontent.com/manyfold3d/manyfold/main/app/assets/images/roundel.svg
 annotations:
@@ -12,5 +12,5 @@ maintainers:
     email: git@facorazza.com
 dependencies:
   - name: boilerplate
-    version: 0.2.0
+    version: 0.6.0
     repository: "https://self-hosters-by-night.github.io/helm-charts"

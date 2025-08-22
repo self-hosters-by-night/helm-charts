@@ -8,8 +8,8 @@ metadata:
     "helm.sh/hook": test
 spec:
   containers:
-    - name: wget
-      image: busybox
-      command: ['wget']
-      args: ['{{ include "boilerplate.names.fullname" . }}:{{ .Values.service.port }}']
+    - name: mosquitto-test
+      image: eclipse-mosquitto:latest
+      command: ['mosquitto_pub']
+      args: ['-h', '{{ include "boilerplate.names.fullname" . }}', '-p', '{{ .Values.service.port }}', '-t', 'test/topic', '-m', 'test message']
   restartPolicy: Never

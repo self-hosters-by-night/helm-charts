@@ -2,12 +2,12 @@ apiVersion: v2
 name: searxng
 description: A Helm chart for Kubernetes
 type: application
-version: 0.1.0
+version: 0.3.0
 appVersion: 2025.8.20-41a4a3e
 maintainers:
   - name: facorazza
     email: git@facorazza.com
 dependencies:
   - name: boilerplate
-    version: 0.2.4
+    version: 0.4.0
     repository: "https://self-hosters-by-night.github.io/helm-charts"

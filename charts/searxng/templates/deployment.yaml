@@ -55,14 +55,25 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.volumeMounts }}
           volumeMounts:
+            {{- if .Values.limiter }}
+            - name: limiter
+              mountPath: /etc/searxng/limiter.toml
+              subPath: limiter.toml
+              readOnly: true
+            {{- end }}
+            {{- with .Values.volumeMounts }}
             {{- toYaml . | nindent 12 }}
-          {{- end }}
-      {{- with .Values.volumes }}
+            {{- end }}
       volumes:
+        {{- if .Values.limiter }}
+        - name: limiter
+          configMap:
+            name: {{ include "boilerplate.names.fullname" . }}-limiter
+        {{- end }}
+        {{- with .Values.volumes }}
         {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

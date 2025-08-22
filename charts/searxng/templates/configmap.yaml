@@ -1,0 +1,11 @@
+{{- if .Values.limiter }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "boilerplate.names.fullname" . }}-limiter
+  labels:
+    {{- include "boilerplate.labels.standard" . | nindent 4 }}
+data:
+  limiter.toml: |
+    {{- .Values.limiter | nindent 4 }}
+{{- end }}

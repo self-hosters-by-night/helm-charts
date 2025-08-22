@@ -6,12 +6,13 @@
 
 ## Library Charts
 
-| Chart                                                                                               | Description                                                                                                         |
-| --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| [boilerplate](https://github.com/self-hosters-by-night/helm-charts/tree/develop/charts/boilerplate) |  Collection of templates to ease chart maintainability. Take a look at the [template](https://github.com/self-hosters-by-night/helm-charts/tree/develop/charts/template) chart for examples on how to use them. |
+| Chart | Description |
+| ----- | ----------- |
+| [boilerplate](https://github.com/self-hosters-by-night/helm-charts/tree/develop/charts/boilerplate) | Collection of templates to ease chart maintainability. Take a look at the [template](https://github.com/self-hosters-by-night/helm-charts/tree/develop/charts/template) chart for examples on how to use them. |
 
 ## Application Charts
 
-| Chart                                                                                         | Description                                                                       |
-| --------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Chart | Description |
+| ----- | ----------- |
+| [chrome](https://github.com/self-hosters-by-night/helm-charts/tree/develop/charts/chrome) | A Helm chart to deploy headless Chrome browser in Kubernetes, perfect for web scraping, automated testing, and browser automation tasks. |
 | [karakeep](https://github.com/self-hosters-by-night/helm-charts/tree/develop/charts/karakeep) | Self-hosted knowledge management and bookmark organizer with AI-powered features. |

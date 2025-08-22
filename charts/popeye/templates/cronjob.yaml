@@ -26,7 +26,7 @@ spec:
           imagePullSecrets:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          serviceAccountName: {{ include "boilerplate.serviceAccountName" . }}
+          serviceAccountName: {{ include "boilerplate.names.serviceAccountName" . }}
           {{- with .Values.securityContext }}
           securityContext:
             {{- toYaml . | nindent 12 }}
@@ -34,7 +34,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: {{ .Chart.Name }}
-              image: {{ include "boilerplate.images.image" (dict "imageRoot" .Values.image "global" .Values.global) }}
+              image: {{ include "boilerplate.images.image" (dict "image" .Values.image "global" .Values.global "chart" .Chart) }}
               imagePullPolicy: {{ .Values.image.pullPolicy }}
               args:
                 {{- if .Values.cronJob.configuration }}
@@ -66,7 +66,7 @@ spec:
                 - name: PUSHGATEWAY_BASIC_AUTH_PASSWORD
                   valueFrom:
                     secretKeyRef:
-                      name: {{ include "boilerplate.fullname" . }}-prometheus
+                      name: {{ include "boilerplate.names.fullname" . }}-prometheus
                       key: pushgateway-password
               {{- end }}
               {{- with .Values.resources }}
@@ -94,5 +94,5 @@ spec:
           volumes:
             - name: configuration
               configMap:
-                name: {{ include "boilerplate.fullname" . }}
+                name: {{ include "boilerplate.names.fullname" . }}
           {{- end }}

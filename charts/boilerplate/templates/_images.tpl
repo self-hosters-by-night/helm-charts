@@ -3,7 +3,10 @@ Return the proper image name
 {{ include "boilerplate.images.image" ( dict "image" .Values.path.to.the.image "global" .Values.global "chart" .Chart ) }}
 */}}
 {{- define "boilerplate.images.image" -}}
-{{- $globalRegistry := (.global.imageRegistry) | default "" -}}
+{{- $globalRegistry := "" -}}
+{{- if and .global .global.imageRegistry -}}
+{{- $globalRegistry = .global.imageRegistry -}}
+{{- end -}}
 {{- $registry := coalesce .image.registry $globalRegistry "" -}}
 {{- $repository := .image.repository -}}
 {{- $version := include "boilerplate.images.version" ( dict "image" .image "global" .global "chart" .chart ) -}}
@@ -47,7 +50,10 @@ Return the proper image pull policy
 {{ include "boilerplate.images.pullPolicy" ( dict "image" .Values.path.to.the.image "global" .Values.global "chart" .Chart ) }}
 */}}
 {{- define "boilerplate.images.pullPolicy" -}}
-{{- $globalImagePullPolicy := (.global.imagePullPolicy) | default "" -}}
+{{- $globalImagePullPolicy := "" -}}
+{{- if and .global .global.imagePullPolicy -}}
+{{- $globalImagePullPolicy = .global.imagePullPolicy -}}
+{{- end -}}
 {{- coalesce .image.pullPolicy $globalImagePullPolicy "IfNotPresent" -}}
 {{- end -}}
 
@@ -57,8 +63,14 @@ Return the proper image pull secrets
 */}}
 {{- define "boilerplate.images.pullSecrets" -}}
 {{- $pullSecrets := list -}}
-{{- $globalSecrets := (.global.imagePullSecrets) | default list -}}
-{{- $imageSecrets := (.image.pullSecrets) | default list -}}
+{{- $globalSecrets := list -}}
+{{- if and .global .global.imagePullSecrets -}}
+{{- $globalSecrets = .global.imagePullSecrets -}}
+{{- end -}}
+{{- $imageSecrets := list -}}
+{{- if and .image .image.pullSecrets -}}
+{{- $imageSecrets = .image.pullSecrets -}}
+{{- end -}}
 {{- $pullSecrets = concat $pullSecrets $globalSecrets $imageSecrets -}}
 {{- if $pullSecrets -}}
 imagePullSecrets:

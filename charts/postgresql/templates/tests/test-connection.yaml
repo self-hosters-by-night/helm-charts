@@ -3,7 +3,7 @@ kind: Pod
 metadata:
   name: "{{ include "boilerplate.names.name" . }}-test-connection"
   labels:
-    {{- include "boilerplate.names.labels" . | nindent 4 }}
+    {{- include "boilerplate.labels.standard" . | nindent 4 }}
   annotations:
     "helm.sh/hook": test
 spec:
@@ -11,5 +11,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['{{ include "boilerplate.names.name" . }}:{{ .Values.postgres.service.port }}']
+      args: ['{{ include "boilerplate.names.name" . }}:{{ .Values.service.port }}']
   restartPolicy: Never

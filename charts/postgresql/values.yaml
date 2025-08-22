@@ -44,70 +44,68 @@ credentials:
     enabled: false
     name: "postgresql-credentials"
 
-postgres:
-  replicaCount: 1
+extraConfigMapRefs: []
+extraSecretRefs: []
 
-  extraConfigMapRefs: []
-  extraSecretRefs: []
+resources: {}
+# We usually recommend not to specify default resources and to leave this as a conscious
+# choice for the user. This also increases chances charts run on environments with little
+# resources, such as Minikube. If you do want to specify resources, uncomment the following
+# lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+# limits:
+#   cpu: 100m
+#   memory: 128Mi
+# requests:
+#   cpu: 100m
+#   memory: 128Mi
 
-  resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+persistence:
+  enabled: true
+  annotations: {}
+  existingClaim: ""
+  storageClassName: ""
+  accessModes:
+    - ReadWriteOnce
+  size: "10Gi"
+  selector: null
 
-  persistence:
-    enabled: true
-    annotations:
-    storageClassName: ""
-    accessModes:
-      - ReadWriteOnce
-    size: "10Gi"
-    selector: null
+# Additional volumes on the output StatefulSet definition.
+extraVolumes: []
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
 
-  # Additional volumes on the output StatefulSet definition.
-  extraVolumes: []
-  # - name: foo
-  #   secret:
-  #     secretName: mysecret
-  #     optional: false
+# Additional volumeMounts on the output StatefulSet definition.
+extraVolumeMounts: []
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
 
-  # Additional volumeMounts on the output StatefulSet definition.
-  extraVolumeMounts: []
-  # - name: foo
-  #   mountPath: "/etc/foo"
-  #   readOnly: true
+service:
+  type: ClusterIP
+  port: 5432
 
-  service:
-    type: ClusterIP
+# Health checks
+livenessProbe:
+  tcpSocket:
     port: 5432
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 6
 
-  # Health checks
-  livenessProbe:
-    tcpSocket:
-      port: 5432
-    initialDelaySeconds: 30
-    periodSeconds: 10
-    timeoutSeconds: 5
-    failureThreshold: 6
-
-  readinessProbe:
-    exec:
-      command:
-        - "/bin/sh"
-        - "-c"
-        - "exec pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"
-    initialDelaySeconds: 5
-    periodSeconds: 10
-    timeoutSeconds: 5
-    successThreshold: 1
-    failureThreshold: 6
+readinessProbe:
+  exec:
+    command:
+      - "/bin/sh"
+      - "-c"
+      - "exec pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 5
+  successThreshold: 1
+  failureThreshold: 6
 
 backup:
   enabled: true
@@ -127,11 +125,9 @@ backup:
 
   persistence:
     enabled: true
-    annotations:
-
+    annotations: {}
     existingClaim: ""
-
-    storageClass: ""
+    storageClassName: ""
     accessModes:
       - ReadWriteOnce
     size: "10Gi"

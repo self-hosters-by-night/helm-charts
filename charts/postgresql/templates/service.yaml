@@ -11,9 +11,9 @@ metadata:
 spec:
   selector:
     {{- include "boilerplate.labels.selectorLabels" . | nindent 4 }}
-  type: {{ .Values.postgres.service.type }}
+  type: {{ .Values.service.type }}
   ports:
     - name: postgresql
-      port: {{ .Values.postgres.service.port }}
+      port: {{ .Values.service.port }}
       protocol: TCP
       targetPort: postgres

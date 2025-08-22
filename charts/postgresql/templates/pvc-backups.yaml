@@ -6,7 +6,9 @@ metadata:
 spec:
   storageClassName: {{ .Values.backup.persistence.storageClass | quote }}
   accessModes:
-    - ReadWriteMany
+    {{- range .Values.backup.persistence.accessModes }}
+    - {{ . }}
+    {{- end }}
   resources:
     requests:
       storage: {{ .Values.backup.persistence.size }}

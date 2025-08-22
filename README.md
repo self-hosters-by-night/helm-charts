@@ -16,3 +16,4 @@
 | ----- | ----------- |
 | [chrome](https://github.com/self-hosters-by-night/helm-charts/tree/develop/charts/chrome) | A Helm chart to deploy headless Chrome browser in Kubernetes, perfect for web scraping, automated testing, and browser automation tasks. |
 | [karakeep](https://github.com/self-hosters-by-night/helm-charts/tree/develop/charts/karakeep) | Self-hosted knowledge management and bookmark organizer with AI-powered features. |
+| [postgresql](https://github.com/self-hosters-by-night/helm-charts/tree/develop/charts/postgresql) | [Postgres](https://www.postgresql.org) is an object-relational database system that provides reliability and data integrity. |

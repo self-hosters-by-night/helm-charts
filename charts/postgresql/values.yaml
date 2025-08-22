@@ -42,7 +42,7 @@ credentials:
   # Use external secret
   externalSecret:
     enabled: false
-    name: "simple-postgres-credentials"
+    name: "postgresql-credentials"
 
 postgres:
   replicaCount: 1

@@ -32,20 +32,8 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- if and .env (gt (len .env) 0) -}}
-          env:
-            {{- range $key, $value := .Values.env }}
-            - name: {{ $key }}
-              value: {{ $value | quote }}
-            {{- end }}
-          {{- end }}
-          envFrom:
-            - configMapRef:
-                name: {{ include "boilerplate.names.fullname" . }}
-            - secretRef:
-                name: {{ include "boilerplate.names.fullname" . }}
-            - secretRef:
-                name: meilisearch
+          {{- include "boilerplate.environment.envVars" (dict "env" .Values.env "global" .Values.global) | nindent 10 }}
+
           ports:
             - name: http
               containerPort: {{ .Values.containerPort }}

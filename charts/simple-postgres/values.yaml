@@ -1,12 +1,15 @@
 global:
   nameOverride: ""
   imagePullSecrets: []
-  image:
-    registry: docker.io
-    repository: postgres
-    pullPolicy: Always
-    # Overrides the image tag whose default is the chart appVersion.
-    tag: ""
+
+image:
+  registry: docker.io
+  repository: postgres
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+  digest: ""
+  pullPolicy: IfNotPresent
+  pullSecrets: []
 
   labels: []
   annotations: []

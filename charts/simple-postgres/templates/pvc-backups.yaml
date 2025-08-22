@@ -1,8 +1,8 @@
-{{- if and .Values.backup.persistence.enabled (ne .Values.backup.persistence.existingClaim "") -}}
+{{- if and .Values.backup.persistence.enabled (eq .Values.backup.persistence.existingClaim "") -}}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ include "boilerplate.name" . }}-backups
+  name: {{ include "boilerplate.names.name" . }}-backups
 spec:
   storageClassName: {{ .Values.backup.persistence.storageClass | quote }}
   accessModes:

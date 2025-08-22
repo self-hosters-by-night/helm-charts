@@ -1,13 +1,13 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ include "boilerplate.name" . }}
+  name: {{ include "boilerplate.names.name" . }}
   {{- with .Values.global.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  serviceName: "{{ include "boilerplate.name" . }}"
+  serviceName: "{{ include "boilerplate.names.name" . }}"
   replicas: {{ .Values.replicaCount | default 1 }}
   selector:
     matchLabels:
@@ -42,7 +42,7 @@ spec:
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          image: {{ include "boilerplate.images.image" (dict "imageRoot" .Values.global.image "global" .Values.global) }}
+          image: {{ include "boilerplate.images.image" (dict "image" .Values.global.image "global" .Values.global "chart" .Chart) }}
           imagePullPolicy: {{ .Values.global.image.pullPolicy }}
           {{- with .Values.global.securityContext }}
           securityContext:
@@ -66,9 +66,9 @@ spec:
             - configMapRef:
                 name: {{ .name }}
             {{- end }}
-            {{- with .Values.credentials.externalSecret }}
+            {{- if .Values.credentials.externalSecret.enabled }}
             - secretRef:
-                name: {{ .name }}
+                name: {{ .Values.credentials.externalSecret.name }}
             {{- end }}
             {{- range .Values.secretRefs }}
             - secretRef:

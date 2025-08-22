@@ -867,6 +867,23 @@ entries:
   searxng:
   - apiVersion: v2
     appVersion: 2025.8.20-41a4a3e
+    created: "2025-08-22T15:27:15.187786374Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.4.0
+    description: A Helm chart for Kubernetes
+    digest: 93268f62f59da80f0ef2bc9bb4343a6d4549484f20123bd4407428c3d3e9f4b2
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: searxng
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/searxng-0.4.0/searxng-0.4.0.tgz
+    version: 0.4.0
+  - apiVersion: v2
+    appVersion: 2025.8.20-41a4a3e
     created: "2025-08-22T15:05:49.902235077Z"
     dependencies:
     - name: boilerplate
@@ -1005,4 +1022,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.1.0/template-0.1.0.tgz
     version: 0.1.0
-generated: "2025-08-22T15:05:49.902393591Z"
+generated: "2025-08-22T15:27:15.187881723Z"

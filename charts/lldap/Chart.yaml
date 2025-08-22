@@ -4,6 +4,7 @@ description: A Helm chart for LLDAP, a lightweight authentication server that pr
 type: application
 version: 0.1.0
 appVersion: "2025-05-19"
+icon: https://raw.githubusercontent.com/self-hosters-by-night/helm-charts/refs/heads/main/assets/lldap.png
 annotations:
   artifacthub.io/category: security
 keywords:

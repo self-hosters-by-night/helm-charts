@@ -243,6 +243,15 @@ entries:
     version: 0.1.0
   boilerplate:
   - apiVersion: v2
+    created: "2025-08-22T16:59:29.883610811Z"
+    description: Boilerplate templates
+    digest: 68c4c7501e4e90ad9b2afdeafd171e13d94b07d508ee9d5140509e81a7d81e8c
+    name: boilerplate
+    type: library
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/boilerplate-0.5.0/boilerplate-0.5.0.tgz
+    version: 0.5.0
+  - apiVersion: v2
     created: "2025-08-21T08:57:00.680727175Z"
     description: Boilerplate templates
     digest: c4ca0af531cfe1a6b49052c88e55ea6521be769c7c394cc108b62ae4602663ba
@@ -636,6 +645,40 @@ entries:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/manyfold-0.1.0/manyfold-0.1.0.tgz
     version: 0.1.0
   popeye:
+  - annotations:
+      artifacthub.io/category: security
+      artifacthub.io/screenshots: |
+        - title: Console Output
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/console.png"
+        - title: HTML Output
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/html.png"
+        - title: JSON Output
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/json.png"
+        - title: Dashboard
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/pop-dash.png"
+        - title: Score A
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/score-a.png"
+        - title: Score D
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/score-d.png"
+    apiVersion: v2
+    appVersion: v0.22.1
+    created: "2025-08-22T16:59:30.017904735Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.4.0
+    description: Popeye is a utility that scans live Kubernetes clusters and reports
+      potential issues with deployed resources and configurations.
+    digest: 91426de55e1374d38b763958e52231b6749267ba407c500a9b10d148df0e50da
+    icon: https://raw.githubusercontent.com/derailed/popeye/master/assets/popeye_logo.png
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: popeye
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/popeye-0.4.2/popeye-0.4.2.tgz
+    version: 0.4.2
   - annotations:
       artifacthub.io/category: security
       artifacthub.io/screenshots: |
@@ -1076,4 +1119,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.1.0/template-0.1.0.tgz
     version: 0.1.0
-generated: "2025-08-22T16:30:38.16543956Z"
+generated: "2025-08-22T16:59:30.018045619Z"

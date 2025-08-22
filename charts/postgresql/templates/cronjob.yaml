@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ include "boilerplate.name" . }}-backup
+  name: {{ include "boilerplate.names.name" . }}-backup
   {{- with .Values.global.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -27,26 +27,26 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: backup
-              image: {{ include "boilerplate.images.image" (dict "imageRoot" .Values.global.image "global" .Values.global) }}
+              image: {{ include "boilerplate.images.image" (dict "image" .Values.global.image "global" .Values.global "chart" .Chart) }}
               imagePullPolicy: {{ .Values.global.image.pullPolicy }}
               command:
                 - "/bin/sh"
                 - "-c"
                 - |
-                  pg_dump postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@{{ include "boilerplate.name" . }}:5432 -Fc -f /backups/$(date '+%Y-%m-%dT%H:%M:%SZ').sql
+                  pg_dump postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@{{ include "boilerplate.names.name" . }}:5432/${POSTGRES_DB} -Fc -f /backups/$(date '+%Y-%m-%dT%H:%M:%SZ').sql
               {{- with .Values.env }}
               env:
                 {{- toYaml . | nindent 16 }}
               {{- end }}
-              {{- if or .Values.configMapRefs .Values.credentials.externalSecret .Values.secretRefs }}
+              {{- if or .Values.configMapRefs .Values.credentials.externalSecret.enabled .Values.secretRefs }}
               envFrom:
                 {{- range .Values.configMapRefs }}
                 - configMapRef:
                     name: {{ .name }}
                 {{- end }}
-                {{- with .Values.credentials.externalSecret }}
+                {{- if .Values.credentials.externalSecret.enabled }}
                 - secretRef:
-                    name: {{ .name }}
+                    name: {{ .Values.credentials.externalSecret.name }}
                 {{- end }}
                 {{- range .Values.secretRefs }}
                 - secretRef:
@@ -64,7 +64,7 @@ spec:
             - name: backups
               {{- if .Values.backup.persistence.enabled }}
               persistentVolumeClaim:
-                claimName: {{ include "boilerplate.name" . }}-backups
+                claimName: {{ include "boilerplate.names.name" . }}-backups
               {{- else }}
               emptyDir: {}
               {{- end }}

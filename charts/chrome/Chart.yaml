@@ -1,6 +1,6 @@
 apiVersion: v2
 name: chrome
-description: A Helm chart for headless Chrome
+description: A Helm chart to deploy headless Chrome browser in Kubernetes.
 type: application
 version: 0.3.1
 appVersion: "124"

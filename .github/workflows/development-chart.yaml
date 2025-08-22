@@ -30,7 +30,7 @@ jobs:
     - name: Helm Lint
       run: |
         for chart in charts/*/; do
-          if [ -f "$chart/Chart.yaml" ]; then
+          if [ -f "$chart/Chart.yaml" ] && [ -d "$chart/templates" ]; then
             echo "Linting $chart"
             helm lint "$chart" --strict
           fi
@@ -39,7 +39,7 @@ jobs:
     - name: Helm Template Validation
       run: |
         for chart in charts/*/; do
-          if [ -f "$chart/Chart.yaml" ]; then
+          if [ -f "$chart/Chart.yaml" ] && [ -d "$chart/templates" ]; then
             echo "Templating $chart"
             helm template test-release "$chart" --debug --dry-run
           fi

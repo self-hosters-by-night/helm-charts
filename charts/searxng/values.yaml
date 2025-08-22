@@ -32,8 +32,7 @@ image:
   pullPolicy: IfNotPresent
   pullSecrets: []
 
-# Container port (different from service port)
-containerPort: 80
+containerPort: 8080
 
 # This is for setting Kubernetes Annotations to a Pod.
 podAnnotations: {}

@@ -4,7 +4,7 @@ metadata:
   name: {{ include "boilerplate.fullname" . }}
 subjects:
   - kind: ServiceAccount
-    name: {{ include "boilerplate.serviceAccountName" . }}
+    name: {{ include "boilerplate.names.serviceAccountName" . }}
     namespace: {{ .Release.Namespace }}
 roleRef:
   kind: ClusterRole

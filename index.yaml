@@ -243,6 +243,15 @@ entries:
     version: 0.1.0
   boilerplate:
   - apiVersion: v2
+    created: "2025-08-22T17:11:57.103355074Z"
+    description: Boilerplate templates
+    digest: 85e7009478bff08de8a5bd7fba19030512444d52495918d376a380e773a18278
+    name: boilerplate
+    type: library
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/boilerplate-0.6.0/boilerplate-0.6.0.tgz
+    version: 0.6.0
+  - apiVersion: v2
     created: "2025-08-22T16:59:29.883610811Z"
     description: Boilerplate templates
     digest: 68c4c7501e4e90ad9b2afdeafd171e13d94b07d508ee9d5140509e81a7d81e8c
@@ -1119,4 +1128,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.1.0/template-0.1.0.tgz
     version: 0.1.0
-generated: "2025-08-22T16:59:30.018045619Z"
+generated: "2025-08-22T17:11:57.245443671Z"

@@ -1,19 +1,21 @@
-image:
-  registry: ghcr.io
-  repository: manyfold3d/manyfold-solo
-  pullPolicy: Always
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
 
 # Global values for boilerplate compatibility
 global:
   imageRegistry: ""
+  imagePullPolicy: ""
+
+  image:
+  registry: ghcr.io
+  repository: manyfold3d/manyfold-solo
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+  digest: ""
+  pullPolicy: IfNotPresent
 
 nodeSelector: {}
 tolerations: []
 affinity: {}
 
-imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
@@ -41,6 +43,23 @@ secret_key_base:
   # secretKeyRef:
   #   name: ""
   #   key: ""
+
+# Environment variables
+env: {}
+  # EXAMPLE_VAR: "value"
+
+# Persistence configuration
+persistence:
+  config:
+    enabled: true
+    name: "config"
+    mountPath: "/config"
+    existingClaim: ""
+  libraries:
+    enabled: true
+    name: "libraries"
+    mountPath: "/libraries"
+    existingClaim: ""
 
 service:
   type: ClusterIP
@@ -74,16 +93,16 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
-# livenessProbe:
-#   httpGet:
-#     path: /
-#     port: http
-#   initialDelaySeconds: 60
-# readinessProbe:
-#   httpGet:
-#     path: /
-#     port: http
-#   initialDelaySeconds: 60
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 60
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 30
 
 # Additional volumes on the output Deployment definition.
 extraVolumes: []

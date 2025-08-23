@@ -243,6 +243,15 @@ entries:
     version: 0.1.0
   boilerplate:
   - apiVersion: v2
+    created: "2025-08-23T05:08:42.150194898Z"
+    description: Boilerplate templates
+    digest: 1f106d68fa2e80fdc589e5c8c4b046f7ef6378e4f464215c6902da3a47e3ca0a
+    name: boilerplate
+    type: library
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/boilerplate-0.8.0/boilerplate-0.8.0.tgz
+    version: 0.8.0
+  - apiVersion: v2
     created: "2025-08-22T21:56:04.818711276Z"
     description: Boilerplate templates
     digest: 4225721b48ec6385b4bfa7fd992ad3538814a4719aa7f4c7c5a7bead01b76dd1
@@ -449,6 +458,33 @@ entries:
   karakeep:
   - apiVersion: v2
     appVersion: 0.26.0
+    created: "2025-08-23T05:08:42.293790301Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.7.0
+    - condition: chrome.enabled
+      name: chrome
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.3.1
+    - condition: meilisearch.enabled
+      name: meilisearch
+      repository: https://meilisearch.github.io/meilisearch-kubernetes
+      version: 0.15.0
+    description: A Helm chart for Karakeep - AI-powered knowledge management and bookmark
+      organizer
+    digest: bca9cb6a0e733596728141cf61b5fe001c716ef68d1ff4669f056595c1a37913
+    icon: https://avatars.githubusercontent.com/u/202258986
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: karakeep
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/karakeep-1.2.0/karakeep-1.2.0.tgz
+    version: 1.2.0
+  - apiVersion: v2
+    appVersion: 0.26.0
     created: "2025-08-22T09:35:22.802546785Z"
     dependencies:
     - name: boilerplate
@@ -593,6 +629,34 @@ entries:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/karakeep-0.1.0/karakeep-0.1.0.tgz
     version: 0.1.0
   lldap:
+  - annotations:
+      artifacthub.io/category: security
+    apiVersion: v2
+    appVersion: "2025-05-19"
+    created: "2025-08-23T05:08:42.440948474Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.7.0
+    - name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 16.7.26
+    description: A Helm chart for LLDAP, a lightweight authentication server that
+      provides an opinionated and simplified LDAP interface for authentication.
+    digest: b811dee93abe202b7c00ce16e6977e11281c7ee05c59d7b5ec4febb25c1383ac
+    icon: https://raw.githubusercontent.com/self-hosters-by-night/helm-charts/refs/heads/main/assets/lldap.png
+    keywords:
+    - ldap
+    - authentication
+    - directory
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: lldap
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/lldap-0.2.0/lldap-0.2.0.tgz
+    version: 0.2.0
   - annotations:
       artifacthub.io/category: security
     apiVersion: v2
@@ -1232,4 +1296,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.1.0/template-0.1.0.tgz
     version: 0.1.0
-generated: "2025-08-22T21:56:05.268177894Z"
+generated: "2025-08-23T05:08:42.578536615Z"

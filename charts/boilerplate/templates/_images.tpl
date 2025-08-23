@@ -69,7 +69,7 @@ Usage: {{ include "boilerplate.images.pullPolicy" ( dict "image" .Values.path.to
 {{- $globalPullPolicy = .global.imagePullPolicy -}}
 {{- end -}}
 {{- $imagePullPolicy := "" -}}
-{{- if .image (hasKey .image "imageRegistry") .image.pullPolicy -}}
+{{- if and .image (hasKey .image "pullPolicy") .image.pullPolicy -}}
 {{- $imagePullPolicy = .image.pullPolicy -}}
 {{- end -}}
 {{- $policy := coalesce $imagePullPolicy $globalPullPolicy "IfNotPresent" -}}
@@ -89,7 +89,7 @@ Usage: {{ include "boilerplate.images.pullSecrets" ( dict "image" .Values.path.t
 {{- $globalSecrets = .global.imagePullSecrets -}}
 {{- end -}}
 {{- $imageSecrets := list -}}
-{{- if .image (hasKey .image "pullSecrets") .image.pullSecrets -}}
+{{- if and .image (hasKey .image "pullSecrets") .image.pullSecrets -}}
 {{- $imageSecrets = .image.pullSecrets -}}
 {{- end -}}
 {{- $allSecrets := concat $globalSecrets $imageSecrets -}}

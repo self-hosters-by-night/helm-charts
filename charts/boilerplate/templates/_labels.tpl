@@ -31,3 +31,21 @@ Pod labels combining standard labels with custom pod labels
 {{- toYaml . }}
 {{- end }}
 {{- end }}
+
+{{/*
+Common labels helper template
+Usage: {{- include "boilerplate.labels" (dict "labels" .Values.labels "global" .Values.global) | nindent 4 }}
+*/}}
+{{- define "boilerplate.labels" -}}
+{{- $globalLabels := dict }}
+{{- if and .global (hasKey .global "labels") .global.labels -}}
+{{- $globalLabels = .global.labels -}}
+{{- end -}}
+{{- $labels := merge $globalLabels (.labels | default dict) -}}
+{{- if $labels }}
+labels:
+{{- range $key, $value := $labels }}
+  {{ $key }}: {{ $value | quote }}
+{{- end }}
+{{- end }}
+{{- end -}}

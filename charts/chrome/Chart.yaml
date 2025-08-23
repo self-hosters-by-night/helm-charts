@@ -4,6 +4,7 @@ description: A Helm chart to deploy headless Chrome browser in Kubernetes.
 type: application
 version: 0.3.1
 appVersion: "124"
+icon: https://upload.wikimedia.org/wikipedia/commons/archive/e/e1/20230720031433%21Google_Chrome_icon_%28February_2022%29.svg
 maintainers:
   - name: facorazza
     email: git@facorazza.com

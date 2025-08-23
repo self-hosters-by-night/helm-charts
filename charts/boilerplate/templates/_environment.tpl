@@ -3,7 +3,7 @@ Render environment variables (env section)
 Usage: {{ include "boilerplate.environment.env" ( dict "env" .Values.env "global" .Values.global ) }}
 */}}
 {{- define "boilerplate.environment.env" -}}
-{{ include "boilerplate.environment.env.validate" .env }}
+{{- include "boilerplate.environment.env.validate" .env }}
 {{- $hasEnvVars := or .env.vars .env.fromConfigMap .env.fromSecret -}}
 {{- if $hasEnvVars }}
 env:

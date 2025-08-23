@@ -30,7 +30,7 @@ Return the proper image version with tag or digest
 Usage: {{ include "boilerplate.images.version" ( dict "image" .image "global" .global "chart" .chart ) }}
 */}}
 {{- define "boilerplate.images.version" -}}
-{{- include "boilerplate.images.validate" . -}}
+{{- include "boilerplate.images.validate" . }}
 {{- if .image.digest -}}
 {{- printf "@%s" (.image.digest | toString) -}}
 {{- else if .image.tag -}}

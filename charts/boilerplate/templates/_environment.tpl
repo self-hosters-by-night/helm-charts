@@ -1,36 +1,17 @@
 {{/*
-Render environment variables with support for vars, configMapRefs, secretRefs, configMaps, and secrets
-Usage: {{ include "boilerplate.environment.envVars" ( dict "env" .Values.path.to.env "global" .Values.global ) }}
+Render environment variables (env section)
+Usage: {{ include "boilerplate.environment.env" ( dict "env" .Values.env "global" .Values.global ) }}
 */}}
-{{- define "boilerplate.environment.envVars" -}}
-{{ include "boilerplate.environment.envVars.validate" .env }}
-{{- if .env -}}
-{{- $hasEnvVars := or .env.vars .env.configMapRefs .env.secretRefs -}}
-{{- $hasEnvFrom := or .env.configMaps .env.secrets -}}
-{{- if $hasEnvFrom }}
-envFrom:
-{{- range .env.configMaps }}
-- configMapRef:
-    name: {{ .name | quote }}
-    {{- if .optional }}
-    optional: {{ .optional }}
-    {{- end }}
-{{- end }}
-{{- range .env.secrets }}
-- secretRef:
-    name: {{ .name | quote }}
-    {{- if .optional }}
-    optional: {{ .optional }}
-    {{- end }}
-{{- end }}
-{{- end }}
+{{- define "boilerplate.environment.env" -}}
+{{ include "boilerplate.environment.env.validate" .env }}
+{{- $hasEnvVars := or .env.vars .env.fromConfigMap .env.fromSecret -}}
 {{- if $hasEnvVars }}
 env:
 {{- range $key, $value := .env.vars }}
 - name: {{ $key | quote }}
   value: {{ $value | quote }}
 {{- end }}
-{{- range $key, $config := .env.configMapRefs }}
+{{- range $key, $config := .env.fromConfigMap }}
 - name: {{ $key | quote }}
   valueFrom:
     configMapKeyRef:
@@ -40,7 +21,7 @@ env:
       optional: {{ $config.optional }}
       {{- end }}
 {{- end }}
-{{- range $key, $config := .env.secretRefs }}
+{{- range $key, $config := .env.fromSecret }}
 - name: {{ $key | quote }}
   valueFrom:
     secretKeyRef:
@@ -52,13 +33,38 @@ env:
 {{- end }}
 {{- end }}
 {{- end -}}
+
+{{/*
+Render environment variables from external sources (envFrom section)
+Usage: {{ include "boilerplate.environment.envFrom" ( dict "envFrom" .Values.envFrom "global" .Values.global ) }}
+*/}}
+{{- define "boilerplate.environment.envFrom" -}}
+{{ include "boilerplate.environment.envFrom.validate" .envFrom }}
+{{- $hasEnvFrom := or .envFrom.configMaps .envFrom.secrets -}}
+{{- if $hasEnvFrom }}
+envFrom:
+{{- range .envFrom.configMaps }}
+- configMapRef:
+    name: {{ .name | quote }}
+    {{- if .optional }}
+    optional: {{ .optional }}
+    {{- end }}
+{{- end }}
+{{- range .envFrom.secrets }}
+- secretRef:
+    name: {{ .name | quote }}
+    {{- if .optional }}
+    optional: {{ .optional }}
+    {{- end }}
+{{- end }}
+{{- end }}
 {{- end -}}
 
 {{/*
-Validate environment variable configuration with comprehensive checks
-{{ include "boilerplate.environment.envVars.validate" .Values.env }}
+Validate environment variable configuration for env section
+{{ include "boilerplate.environment.env.validate" .Values.env }}
 */}}
-{{- define "boilerplate.environment.envVars.validate" -}}
+{{- define "boilerplate.environment.env.validate" -}}
 {{- if . }}
   {{/* Validate that input is a map */}}
   {{- if not (kindIs "map" .) }}
@@ -93,90 +99,136 @@ Validate environment variable configuration with comprehensive checks
     {{- end }}
   {{- end }}
 
-  {{/* Validate configMapRefs section */}}
-  {{- if .configMapRefs }}
-    {{- if not (kindIs "map" .configMapRefs) }}
-      {{- fail "'configMapRefs' must be a map of environment variable definitions" }}
+  {{/* Validate fromConfigMap section */}}
+  {{- if .fromConfigMap }}
+    {{- if not (kindIs "map" .fromConfigMap) }}
+      {{- fail "'fromConfigMap' must be a map of environment variable definitions" }}
     {{- end }}
-    {{- range $key, $config := .configMapRefs }}
+    {{- range $key, $config := .fromConfigMap }}
       {{- if not $key }}
-        {{- fail "Environment variable key in 'configMapRefs' cannot be empty" }}
+        {{- fail "Environment variable key in 'fromConfigMap' cannot be empty" }}
       {{- end }}
       {{- if not (kindIs "string" $key) }}
-        {{- fail "Environment variable key in 'configMapRefs' must be a string" }}
+        {{- fail "Environment variable key in 'fromConfigMap' must be a string" }}
       {{- end }}
       {{- if not (regexMatch "^[A-Za-z_][A-Za-z0-9_]*$" $key) }}
-        {{- fail (printf "Environment variable key '%s' in configMapRefs is invalid. Must start with letter or underscore and contain only alphanumeric characters and underscores" $key) }}
+        {{- fail (printf "Environment variable key '%s' in fromConfigMap is invalid. Must start with letter or underscore and contain only alphanumeric characters and underscores" $key) }}
       {{- end }}
       {{- if not (kindIs "map" $config) }}
-        {{- fail (printf "configMapRef '%s' must be a map with 'from' and 'key' fields" $key) }}
+        {{- fail (printf "fromConfigMap '%s' must be a map with 'from' and 'key' fields" $key) }}
       {{- end }}
       {{- if not $config.from }}
-        {{- fail (printf "configMapRef '%s' must have 'from' field defined" $key) }}
+        {{- fail (printf "fromConfigMap '%s' must have 'from' field defined" $key) }}
       {{- end }}
       {{- if not (kindIs "string" $config.from) }}
-        {{- fail (printf "configMapRef '%s' 'from' field must be a string" $key) }}
+        {{- fail (printf "fromConfigMap '%s' 'from' field must be a string" $key) }}
       {{- end }}
       {{- if not $config.key }}
-        {{- fail (printf "configMapRef '%s' must have 'key' field defined" $key) }}
+        {{- fail (printf "fromConfigMap '%s' must have 'key' field defined" $key) }}
       {{- end }}
       {{- if not (kindIs "string" $config.key) }}
-        {{- fail (printf "configMapRef '%s' 'key' field must be a string" $key) }}
+        {{- fail (printf "fromConfigMap '%s' 'key' field must be a string" $key) }}
       {{- end }}
       {{/* Validate Kubernetes resource name for configMap */}}
       {{- if not (regexMatch "^[a-z0-9]([a-z0-9\\-]*[a-z0-9])?$" $config.from) }}
-        {{- fail (printf "configMapRef '%s' 'from' field '%s' is not a valid Kubernetes resource name" $key $config.from) }}
+        {{- fail (printf "fromConfigMap '%s' 'from' field '%s' is not a valid Kubernetes resource name" $key $config.from) }}
       {{- end }}
       {{/* Validate optional field if present */}}
       {{- if hasKey $config "optional" }}
         {{- if not (kindIs "bool" $config.optional) }}
-          {{- fail (printf "configMapRef '%s' 'optional' field must be a boolean" $key) }}
+          {{- fail (printf "fromConfigMap '%s' 'optional' field must be a boolean" $key) }}
         {{- end }}
       {{- end }}
     {{- end }}
   {{- end }}
 
-  {{/* Validate secretRefs section */}}
-  {{- if .secretRefs }}
-    {{- if not (kindIs "map" .secretRefs) }}
-      {{- fail "'secretRefs' must be a map of environment variable definitions" }}
+  {{/* Validate fromSecret section */}}
+  {{- if .fromSecret }}
+    {{- if not (kindIs "map" .fromSecret) }}
+      {{- fail "'fromSecret' must be a map of environment variable definitions" }}
     {{- end }}
-    {{- range $key, $config := .secretRefs }}
+    {{- range $key, $config := .fromSecret }}
       {{- if not $key }}
-        {{- fail "Environment variable key in 'secretRefs' cannot be empty" }}
+        {{- fail "Environment variable key in 'fromSecret' cannot be empty" }}
       {{- end }}
       {{- if not (kindIs "string" $key) }}
-        {{- fail "Environment variable key in 'secretRefs' must be a string" }}
+        {{- fail "Environment variable key in 'fromSecret' must be a string" }}
       {{- end }}
       {{- if not (regexMatch "^[A-Za-z_][A-Za-z0-9_]*$" $key) }}
-        {{- fail (printf "Environment variable key '%s' in secretRefs is invalid. Must start with letter or underscore and contain only alphanumeric characters and underscores" $key) }}
+        {{- fail (printf "Environment variable key '%s' in fromSecret is invalid. Must start with letter or underscore and contain only alphanumeric characters and underscores" $key) }}
       {{- end }}
       {{- if not (kindIs "map" $config) }}
-        {{- fail (printf "secretRef '%s' must be a map with 'from' and 'key' fields" $key) }}
+        {{- fail (printf "fromSecret '%s' must be a map with 'from' and 'key' fields" $key) }}
       {{- end }}
       {{- if not $config.from }}
-        {{- fail (printf "secretRef '%s' must have 'from' field defined" $key) }}
+        {{- fail (printf "fromSecret '%s' must have 'from' field defined" $key) }}
       {{- end }}
       {{- if not (kindIs "string" $config.from) }}
-        {{- fail (printf "secretRef '%s' 'from' field must be a string" $key) }}
+        {{- fail (printf "fromSecret '%s' 'from' field must be a string" $key) }}
       {{- end }}
       {{- if not $config.key }}
-        {{- fail (printf "secretRef '%s' must have 'key' field defined" $key) }}
+        {{- fail (printf "fromSecret '%s' must have 'key' field defined" $key) }}
       {{- end }}
       {{- if not (kindIs "string" $config.key) }}
-        {{- fail (printf "secretRef '%s' 'key' field must be a string" $key) }}
+        {{- fail (printf "fromSecret '%s' 'key' field must be a string" $key) }}
       {{- end }}
       {{/* Validate Kubernetes resource name for secret */}}
       {{- if not (regexMatch "^[a-z0-9]([a-z0-9\\-]*[a-z0-9])?$" $config.from) }}
-        {{- fail (printf "secretRef '%s' 'from' field '%s' is not a valid Kubernetes resource name" $key $config.from) }}
+        {{- fail (printf "fromSecret '%s' 'from' field '%s' is not a valid Kubernetes resource name" $key $config.from) }}
       {{- end }}
       {{/* Validate optional field if present */}}
       {{- if hasKey $config "optional" }}
         {{- if not (kindIs "bool" $config.optional) }}
-          {{- fail (printf "secretRef '%s' 'optional' field must be a boolean" $key) }}
+          {{- fail (printf "fromSecret '%s' 'optional' field must be a boolean" $key) }}
         {{- end }}
       {{- end }}
     {{- end }}
+  {{- end }}
+
+  {{/* Check for duplicate environment variable names across different sources */}}
+  {{- $allEnvVars := dict }}
+  {{- if .vars }}
+    {{- range $key, $value := .vars }}
+      {{- $_ := set $allEnvVars $key "vars" }}
+    {{- end }}
+  {{- end }}
+  {{- if .fromConfigMap }}
+    {{- range $key, $config := .fromConfigMap }}
+      {{- if hasKey $allEnvVars $key }}
+        {{- fail (printf "Duplicate environment variable '%s' found in both '%s' and 'fromConfigMap'" $key (index $allEnvVars $key)) }}
+      {{- end }}
+      {{- $_ := set $allEnvVars $key "fromConfigMap" }}
+    {{- end }}
+  {{- end }}
+  {{- if .fromSecret }}
+    {{- range $key, $config := .fromSecret }}
+      {{- if hasKey $allEnvVars $key }}
+        {{- fail (printf "Duplicate environment variable '%s' found in both '%s' and 'fromSecret'" $key (index $allEnvVars $key)) }}
+      {{- end }}
+      {{- $_ := set $allEnvVars $key "fromSecret" }}
+    {{- end }}
+  {{- end }}
+
+  {{/* Validate no unknown fields */}}
+  {{- $validFields := list "vars" "fromConfigMap" "fromSecret" }}
+  {{- range $field, $value := . }}
+    {{- if not (has $field $validFields) }}
+      {{- fail (printf "Unknown field '%s' in environment configuration. Valid fields are: %s" $field (join ", " $validFields)) }}
+    {{- end }}
+  {{- end }}
+
+{{- end }}
+{{- end -}}
+
+{{/*
+Validate envFrom configuration
+{{ include "boilerplate.environment.envFrom.validate" .Values.envFrom }}
+*/}}
+{{- define "boilerplate.environment.envFrom.validate" -}}
+{{- if . }}
+  {{/* Validate that input is a map */}}
+  {{- if not (kindIs "map" .) }}
+    {{- fail "EnvFrom configuration must be a map/object" }}
   {{- end }}
 
   {{/* Validate configMaps section */}}
@@ -235,35 +287,11 @@ Validate environment variable configuration with comprehensive checks
     {{- end }}
   {{- end }}
 
-  {{/* Check for duplicate environment variable names across different sources */}}
-  {{- $allEnvVars := dict }}
-  {{- if .vars }}
-    {{- range $key, $value := .vars }}
-      {{- $_ := set $allEnvVars $key "vars" }}
-    {{- end }}
-  {{- end }}
-  {{- if .configMapRefs }}
-    {{- range $key, $config := .configMapRefs }}
-      {{- if hasKey $allEnvVars $key }}
-        {{- fail (printf "Duplicate environment variable '%s' found in both '%s' and 'configMapRefs'" $key (index $allEnvVars $key)) }}
-      {{- end }}
-      {{- $_ := set $allEnvVars $key "configMapRefs" }}
-    {{- end }}
-  {{- end }}
-  {{- if .secretRefs }}
-    {{- range $key, $config := .secretRefs }}
-      {{- if hasKey $allEnvVars $key }}
-        {{- fail (printf "Duplicate environment variable '%s' found in both '%s' and 'secretRefs'" $key (index $allEnvVars $key)) }}
-      {{- end }}
-      {{- $_ := set $allEnvVars $key "secretRefs" }}
-    {{- end }}
-  {{- end }}
-
   {{/* Validate no unknown fields */}}
-  {{- $validFields := list "vars" "configMapRefs" "secretRefs" "configMaps" "secrets" }}
+  {{- $validFields := list "configMaps" "secrets" }}
   {{- range $field, $value := . }}
     {{- if not (has $field $validFields) }}
-      {{- fail (printf "Unknown field '%s' in environment configuration. Valid fields are: %s" $field (join ", " $validFields)) }}
+      {{- fail (printf "Unknown field '%s' in envFrom configuration. Valid fields are: %s" $field (join ", " $validFields)) }}
     {{- end }}
   {{- end }}
 

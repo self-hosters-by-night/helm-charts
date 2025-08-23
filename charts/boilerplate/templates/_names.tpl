@@ -2,7 +2,11 @@
 Expand the name of the chart.
 */}}
 {{- define "boilerplate.names.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
+{{- $name := default .Chart.Name .Values.nameOverride -}}
+{{- if not (regexMatch "^[a-zA-Z0-9]([a-zA-Z0-9\\-]*[a-zA-Z0-9])?$" $name) -}}
+{{- fail (printf "Invalid name '%s'. Must start and end with alphanumeric characters and contain only alphanumeric characters and hyphens" $name) -}}
+{{- end -}}
+{{- $name | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
@@ -21,6 +25,10 @@ If release name contains chart name it will be used as a full name.
 {{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
 {{- end }}
 {{- end }}
+{{- if not (regexMatch "^[a-zA-Z0-9]([a-zA-Z0-9\\-]*[a-zA-Z0-9])?$" $fullname) -}}
+{{- fail (printf "Invalid fullname '%s'. Must start and end with alphanumeric characters and contain only alphanumeric characters and hyphens" $fullname) -}}
+{{- end -}}
+{{- $fullname | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*

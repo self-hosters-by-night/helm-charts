@@ -1,5 +1,5 @@
 {{- if .Values.tcproute.ldap.enabled -}}
-{{- $fullName := include "boilerplate.fullname" . -}}
+{{- $fullName := include "boilerplate.names.fullname" . -}}
 {{- $svcPort := .Values.service.ldap.port -}}
 apiVersion: gateway.networking.k8s.io/v1alpha2
 kind: TCPRoute
@@ -30,7 +30,7 @@ spec:
 {{- end -}}
 ---
 {{- if .Values.tcproute.ldaps.enabled -}}
-{{- $fullName := include "boilerplate.fullname" . -}}
+{{- $fullName := include "boilerplate.names.fullname" . -}}
 {{- $svcPort := .Values.service.ldaps.port -}}
 apiVersion: gateway.networking.k8s.io/v1alpha2
 kind: TCPRoute

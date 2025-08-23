@@ -1,5 +1,5 @@
 {{- if .Values.httproute.webui.enabled -}}
-{{- $fullName := include "boilerplate.fullname" . -}}
+{{- $fullName := include "boilerplate.names.fullname" . -}}
 {{- $svcPort := .Values.service.webui.port -}}
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute

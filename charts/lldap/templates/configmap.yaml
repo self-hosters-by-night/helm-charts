@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "boilerplate.fullname" . }}-config
+  name: {{ include "boilerplate.names.fullname" . }}-config
   labels:
     {{- include "boilerplate.labels.standard" . | nindent 4 }}
 data:

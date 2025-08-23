@@ -6,8 +6,6 @@ fullnameOverride: ""
 image:
   registry: ghcr.io
   repository: lldap/lldap
-  # This sets the pull policy for images.
-  pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
   # Possible tags:
@@ -20,9 +18,10 @@ image:
   #   yyyy-mm-dd-latest-debian-rootless
   #   yyyy-mm-dd-latest-alpine-rootless
   # Check out https://github.com/lldap/lldap/pkgs/container/lldap for a complete list of available tags
-
-# This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
-imagePullSecrets: []
+  digest: ""
+  # This sets the pull policy for images.
+  pullPolicy: IfNotPresent
+  pullSecrets: []
 
 # This is for setting Kubernetes Annotations to a Pod.
 # For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
@@ -137,9 +136,27 @@ service:
     port: 17170
     # nodePort: 30171  # Only used if service.type is NodePort or LoadBalancer
 
+# Ingress configuration
+ingress:
+  webui:
+    enabled: false
+    className: ""
+    annotations: {}
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+    hosts:
+      - host: lldap.local
+        paths:
+          - path: /
+            pathType: Prefix
+    tls: []
+    #  - secretName: lldap-tls
+    #    hosts:
+    #      - lldap.local
+
 httproute:
   webui:
-    enabled: true
+    enabled: false
     gatewayName: ""
     namespace: ""
     sectionName: ""
@@ -153,14 +170,14 @@ httproute:
 
 tcproute:
   ldap:
-    enabled: true
+    enabled: false
     gatewayName: ""
     namespace: ""
     sectionName: ""
     annotations: {}
     weight: 1
   ldaps:
-    enabled: true
+    enabled: false
     gatewayName: ""
     namespace: ""
     sectionName: ""
@@ -183,12 +200,12 @@ resources: {}
 livenessProbe:
   httpGet:
     path: /
-    port: http
+    port: webui
 
 readinessProbe:
   httpGet:
     path: /
-    port: http
+    port: webui
 
 persistence:
   # This is to enable persistence for the LDAP data.

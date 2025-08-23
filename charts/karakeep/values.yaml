@@ -45,8 +45,44 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
 ## @param env Environment variables to add to the container
-env: {}
+## Supports vars, configMapRefs, secretRefs, configMaps, and secrets
+## Example:
+## env:
+##   vars:
+##     DEBUG: "true"
+##   configMapRefs:
+##     DATABASE_URL:
+##       from: "app-config"
+##       key: "db-url"
+##   secretRefs:
+##     API_KEY:
+##       from: "app-secrets"
+##       key: "api-key"
+##   configMaps:
+##     - name: "shared-config"
+##   secrets:
+##     - name: "shared-secrets"
+env:
+  # Mount entire ConfigMaps as environment variables
+  configMaps: []
+    # - name: config-map-name
+
+  # Mount entire Secrets as environment variables
+  secrets: []
+    # - name: secret-name
 
 ## @section configuration
 ## Karakeep configuration
@@ -228,11 +264,38 @@ configuration:
     ## @param crawler.noProxy Hostnames/IPs to bypass proxy
     noProxy: ""
 
+persistence:
+  enabled: true
+  storageClass: ""
+  # volumeName: ""
+  accessMode: ReadWriteOnce
+  size: 10Gi
+  # existingClaim: ""
+
+extraVolumeMounts: []
+extraVolumes: []
+
+containerPort: 3000
+
+livenessProbe:
+  httpGet:
+    path: /api/health
+    port: http
+  initialDelaySeconds: 30
+  periodSeconds: 30
+  timeoutSeconds: 10
+
+readinessProbe:
+  httpGet:
+    path: /api/health
+    port: http
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 5
+
 service:
   type: ClusterIP
   port: 80
-
-containerPort: 3000
 
 ingress:
   enabled: false
@@ -276,45 +339,6 @@ httproute:
       #       scheme: https
       # weight: 100
 
-persistence:
-  enabled: true
-  storageClass: ""
-  # volumeName: ""
-  accessMode: ReadWriteOnce
-  size: 10Gi
-  # existingClaim: ""
-
-extraVolumeMounts: []
-extraVolumes: []
-
-resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
-
-livenessProbe:
-  httpGet:
-    path: /api/health
-    port: http
-  initialDelaySeconds: 30
-  periodSeconds: 30
-  timeoutSeconds: 10
-
-readinessProbe:
-  httpGet:
-    path: /api/health
-    port: http
-  initialDelaySeconds: 5
-  periodSeconds: 10
-  timeoutSeconds: 5
-
 ## @section Network policies
 networkPolicies:
   # -- Enable network policies
@@ -338,6 +362,8 @@ meilisearch:
     MEILI_NO_ANALYTICS: true
     MEILI_ENV: production
   auth:
+    # This secret is created by this chart if it's not already present in the cluster.
+    # If the chart is uninstalled the secret persists in the cluster and has to be removed manually.
     existingMasterKeySecret: "meilisearch"
   persistence:
     # -- Enable persistence using PVC

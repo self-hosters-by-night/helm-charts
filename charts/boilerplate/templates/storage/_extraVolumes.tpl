@@ -58,33 +58,26 @@ Render extra volumes
 {{- with .hostPath.type }}
     type: {{ . }}
 {{- end }}
+{{- else if .nfs }}
+  nfs:
+    server: {{ .nfs.server | required "NFS server is required" }}
+    path: {{ .nfs.path | required "NFS path is required" }}
+{{- with .nfs.readOnly }}
+    readOnly: {{ . }}
+{{- end }}
+{{- else if .csi }}
+  csi:
+    driver: {{ .csi.driver | required "CSI driver is required" }}
+{{- with .csi.volumeAttributes }}
+    volumeAttributes:
+{{- toYaml . | nindent 6 }}
+{{- end }}
+{{- with .csi.nodePublishSecretRef }}
+    nodePublishSecretRef:
+      name: {{ .name }}
+{{- end }}
 {{- else }}
-{{- fail "Volume type must be specified (configMap, secret, persistentVolumeClaim, emptyDir or hostPath)" }}
-{{- end }}
-{{- end }}
-{{- end }}
-{{- end }}
-
-{{/*
-Render extra volume mounts
-{{- include "boilerplate.storage.extraVolumeMounts" . }}
-*/}}
-{{- define "boilerplate.storage.extraVolumeMounts" -}}
-{{- if .Values.extraVolumeMounts -}}
-{{- range .Values.extraVolumeMounts }}
-- name: {{ .name | required "Volume mount name is required" }}
-  mountPath: {{ .mountPath | required "Volume mount path is required" }}
-{{- with .subPath }}
-  subPath: {{ . }}
-{{- end }}
-{{- with .readOnly }}
-  readOnly: {{ . }}
-{{- end }}
-{{- with .mountPropagation }}
-  mountPropagation: {{ . }}
-{{- end }}
-{{- with .subPathExpr }}
-  subPathExpr: {{ . }}
+{{- fail "Volume type must be specified (configMap, secret, persistentVolumeClaim, emptyDir, hostPath, nfs, or csi)" }}
 {{- end }}
 {{- end }}
 {{- end }}

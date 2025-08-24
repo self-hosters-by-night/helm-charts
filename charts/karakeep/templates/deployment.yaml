@@ -19,21 +19,21 @@ spec:
       labels:
         {{- include "boilerplate.labels.podLabels" . | nindent 8 }}
     spec:
-      {{- include "boilerplate.images.pullSecrets" (dict "global" .Values.global "image" .Values.image) | nindent 6 }}
+      {{- include "karakeep.imagePullSecrets" . | nindent 6 }}
       {{- with .Values.podSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          image: {{ include "boilerplate.images.image" (dict "image" .Values.image "global" .Values.global "chart" .Chart) }}
-          imagePullPolicy: {{ include "boilerplate.images.pullPolicy" (dict "image" .Values.image "global" .Values.global) }}
+          image: {{ include "karakeep.image" . }}
+          imagePullPolicy: {{ include "karakeep.imagePullPolicy" . }}
           {{- with .Values.securityContext }}
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- include "boilerplate.environment.envVars" (dict "env" .Values.env "global" .Values.global) | nindent 10 }}
-
+          {{- include "karakeep.environment.env" . | nindent 10 }}
+          {{- include "karakeep.environment.envFrom" . | nindent 10 }}
           ports:
             - name: http
               containerPort: {{ .Values.containerPort }}
@@ -51,18 +51,19 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           volumeMounts:
-            {{- if .Values.persistence.enabled }}
             - name: data
               mountPath: /data
-            {{- end }}
-            {{- include "boilerplate.storage.extraVolumeMounts" . }}
+            {{- include "boilerplate.storage.extraVolumeMounts" . | nindent 12 }}
       volumes:
-      {{- if .Values.persistence.enabled }}
+        {{- if .Values.persistence.enabled }}
         - name: data
           persistentVolumeClaim:
             claimName: {{ include "boilerplate.names.fullname" . }}-data
-      {{- end }}
-      {{- include "boilerplate.storage.extraVolumes" . }}
+        {{- else }}
+        - name: data
+          emptyDir: {}
+        {{- end -}}
+        {{- include "boilerplate.storage.extraVolumes" . | nindent 8 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

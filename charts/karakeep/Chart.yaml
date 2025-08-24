@@ -10,7 +10,7 @@ maintainers:
     email: git@facorazza.com
 dependencies:
   - name: boilerplate
-    version: 0.13.3
+    version: 0.13.4
     repository: "https://self-hosters-by-night.github.io/helm-charts"
   - name: chrome
     version: 0.3.1

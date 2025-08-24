@@ -4,8 +4,7 @@ Usage: {{ include "boilerplate.environment.env" ( dict "env" .Values.env "global
 */}}
 {{- define "boilerplate.environment.env" -}}
 {{- include "boilerplate.environment.env.validate" .env }}
-{{- $hasEnvVars := or .env.vars .env.fromConfigMap .env.fromSecret -}}
-{{- if $hasEnvVars }}
+{{- if or .env.vars .env.fromConfigMap .env.fromSecret }}
 env:
 {{- range $key, $value := .env.vars }}
 - name: {{ $key | quote }}
@@ -39,9 +38,8 @@ Render environment variables from external sources (envFrom section)
 Usage: {{ include "boilerplate.environment.envFrom" ( dict "envFrom" .Values.envFrom "global" .Values.global ) }}
 */}}
 {{- define "boilerplate.environment.envFrom" -}}
-{{ include "boilerplate.environment.envFrom.validate" .envFrom }}
-{{- $hasEnvFrom := or .envFrom.configMaps .envFrom.secrets -}}
-{{- if $hasEnvFrom }}
+{{- include "boilerplate.environment.envFrom.validate" .envFrom }}
+{{- if or .envFrom.configMaps .envFrom.secrets }}
 envFrom:
 {{- range .envFrom.configMaps }}
 - configMapRef:
@@ -69,7 +67,7 @@ Validate environment variable configuration for env section
   {{/* Validate that input is a map */}}
   {{- if not (kindIs "map" .) }}
     {{- fail "Environment configuration must be a map/object" }}
-  {{- end }}
+  {{- end -}}
 
   {{/* Validate vars section */}}
   {{- if .vars }}
@@ -97,7 +95,7 @@ Validate environment variable configuration for env section
         {{- fail (printf "Environment variable '%s' has nil value. Use empty string if needed" $key) }}
       {{- end }}
     {{- end }}
-  {{- end }}
+  {{- end -}}
 
   {{/* Validate fromConfigMap section */}}
   {{- if .fromConfigMap }}
@@ -140,7 +138,7 @@ Validate environment variable configuration for env section
         {{- end }}
       {{- end }}
     {{- end }}
-  {{- end }}
+  {{- end -}}
 
   {{/* Validate fromSecret section */}}
   {{- if .fromSecret }}
@@ -183,7 +181,7 @@ Validate environment variable configuration for env section
         {{- end }}
       {{- end }}
     {{- end }}
-  {{- end }}
+  {{- end -}}
 
   {{/* Check for duplicate environment variable names across different sources */}}
   {{- $allEnvVars := dict }}
@@ -207,7 +205,7 @@ Validate environment variable configuration for env section
       {{- end }}
       {{- $_ := set $allEnvVars $key "fromSecret" }}
     {{- end }}
-  {{- end }}
+  {{- end -}}
 
   {{/* Validate no unknown fields */}}
   {{- $validFields := list "vars" "fromConfigMap" "fromSecret" }}
@@ -215,7 +213,7 @@ Validate environment variable configuration for env section
     {{- if not (has $field $validFields) }}
       {{- fail (printf "Unknown field '%s' in environment configuration. Valid fields are: %s" $field (join ", " $validFields)) }}
     {{- end }}
-  {{- end }}
+  {{- end -}}
 
 {{- end }}
 {{- end -}}
@@ -229,7 +227,7 @@ Validate envFrom configuration
   {{/* Validate that input is a map */}}
   {{- if not (kindIs "map" .) }}
     {{- fail "EnvFrom configuration must be a map/object" }}
-  {{- end }}
+  {{- end -}}
 
   {{/* Validate configMaps section */}}
   {{- if .configMaps }}
@@ -257,7 +255,7 @@ Validate envFrom configuration
         {{- end }}
       {{- end }}
     {{- end }}
-  {{- end }}
+  {{- end -}}
 
   {{/* Validate secrets section */}}
   {{- if .secrets }}
@@ -285,7 +283,7 @@ Validate envFrom configuration
         {{- end }}
       {{- end }}
     {{- end }}
-  {{- end }}
+  {{- end -}}
 
   {{/* Validate no unknown fields */}}
   {{- $validFields := list "configMaps" "secrets" }}
@@ -294,6 +292,5 @@ Validate envFrom configuration
       {{- fail (printf "Unknown field '%s' in envFrom configuration. Valid fields are: %s" $field (join ", " $validFields)) }}
     {{- end }}
   {{- end }}
-
 {{- end }}
 {{- end -}}

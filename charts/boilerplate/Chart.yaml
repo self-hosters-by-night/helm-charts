@@ -3,3 +3,4 @@ name: boilerplate
 description: Boilerplate templates
 type: library
 version: 0.13.3
+icon: https://raw.githubusercontent.com/self-hosters-by-night/helm-charts/refs/heads/main/assets/boilerplate.png

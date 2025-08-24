@@ -59,23 +59,24 @@ resources: {}
 
 ## @param env Environment variables to add to the container
 ## Supports vars, configMapRefs, secretRefs, configMaps, and secrets
-## Example:
-## env:
-##   vars:
-##     DEBUG: "true"
-##   configMapRefs:
-##     DATABASE_URL:
-##       from: "app-config"
-##       key: "db-url"
-##   secretRefs:
-##     API_KEY:
-##       from: "app-secrets"
-##       key: "api-key"
-##   configMaps:
-##     - name: "shared-config"
-##   secrets:
-##     - name: "shared-secrets"
 env:
+  # vars:
+  #   DEBUG: "true"
+  # Mount entire ConfigMaps as environment variables
+  fromConfigMap: {}
+    # DATABASE_URL:
+      # from: "app-config"
+      # key: "db-url"
+
+  # Mount entire Secrets as environment variables
+  fromSecret: {}
+    # API_KEY:
+      # from: "app-secrets"
+      # key: "api-key"
+
+## @param envFrom Environment variables from external sources
+## Supports configMaps and secrets
+envFrom:
   # Mount entire ConfigMaps as environment variables
   configMaps: []
     # - name: config-map-name
@@ -265,7 +266,7 @@ configuration:
     noProxy: ""
 
 persistence:
-  enabled: true
+  enabled: false
   storageClass: ""
   # volumeName: ""
   accessMode: ReadWriteOnce

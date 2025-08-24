@@ -1,10 +1,9 @@
-
 {{/*
 Render extra volume mounts
 {{- include "boilerplate.storage.extraVolumeMounts" . }}
 */}}
 {{- define "boilerplate.storage.extraVolumeMounts" -}}
-{{- if .Values.extraVolumeMounts -}}
+{{- if .Values.extraVolumeMounts }}
 {{- range .Values.extraVolumeMounts }}
 - name: {{ .name | required "Volume mount name is required" }}
   mountPath: {{ .mountPath | required "Volume mount path is required" }}
@@ -22,4 +21,4 @@ Render extra volume mounts
 {{- end }}
 {{- end }}
 {{- end }}
-{{- end }}
+{{- end -}}

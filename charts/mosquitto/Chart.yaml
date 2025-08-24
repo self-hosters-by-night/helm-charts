@@ -4,6 +4,7 @@ description: "Mosquitto"
 type: application
 version: 0.1.0
 appVersion: 2.0.22
+icon: https://raw.githubusercontent.com/docker-library/docs/757578e3a44e5460a8a11d32a81776f8b74231a9/eclipse-mosquitto/logo.png
 annotations:
   artifacthub.io/category: security
 maintainers:

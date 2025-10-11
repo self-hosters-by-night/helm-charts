@@ -2,34 +2,34 @@
 Render environment variables (env section)
 Usage: {{ include "boilerplate.environment.env" ( dict "env" .Values.env "global" .Values.global ) }}
 */}}
-{{- define "boilerplate.environment.env" | export -}}
+{{- define "boilerplate.environment.env" -}}
 {{- include "boilerplate.environment.env.validate" .env }}
 {{- if or .env.vars .env.fromConfigMap .env.fromSecret }}
 env:
-{{- range $key, $value := .env.vars }}
-- name: {{ $key | quote }}
-  value: {{ $value | quote }}
-{{- end }}
-{{- range $key, $config := .env.fromConfigMap }}
-- name: {{ $key | quote }}
-  valueFrom:
-    configMapKeyRef:
-      name: {{ $config.from | quote }}
-      key: {{ $config.key | quote }}
-      {{- if $config.optional }}
-      optional: {{ $config.optional }}
-      {{- end }}
-{{- end }}
-{{- range $key, $config := .env.fromSecret }}
-- name: {{ $key | quote }}
-  valueFrom:
-    secretKeyRef:
-      name: {{ $config.from | quote }}
-      key: {{ $config.key | quote }}
-      {{- if $config.optional }}
-      optional: {{ $config.optional }}
-      {{- end }}
-{{- end }}
+  {{- range $key, $value := .env.vars }}
+  - name: {{ $key | quote }}
+    value: {{ $value | quote }}
+  {{- end }}
+  {{- range $key, $config := .env.fromConfigMap }}
+  - name: {{ $key | quote }}
+    valueFrom:
+      configMapKeyRef:
+        name: {{ $config.from | quote }}
+        key: {{ $config.key | quote }}
+        {{- if $config.optional }}
+        optional: {{ $config.optional }}
+        {{- end }}
+  {{- end }}
+  {{- range $key, $config := .env.fromSecret }}
+  - name: {{ $key | quote }}
+    valueFrom:
+      secretKeyRef:
+        name: {{ $config.from | quote }}
+        key: {{ $config.key | quote }}
+        {{- if $config.optional }}
+        optional: {{ $config.optional }}
+        {{- end }}
+  {{- end }}
 {{- end }}
 {{- end -}}
 
@@ -41,20 +41,20 @@ Usage: {{ include "boilerplate.environment.envFrom" ( dict "envFrom" .Values.env
 {{- include "boilerplate.environment.envFrom.validate" .envFrom }}
 {{- if or .envFrom.configMaps .envFrom.secrets }}
 envFrom:
-{{- range .envFrom.configMaps }}
-- configMapRef:
-    name: {{ .name | quote }}
-    {{- if .optional }}
-    optional: {{ .optional }}
-    {{- end }}
-{{- end }}
-{{- range .envFrom.secrets }}
-- secretRef:
-    name: {{ .name | quote }}
-    {{- if .optional }}
-    optional: {{ .optional }}
-    {{- end }}
-{{- end }}
+  {{- range .envFrom.configMaps }}
+  - configMapRef:
+      name: {{ .name | quote }}
+      {{- if .optional }}
+      optional: {{ .optional }}
+      {{- end }}
+  {{- end }}
+  {{- range .envFrom.secrets }}
+  - secretRef:
+      name: {{ .name | quote }}
+      {{- if .optional }}
+      optional: {{ .optional }}
+      {{- end }}
+  {{- end }}
 {{- end }}
 {{- end -}}
 

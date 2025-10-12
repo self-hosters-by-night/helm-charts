@@ -93,7 +93,7 @@ configuration:
   ## @param configuration.protocol Protocol for the application (http or https)
   protocol: "http"
   ## @param applicationHost Hostname for the application
-  hostname: ""
+  hostname: "karakeep.local"
 
   ## @param configuration.dataDir The path for the persistent data directory
   dataDir: "/data"

@@ -550,6 +550,33 @@ entries:
   karakeep:
   - apiVersion: v2
     appVersion: 0.26.0
+    created: "2025-10-12T20:57:13.348894873Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.15.1
+    - condition: chrome.enabled
+      name: chrome
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.4.0
+    - condition: meilisearch.enabled
+      name: meilisearch
+      repository: https://meilisearch.github.io/meilisearch-kubernetes
+      version: 0.15.0
+    description: A Helm chart for Karakeep - AI-powered knowledge management and bookmark
+      organizer
+    digest: ec6cf50dab1ab978aea70f8b8d56b1c2b8d87fc35bd43d0949c56600d7c0316e
+    icon: https://avatars.githubusercontent.com/u/202258986
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: karakeep
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/karakeep-2.2.0/karakeep-2.2.0.tgz
+    version: 2.2.0
+  - apiVersion: v2
+    appVersion: 0.26.0
     created: "2025-10-12T20:12:35.46940408Z"
     dependencies:
     - name: boilerplate
@@ -1410,4 +1437,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.1.0/template-0.1.0.tgz
     version: 0.1.0
-generated: "2025-10-12T20:53:47.11905567Z"
+generated: "2025-10-12T20:57:13.349039734Z"

@@ -1,8 +1,8 @@
 apiVersion: v2
 name: mosquitto
-description: "Mosquitto"
+description: "A Helm chart for Eclipse Mosquitto MQTT broker. Provides a secure, lightweight, and reliable messaging solution for IoT and other applications."
 type: application
-version: 0.1.0
+version: 0.2.0
 appVersion: 2.0.22
 icon: https://raw.githubusercontent.com/docker-library/docs/757578e3a44e5460a8a11d32a81776f8b74231a9/eclipse-mosquitto/logo.png
 annotations:
@@ -10,7 +10,14 @@ annotations:
 maintainers:
   - name: facorazza
     email: git@facorazza.com
+keywords:
+  - mqtt
+  - mosquitto
+  - broker
+  - iot
+sources:
+  - https://github.com/eclipse/mosquitto
 dependencies:
   - name: boilerplate
-    version: 0.6.0
+    version: 0.15.1
     repository: "https://self-hosters-by-night.github.io/helm-charts"

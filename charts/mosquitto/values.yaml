@@ -96,11 +96,18 @@ autoscaling:
   # targetMemoryUtilizationPercentage: 80
 
 # Environment variables for the container
-env: {}
-# Example:
-# env:
+env: []
 #   MQTT_LOG_LEVEL: "info"
 #   MQTT_PERSISTENCE: "true"
+
+configMapRefs: []
+# - name: s3-config
+
+secretRefs: []
+#  - name: s3-config
+
+extraConfigMapRefs: []
+extraSecretRefs: []
 
 # Additional volumes using boilerplate storage templates
 extraVolumes: []

@@ -1,11 +1,13 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ include "boilerplate.names.name" . }}
+  name: {{ include "boilerplate.names.fullname" . }}
   {{- with .Values.global.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
+  labels:
+    {{- include "boilerplate.labels.standard" . | nindent 4 }}
 spec:
   serviceName: "{{ include "boilerplate.names.name" . }}"
   replicas: {{ .Values.replicaCount | default 1 }}
@@ -19,15 +21,14 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "boilerplate.labels.selectorLabels" . | nindent 8 }}
-        {{- with .Values.labels }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
+        {{- include "boilerplate.labels.standard" . | nindent 8 }}
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+      {{- include "boilerplate.images.pullSecrets"
+        ( dict
+          "globalImagePullSecrets" .Values.global.imagePullSecrets
+          "localImagePullSecrets" .Values.image.pullSecrets
+        ) | nindent 6
+      }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -42,21 +43,23 @@ spec:
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          image: {{ include "boilerplate.images.image" (dict "image" .Values.image "global" .Values.global "chart" .Chart) }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- with .Values.image.securityContext }}
-          securityContext:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- with .Values.resources }}
-          resources:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
+          {{- include "boilerplate.images.image"
+            ( dict
+              "root" .
+              "image" .Values.image
+            ) | nindent 10
+          }}
+          {{- include "boilerplate.images.pullPolicy"
+            ( dict
+              "globalPullPolicy" .Values.global.imagePullPolicy
+              "localPullPolicy" .Values.image.pullPolicy
+            ) | nindent 10
+          }}
           {{- with .Values.env }}
           env:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- if or .Values.configMapRefs .Values.extraConfigMapRefs .Values.credentials.externalSecret.enabled .Values.secretRefs .Values.extraSecretRefs }}
+          {{- if or .Values.configMapRefs .Values.extraConfigMapRefs .Values.secretRefs .Values.extraSecretRefs }}
           envFrom:
             {{- range .Values.configMapRefs }}
             - configMapRef:
@@ -66,10 +69,6 @@ spec:
             - configMapRef:
                 name: {{ .name }}
             {{- end }}
-            {{- if .Values.credentials.externalSecret.enabled }}
-            - secretRef:
-                name: {{ .Values.credentials.externalSecret.name }}
-            {{- end }}
             {{- range .Values.secretRefs }}
             - secretRef:
                 name: {{ .name }}
@@ -78,6 +77,14 @@ spec:
             - secretRef:
                 name: {{ .name }}
             {{- end }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
           {{- end }}
           volumeMounts:
             - name: data
@@ -107,7 +114,6 @@ spec:
       {{- end }}
   {{- if .Values.persistence.enabled }}
   volumeClaimTemplates:
-    {{- if not .Values.persistence.existingClaim }}
     - metadata:
         name: data
         {{- with .Values.persistence.annotations }}
@@ -127,5 +133,4 @@ spec:
         selector:
           {{- toYaml . | nindent 10 }}
         {{- end }}
-    {{- end }}
   {{- end }}

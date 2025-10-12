@@ -427,6 +427,24 @@ entries:
   chrome:
   - apiVersion: v2
     appVersion: "124"
+    created: "2025-10-12T20:53:46.965199086Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.15.1
+    description: A Helm chart to deploy headless Chrome browser in Kubernetes.
+    digest: c33277020537438d4af6e074a9f73a8307c02137b0f7f699d2160c89a7827c51
+    icon: https://upload.wikimedia.org/wikipedia/commons/archive/e/e1/20230720031433%21Google_Chrome_icon_%28February_2022%29.svg
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: chrome
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/chrome-0.4.0/chrome-0.4.0.tgz
+    version: 0.4.0
+  - apiVersion: v2
+    appVersion: "124"
     created: "2025-08-21T07:36:14.693472066Z"
     dependencies:
     - name: boilerplate
@@ -1321,6 +1339,24 @@ entries:
     version: 0.1.0
   template:
   - apiVersion: v2
+    created: "2025-10-12T20:53:47.118887136Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.15.1
+    description: A template Helm chart to demostrate the usage of the boilerplate
+      library chart.
+    digest: 0810e784f163e31433178de8bf6556308149b3128f068ccabc9dac0e467dbdad
+    icon: https://raw.githubusercontent.com/self-hosters-by-night/helm-charts/refs/heads/main/assets/template.png
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: template
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.5.1/template-0.5.1.tgz
+    version: 0.5.1
+  - apiVersion: v2
     created: "2025-10-12T20:12:36.044103747Z"
     dependencies:
     - name: boilerplate
@@ -1374,4 +1410,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.1.0/template-0.1.0.tgz
     version: 0.1.0
-generated: "2025-10-12T20:12:36.044278894Z"
+generated: "2025-10-12T20:53:47.11905567Z"

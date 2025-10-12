@@ -532,6 +532,33 @@ entries:
   karakeep:
   - apiVersion: v2
     appVersion: 0.26.0
+    created: "2025-10-12T20:12:35.46940408Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.15.1
+    - condition: chrome.enabled
+      name: chrome
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.3.1
+    - condition: meilisearch.enabled
+      name: meilisearch
+      repository: https://meilisearch.github.io/meilisearch-kubernetes
+      version: 0.15.0
+    description: A Helm chart for Karakeep - AI-powered knowledge management and bookmark
+      organizer
+    digest: 5439fc4620ff12c48628e5780b33ddcb3b67a22946b12dbbe83e717e2941aa90
+    icon: https://avatars.githubusercontent.com/u/202258986
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: karakeep
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/karakeep-2.1.0/karakeep-2.1.0.tgz
+    version: 2.1.0
+  - apiVersion: v2
+    appVersion: 0.26.0
     created: "2025-08-24T15:01:29.709257414Z"
     dependencies:
     - name: boilerplate
@@ -783,6 +810,26 @@ entries:
       artifacthub.io/category: storage
     apiVersion: v2
     appVersion: 0.78.1
+    created: "2025-10-12T20:12:35.578605523Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.15.1
+    description: Manyfold is a self-hosted digital asset manager for 3d print files.
+    digest: 1fc7031580998a7a186456782be53a92f6af1393ef8f5046d87d2a88cc2b6020
+    icon: https://raw.githubusercontent.com/manyfold3d/manyfold/main/app/assets/images/roundel.svg
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: manyfold
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/manyfold-0.3.0/manyfold-0.3.0.tgz
+    version: 0.3.0
+  - annotations:
+      artifacthub.io/category: storage
+    apiVersion: v2
+    appVersion: 0.78.1
     created: "2025-08-22T21:56:04.975501116Z"
     dependencies:
     - name: boilerplate
@@ -848,6 +895,34 @@ entries:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/manyfold-0.1.0/manyfold-0.1.0.tgz
     version: 0.1.0
   mosquitto:
+  - annotations:
+      artifacthub.io/category: security
+    apiVersion: v2
+    appVersion: 2.0.22
+    created: "2025-10-12T20:12:35.699199896Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.15.1
+    description: A Helm chart for Eclipse Mosquitto MQTT broker. Provides a secure,
+      lightweight, and reliable messaging solution for IoT and other applications.
+    digest: ab329d48337696219585dbc7e4882c611531436a730fcbf09d4c866cd8a0c0b1
+    icon: https://raw.githubusercontent.com/docker-library/docs/757578e3a44e5460a8a11d32a81776f8b74231a9/eclipse-mosquitto/logo.png
+    keywords:
+    - mqtt
+    - mosquitto
+    - broker
+    - iot
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: mosquitto
+    sources:
+    - https://github.com/eclipse/mosquitto
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/mosquitto-0.2.0/mosquitto-0.2.0.tgz
+    version: 0.2.0
   - annotations:
       artifacthub.io/category: security
     apiVersion: v2
@@ -1107,6 +1182,28 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/popeye-0.1.0/popeye-0.1.0.tgz
     version: 0.1.0
+  postgres:
+  - annotations:
+      artifacthub.io/category: database
+    apiVersion: v2
+    appVersion: "18.0"
+    created: "2025-10-12T20:12:35.807991197Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.15.1
+    description: Postgres is an object-relational database system that provides reliability
+      and data integrity.
+    digest: 233c8f71cc0e7cc0ebcda064316db0416a92f4ae68276a84c0ca4c01a307fcfe
+    icon: https://raw.githubusercontent.com/self-hosters-by-night/helm-charts/refs/heads/main/assets/postgresql.png
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: postgres
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/postgres-0.7.0/postgres-0.7.0.tgz
+    version: 0.7.0
   postgresql:
   - annotations:
       artifacthub.io/category: database
@@ -1224,6 +1321,24 @@ entries:
     version: 0.1.0
   template:
   - apiVersion: v2
+    created: "2025-10-12T20:12:36.044103747Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.15.1
+    description: A template Helm chart to demostrate the usage of the boilerplate
+      library chart.
+    digest: 2ef67ce3774d455750b3b4cef595f87f84fe9328f6502b9ab207f613501b5a96
+    icon: https://raw.githubusercontent.com/self-hosters-by-night/helm-charts/refs/heads/main/assets/template.png
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: template
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.5.0/template-0.5.0.tgz
+    version: 0.5.0
+  - apiVersion: v2
     appVersion: 1.16.0
     created: "2025-08-21T12:49:18.365862322Z"
     dependencies:
@@ -1259,4 +1374,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.1.0/template-0.1.0.tgz
     version: 0.1.0
-generated: "2025-10-12T19:11:09.01908487Z"
+generated: "2025-10-12T20:12:36.044278894Z"

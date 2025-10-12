@@ -59,7 +59,8 @@ resources: {}
 
 ## @param env Environment variables to add to the container
 env:
-  NEXTAUTH_SECRET: "CHANGE-ME-OR-USE-A-SECRET"
+  - name: NEXTAUTH_SECRET
+    value: "CHANGE-ME-OR-USE-A-SECRET"
 
 configMapRefs: []
 # - name: s3-config

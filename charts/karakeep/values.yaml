@@ -59,17 +59,18 @@ resources: {}
 
 ## @param env Environment variables to add to the container
 env:
-  - name: NEXTAUTH_SECRET
-    value: "CHANGE-ME-OR-USE-A-SECRET"
+  vars:
+    NEXTAUTH_SECRET: "CHANGE-ME-OR-USE-A-SECRET"
 
-configMapRefs: []
-# - name: s3-config
+  fromConfigMap: {}
+  fromSecret: {}
 
-secretRefs: []
-#  - name: s3-config
+envFrom:
+  configMaps: []
+  # - name: s3-config
 
-extraConfigMapRefs: []
-extraSecretRefs: []
+  secrets: []
+  #  - name: s3-config
 
 ## @section configuration
 ## Karakeep configuration

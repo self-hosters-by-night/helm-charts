@@ -119,7 +119,7 @@ configuration:
   ## Configuration for user authentication and signups
   auth:
     ## @param auth.disableSignups If enabled, no new signups will be allowed
-    disableSignups: ""
+    disableSignups: "false"
     ## @param auth.disablePasswordAuth If enabled, only OAuth signups/logins are allowed
     disablePasswordAuth: ""
     ## @param auth.emailVerificationRequired Whether email verification is required during signup

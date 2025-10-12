@@ -5,7 +5,7 @@ Standard labels
 {{- define "boilerplate.labels.standard" -}}
 app.kubernetes.io/name: {{ include "boilerplate.names.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-{{- with .Chart.AppVersion }}
+{{- with .Chart.Version }}
 app.kubernetes.io/version: {{ . | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}

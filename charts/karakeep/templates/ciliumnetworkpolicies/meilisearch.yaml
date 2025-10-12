@@ -1,5 +1,4 @@
 {{- if and .Values.networkPolicies.enabled (eq .Values.networkPolicies.flavor "cilium") -}}
----
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:

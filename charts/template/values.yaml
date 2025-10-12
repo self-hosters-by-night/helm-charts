@@ -7,9 +7,9 @@ global:
 # {{ include "boilerplate.images.image" .Values }}
 image:
   registry: docker.io # overridden by global
-  repository: myapp
+  repository: alpine
   tag: v1.0.0 # define either tag or digest
-  digest: 6akexk9fo9bj2lcdfbiygd9s895r6znx
+  digest: ""
   pullPolicy: IfNotPresent # overridden by global
   pullSecrets:
     - app-secret # merged with global
@@ -32,8 +32,8 @@ extraSecretRefs: []
 myapp:
   image:
     registry: docker.io # overridden by global
-    repository: myapp
-    tag: v1.0.0 # define either tag or digest
+    repository: alpine
+    tag: "" # define either tag or digest
     digest: 6akexk9fo9bj2lcdfbiygd9s895r6znx
     pullPolicy: IfNotPresent # overridden by global
     pullSecrets:

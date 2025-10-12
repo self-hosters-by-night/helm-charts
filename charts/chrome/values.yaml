@@ -3,6 +3,8 @@
 global:
   ## @param global.imageRegistry Global container image registry
   imageRegistry: ""
+  ## @param global.imagePullPolicy Global container image pull policy
+  imagePullPolicy: ""
   ## @param global.imagePullSecrets Global container registry secret names as an array
   imagePullSecrets: []
   ## @param global.defaultStorageClass Global default StorageClass for Persistent Volume(s)

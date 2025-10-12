@@ -1,0 +1,122 @@
+---
+# Source: chrome/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: karakeep-chrome
+  labels:
+    app.kubernetes.io/name: chrome
+    app.kubernetes.io/instance: karakeep
+    app.kubernetes.io/version: "0.4.0"
+    app.kubernetes.io/managed-by: Helm
+    helm.sh/chart: chrome-0.4.0
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 9222
+      targetPort: http
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: chrome
+    app.kubernetes.io/instance: karakeep
+---
+# Source: chrome/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: karakeep-chrome
+  labels:
+    app.kubernetes.io/name: chrome
+    app.kubernetes.io/instance: karakeep
+    app.kubernetes.io/version: "0.4.0"
+    app.kubernetes.io/managed-by: Helm
+    helm.sh/chart: chrome-0.4.0
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: chrome
+      app.kubernetes.io/instance: karakeep
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: chrome
+        app.kubernetes.io/instance: karakeep
+    spec:
+      imagePullSecrets: []
+      securityContext:
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
+      containers:
+        - name: chrome
+          image: zenika/alpine-chrome:latest
+          imagePullPolicy: "IfNotPresent"
+          args:
+            - --remote-debugging-address=0.0.0.0
+            - --remote-debugging-port=9222
+            - --headless
+            - --disable-gpu
+            - --disable-dev-shm-usage
+            - --disable-extensions
+            - --disable-background-timer-throttling
+            - --disable-backgrounding-occluded-windows
+            - --disable-renderer-backgrounding
+          ports:
+            - name: http
+              containerPort: 9222
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /json/version
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /json/version
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+            requests:
+              cpu: 100m
+              memory: 256Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: false
+            runAsNonRoot: true
+            runAsUser: 1000
+---
+# Source: chrome/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "karakeep-chrome-test-connection"
+  labels:
+    app.kubernetes.io/name: chrome
+    app.kubernetes.io/instance: karakeep
+    app.kubernetes.io/version: "0.4.0"
+    app.kubernetes.io/managed-by: Helm
+    helm.sh/chart: chrome-0.4.0
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['karakeep-chrome:9222']
+  restartPolicy: Never

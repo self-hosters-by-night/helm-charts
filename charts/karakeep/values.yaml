@@ -58,32 +58,17 @@ resources: {}
   #   memory: 128Mi
 
 ## @param env Environment variables to add to the container
-## Supports vars, configMapRefs, secretRefs, configMaps, and secrets
-env:
-  # vars:
-  #   DEBUG: "true"
-  # Mount entire ConfigMaps as environment variables
-  fromConfigMap: {}
-    # DATABASE_URL:
-      # from: "app-config"
-      # key: "db-url"
+env: []
+#   LOG: "info"
 
-  # Mount entire Secrets as environment variables
-  fromSecret: {}
-    # API_KEY:
-      # from: "app-secrets"
-      # key: "api-key"
+configMapRefs: []
+# - name: s3-config
 
-## @param envFrom Environment variables from external sources
-## Supports configMaps and secrets
-envFrom:
-  # Mount entire ConfigMaps as environment variables
-  configMaps: []
-    # - name: config-map-name
+secretRefs: []
+#  - name: s3-config
 
-  # Mount entire Secrets as environment variables
-  secrets: []
-    # - name: secret-name
+extraConfigMapRefs: []
+extraSecretRefs: []
 
 ## @section configuration
 ## Karakeep configuration

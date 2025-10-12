@@ -427,6 +427,24 @@ entries:
   chrome:
   - apiVersion: v2
     appVersion: "124"
+    created: "2025-10-12T21:37:21.515782027Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.15.1
+    description: A Helm chart to deploy headless Chrome browser in Kubernetes.
+    digest: 5815069d90498b35787ef57c8719f03ea4596a870d22bfe8f9426eacb6bd9741
+    icon: https://upload.wikimedia.org/wikipedia/commons/archive/e/e1/20230720031433%21Google_Chrome_icon_%28February_2022%29.svg
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: chrome
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/chrome-0.5.0/chrome-0.5.0.tgz
+    version: 0.5.0
+  - apiVersion: v2
+    appVersion: "124"
     created: "2025-10-12T20:53:46.965199086Z"
     dependencies:
     - name: boilerplate
@@ -1437,4 +1455,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.1.0/template-0.1.0.tgz
     version: 0.1.0
-generated: "2025-10-12T20:57:13.349039734Z"
+generated: "2025-10-12T21:37:21.515912721Z"

@@ -20,7 +20,12 @@ spec:
       labels:
         {{- include "boilerplate.labels.podLabels" . | nindent 8 }}
     spec:
-      {{- include "boilerplate.images.pullSecrets" (dict "image" .Values.myapp.image "global" .Values.global) | nindent 6 }}
+      {{- include "boilerplate.images.pullSecrets"
+        ( dict
+          "globalImagePullSecrets" .Values.global.imagePullSecrets
+          "localImagePullSecrets" .Values.image.pullSecrets
+        ) | nindent 6
+      }}
       serviceAccountName: {{ include "boilerplate.names.serviceAccountName" . }}
       {{- with .Values.podSecurityContext }}
       securityContext:
@@ -28,12 +33,40 @@ spec:
       {{- end }}
       containers:
         - name: myapp
-          image: {{ include "boilerplate.images.image" (dict "image" .Values.myapp.image "global" .Values.global "chart" .Chart) }}
-          imagePullPolicy: {{ include "boilerplate.images.pullPolicy" (dict "image" .Values.myapp.image "global" .Values.global) }}
-
-          {{- with .Values.securityContext }}
-          securityContext:
+          {{- include "boilerplate.images.image"
+            ( dict
+              "root" .
+              "image" .Values.image
+            ) | nindent 10
+          }}
+          {{- include "boilerplate.images.pullPolicy"
+            ( dict
+              "globalPullPolicy" .Values.global.imagePullPolicy
+              "localPullPolicy" .Values.image.pullPolicy
+            ) | nindent 10
+          }}
+          {{- with .Values.env }}
+          env:
             {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if or .Values.configMapRefs .Values.extraConfigMapRefs .Values.secretRefs .Values.extraSecretRefs }}
+          envFrom:
+            {{- range .Values.configMapRefs }}
+            - configMapRef:
+                name: {{ .name }}
+            {{- end }}
+            {{- range .Values.extraConfigMapRefs }}
+            - configMapRef:
+                name: {{ .name }}
+            {{- end }}
+            {{- range .Values.secretRefs }}
+            - secretRef:
+                name: {{ .name }}
+            {{- end }}
+            {{- range .Values.extraSecretRefs }}
+            - secretRef:
+                name: {{ .name }}
+            {{- end }}
           {{- end }}
           ports:
             - name: http
@@ -49,6 +82,10 @@ spec:
           {{- end }}
           {{- with .Values.resources }}
           resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.securityContext }}
+          securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           volumeMounts:

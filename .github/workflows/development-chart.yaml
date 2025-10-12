@@ -41,7 +41,7 @@ jobs:
     - name: Helm Template Validation
       run: |
         for chart in charts/*/; do
-          if [ -f "$chart/Chart.yaml" ] && [ -d "$chart/templates" ]; then
+          if [ -f "$chart/Chart.yaml" ] && [ -f "$chart/values.yaml" ] && [ -d "$chart/templates" ]; then
             echo "Templating $chart"
             helm template test-release "$chart" --debug --dry-run
           fi

@@ -36,7 +36,7 @@ securityContext: {}
 # Define a secret key with:
 secret_key_base:
   # generate a new secret
-  # secret: ""
+  secret: "CHANGE-ME"
   # or reference an existing secret
   # secretName: ""
   # or referencing a specific key in an existing secret

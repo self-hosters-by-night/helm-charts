@@ -18,7 +18,7 @@ image:
 
 # Define environment variables or load specific ones from ConfigMaps and Secrets
 env: []
-  # If configuring postgre credentials as env vars set credentials.externalSecret.enabled: false
+  # If configuring postgres credentials as env vars set credentials.externalSecret.enabled: false
   # Useful for development instance
   # - name: POSTGRES_USER
   #   value: "postgres"

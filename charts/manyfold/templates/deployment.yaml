@@ -33,55 +33,61 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+      {{- include "boilerplate.images.pullSecrets"
+        ( dict
+          "globalImagePullSecrets" .Values.global.imagePullSecrets
+          "localImagePullSecrets" .Values.image.pullSecrets
+        ) | nindent 6
+      }}
       {{- with .Values.podSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          image: {{ include "boilerplate.images.image" (dict "image" .Values.image "global" .Values.global "chart" .Chart) }}
-          imagePullPolicy: {{ include "boilerplate.images.pullPolicy" (dict "image" .Values.image "global" .Values.global "chart" .Chart) }}
-          {{- if or .Values.secret_key_base.secret .Values.secret_key_base.secretKeyRef }}
+          {{- include "boilerplate.images.image"
+            ( dict
+              "root" .
+              "image" .Values.image
+            ) | nindent 10
+          }}
+          {{- include "boilerplate.images.pullPolicy"
+            ( dict
+              "globalPullPolicy" .Values.global.imagePullPolicy
+              "localPullPolicy" .Values.image.pullPolicy
+            ) | nindent 10
+          }}
+          {{- with .Values.env }}
           env:
-            - name: SECRET_KEY_BASE
-              valueFrom:
-                secretKeyRef:
-                  {{- if .Values.secret_key_base.secret }}
-                    name: {{ include "boilerplate.names.fullname" . }}
-                    key: "SECRET_KEY_BASE"
-                  {{- else }}
-                    name: {{ .Values.secret_key_base.secretKeyRef.name }}
-                    key: {{ .Values.secret_key_base.secretKeyRef.key }}
-                  {{- end }}
-          {{- end }}
-          {{- include "boilerplate.environment.env" (dict "env" .Values.env "global" .Values.global) | nindent 10 }}
-          {{- with .Values.secret_key_base.secretName }}
-          envFrom:
-            - secretRef:
-                name: {{ . }}
-          {{- end }}
-          {{- with .Values.securityContext }}
-          securityContext:
             {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if or .Values.configMapRefs .Values.extraConfigMapRefs .Values.secretRefs .Values.extraSecretRefs }}
+          envFrom:
+            {{- range .Values.configMapRefs }}
+            - configMapRef:
+                name: {{ .name }}
+            {{- end }}
+            {{- range .Values.extraConfigMapRefs }}
+            - configMapRef:
+                name: {{ .name }}
+            {{- end }}
+            {{- range .Values.secretRefs }}
+            - secretRef:
+                name: {{ .name }}
+            {{- end }}
+            {{- range .Values.extraSecretRefs }}
+            - secretRef:
+                name: {{ .name }}
+            {{- end }}
           {{- end }}
           {{- with .Values.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          volumeMounts:
-            {{- if .Values.persistence.config.enabled }}
-            - name: {{ .Values.persistence.config.name | default "config" }}
-              mountPath: {{ .Values.persistence.config.mountPath | default "/config" }}
-            {{- end }}
-            {{- if .Values.persistence.libraries.enabled }}
-            - name: {{ .Values.persistence.libraries.name | default "libraries" }}
-              mountPath: {{ .Values.persistence.libraries.mountPath | default "/libraries" }}
-            {{- end }}
-            {{- include "boilerplate.storage.extraVolumeMounts" . | nindent 12 }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           ports:
             - name: http
               containerPort: 3214
@@ -94,6 +100,16 @@ spec:
           readinessProbe:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+          volumeMounts:
+            {{- if .Values.persistence.config.enabled }}
+            - name: {{ .Values.persistence.config.name | default "config" }}
+              mountPath: {{ .Values.persistence.config.mountPath | default "/config" }}
+            {{- end }}
+            {{- if .Values.persistence.libraries.enabled }}
+            - name: {{ .Values.persistence.libraries.name | default "libraries" }}
+              mountPath: {{ .Values.persistence.libraries.mountPath | default "/libraries" }}
+            {{- end }}
+            {{- include "boilerplate.storage.extraVolumeMounts" . | nindent 12 }}
       volumes:
         {{- if .Values.persistence.config.enabled }}
         - name: {{ .Values.persistence.config.name | default "config" }}

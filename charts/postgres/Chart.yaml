@@ -1,9 +1,9 @@
 apiVersion: v2
-name: postgresql
+name: postgres
 description: "Postgres is an object-relational database system that provides reliability and data integrity."
 type: application
-version: 0.5.0
-appVersion: "17"
+version: 0.7.0
+appVersion: "18.0"
 icon: https://raw.githubusercontent.com/self-hosters-by-night/helm-charts/refs/heads/main/assets/postgresql.png
 annotations:
   artifacthub.io/category: database
@@ -12,5 +12,5 @@ maintainers:
     email: git@facorazza.com
 dependencies:
   - name: boilerplate
-    version: 0.6.0
+    version: 0.15.1
     repository: "https://self-hosters-by-night.github.io/helm-charts"

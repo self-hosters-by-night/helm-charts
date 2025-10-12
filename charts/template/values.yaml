@@ -14,6 +14,20 @@ image:
   pullSecrets:
     - app-secret # merged with global
 
+# Define environment variables or load specific ones from ConfigMaps and Secrets
+env: []
+  # - name: POSTGRES_USER
+  #   value: "postgres"
+
+configMapRefs: []
+# - name: s3-config
+
+secretRefs: []
+#  - name: s3-config
+
+extraConfigMapRefs: []
+extraSecretRefs: []
+
 # {{ include "boilerplate.images.image" .Values.myapp }}
 myapp:
   image:

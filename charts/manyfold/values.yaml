@@ -4,7 +4,7 @@ global:
   imageRegistry: ""
   imagePullPolicy: ""
 
-  image:
+image:
   registry: ghcr.io
   repository: manyfold3d/manyfold-solo
   # Overrides the image tag whose default is the chart appVersion.
@@ -33,20 +33,18 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
-# Define a secret key with:
-secret_key_base:
-  # generate a new secret
-  # secret: ""
-  # or reference an existing secret
-  # secretName: ""
-  # or referencing a specific key in an existing secret
-  # secretKeyRef:
-  #   name: ""
-  #   key: ""
-
 # Environment variables
-env: {}
-  # EXAMPLE_VAR: "value"
+env:
+  SECRET_KEY_BASE: "CHANGE-ME-OR-USE-SECRET"
+
+configMapRefs: []
+# - name: s3-config
+
+secretRefs: []
+#  - name: s3-config
+
+extraConfigMapRefs: []
+extraSecretRefs: []
 
 # Persistence configuration
 persistence:

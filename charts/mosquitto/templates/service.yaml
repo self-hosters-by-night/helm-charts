@@ -4,7 +4,6 @@ metadata:
   name: {{ include "boilerplate.names.fullname" . }}
   labels:
     {{- include "boilerplate.labels.standard" . | nindent 4 }}
-  {{- include "boilerplate.labels.commonAnnotations" . | nindent 2 }}
 spec:
   type: {{ .Values.service.type }}
   ports:

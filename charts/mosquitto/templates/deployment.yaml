@@ -43,21 +43,8 @@ spec:
               "localPullPolicy" .Values.image.pullPolicy
             ) | nindent 10
           }}
-          {{- with .Values.env }}
-          env:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- if or .Values.configMapRefs .Values.secretRefs }}
-          envFrom:
-            {{- range .Values.configMapRefs }}
-            - configMapRef:
-                name: {{ .name }}
-            {{- end }}
-            {{- range .Values.secretRefs }}
-            - secretRef:
-                name: {{ .name }}
-            {{- end }}
-          {{- end }}
+          {{- include "boilerplate.environment.env" ( dict "env" .Values.env "global" .Values.global ) | nindent 10 }}
+          {{- include "boilerplate.environment.envFrom" ( dict "envFrom" .Values.envFrom "global" .Values.global ) nindent 10 }}
           ports:
             - name: mqtt
               containerPort: 1883

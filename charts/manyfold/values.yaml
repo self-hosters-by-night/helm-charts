@@ -33,18 +33,27 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
-# Environment variables
+## @param env Environment variables to add to the container
 env:
-  SECRET_KEY_BASE: "CHANGE-ME-OR-USE-SECRET"
+  vars:
+    SECRET_KEY_BASE: "CHANGE-ME-OR-USE-SECRET"
+  fromConfigMap: {}
+  # ENV_VAR_NAME:
+  #     from: configmap-name
+  #     key: configmap-key
+  #     optional: false
+  fromSecret: {}
+  # SECRET_NAME:
+  #     from: secret-name
+  #     key: secret-key
+  #     optional: false
 
-configMapRefs: []
-# - name: s3-config
+envFrom:
+  configMaps: []
+  # - name: s3-config
 
-secretRefs: []
-#  - name: s3-config
-
-extraConfigMapRefs: []
-extraSecretRefs: []
+  secrets: []
+  #  - name: s3-config
 
 # Persistence configuration
 persistence:

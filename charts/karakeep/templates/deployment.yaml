@@ -46,7 +46,7 @@ spec:
             ) | nindent 10
           }}
           {{- include "boilerplate.environment.env" ( dict "env" .Values.env "global" .Values.global ) | nindent 10 }}
-          {{- include "boilerplate.environment.envFrom" ( dict "envFrom" $envFrom "global" .Values.global ) | nindent 10 }}
+          {{- include "boilerplate.environment.envFrom" ( dict "envFrom" .Values.envFrom "global" .Values.global ) | nindent 10 }}
           ports:
             - name: http
               containerPort: {{ .Values.containerPort }}

@@ -47,21 +47,13 @@ spec:
           env:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- if or .Values.configMapRefs .Values.extraConfigMapRefs .Values.secretRefs .Values.extraSecretRefs }}
+          {{- if or .Values.configMapRefs .Values.secretRefs }}
           envFrom:
             {{- range .Values.configMapRefs }}
             - configMapRef:
                 name: {{ .name }}
             {{- end }}
-            {{- range .Values.extraConfigMapRefs }}
-            - configMapRef:
-                name: {{ .name }}
-            {{- end }}
             {{- range .Values.secretRefs }}
-            - secretRef:
-                name: {{ .name }}
-            {{- end }}
-            {{- range .Values.extraSecretRefs }}
             - secretRef:
                 name: {{ .name }}
             {{- end }}

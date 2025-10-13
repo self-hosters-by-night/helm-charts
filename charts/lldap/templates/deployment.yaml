@@ -31,17 +31,20 @@ spec:
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          {{- with .Values.securityContext }}
-          securityContext:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          image: {{ include "boilerplate.images.image" (dict "image" .Values.image "global" .Values.global "chart" .Chart) }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          envFrom:
-            - configMapRef:
-                name: {{ if .Values.config.existingConfigMap }}{{ .Values.config.existingConfigMap }}{{ else }}{{ include "boilerplate.names.fullname" . }}-config{{ end }}
-            - secretRef:
-                name: {{ if .Values.secrets.existingSecret }}{{ .Values.secrets.existingSecret }}{{ else }}{{ include "boilerplate.names.fullname" . }}-secret{{ end }}
+          {{- include "boilerplate.images.image"
+            ( dict
+              "root" .
+              "image" .Values.image
+            ) | nindent 10
+          }}
+          {{- include "boilerplate.images.pullPolicy"
+            ( dict
+              "globalPullPolicy" .Values.global.imagePullPolicy
+              "localPullPolicy" .Values.image.pullPolicy
+            ) | nindent 10
+          }}
+          {{- include "boilerplate.environment.env" ( dict "env" .Values.env "global" .Values.global ) | nindent 10 }}
+          {{- include "boilerplate.environment.envFrom" ( dict "envFrom" .Values.envFrom "global" .Values.global ) | nindent 10 }}
           ports:
             - name: ldap
               containerPort: 3890
@@ -62,6 +65,10 @@ spec:
           {{- end }}
           {{- with .Values.resources }}
           resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.securityContext }}
+          securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           volumeMounts:

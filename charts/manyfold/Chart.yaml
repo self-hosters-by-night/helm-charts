@@ -15,5 +15,5 @@ dependencies:
     version: 0.15.1
     repository: "https://self-hosters-by-night.github.io/helm-charts"
   - name: postgres
-    version: 0.9.0
+    version: 0.8.0
     repository: "https://self-hosters-by-night.github.io/helm-charts"

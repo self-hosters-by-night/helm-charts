@@ -16,25 +16,30 @@ image:
   pullPolicy: IfNotPresent
   pullSecrets: []
 
-# Define environment variables or load specific ones from ConfigMaps and Secrets
-env: []
-  # If configuring postgres credentials as env vars set credentials.externalSecret.enabled: false
-  # Useful for development instance
-  # - name: POSTGRES_USER
-  #   value: "postgres"
-  # - name: POSTGRES_PASSWORD
-  #   value: "password"
-  # - name: POSTGRES_DB
-  #   value: "database"
+## @param env Define environment variables or load specific ones from ConfigMaps and Secrets
+env:
+  vars:
+    # Useful for development instances only. In production, use secrets.
+    # POSTGRES_USER: "postgres"
+    # POSTGRES_PASSWORD: "password"
+    # POSTGRES_DB: "database"
+  fromConfigMap: {}
+  # POSTGRES_DB:
+  #     from: configmap-name
+  #     key: configmap-key
+  #     optional: false
+  fromSecret: {}
+  # POSTGRES_PASSWORD:
+  #     from: secret-name
+  #     key: secret-key
+  #     optional: false
 
-configMapRefs: []
-# - name: s3-config
+envFrom:
+  configMaps: []
+  # - name: postgres-config
 
-secretRefs: []
-#  - name: s3-config
-
-extraConfigMapRefs: []
-extraSecretRefs: []
+  secrets: []
+  #  - name: postgres-secret
 
 persistence:
   enabled: true

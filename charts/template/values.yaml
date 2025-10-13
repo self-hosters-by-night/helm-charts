@@ -8,7 +8,7 @@ global:
 image:
   registry: docker.io # overridden by global
   repository: alpine
-  tag: v1.0.0 # define either tag or digest
+  tag: latest # define either tag or digest
   digest: ""
   pullPolicy: IfNotPresent # overridden by global
   pullSecrets:

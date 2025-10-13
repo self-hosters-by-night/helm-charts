@@ -1,11 +1,11 @@
-# Popeye
+# Mosquitto
 
-[Popeye](https://popeyecli.io) is a utility that scans live Kubernetes clusters and reports potential issues with deployed resources and configurations.
+[Mosquitto](https://mosquitto.org) ) message broker that implements the MQTT protocol versions 5.0, 3.1.1 and 3.1. Mosquitto is lightweight and is suitable for use on all devices from low power single board computers to full servers.
 
 ## Install
 
 ```shell
 helm repo add self-hosters-by-night https://self-hosters-by-night.github.io/helm-charts
 helm repo update self-hosters-by-night
-helm install popeye self-hosters-by-night/popeye
+helm install mosquitto self-hosters-by-night/mosquitto
 ```

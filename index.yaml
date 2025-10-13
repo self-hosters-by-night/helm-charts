@@ -568,6 +568,33 @@ entries:
   karakeep:
   - apiVersion: v2
     appVersion: 0.26.0
+    created: "2025-10-13T17:25:11.525859618Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.15.1
+    - condition: chrome.enabled
+      name: chrome
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.5.0
+    - condition: meilisearch.enabled
+      name: meilisearch
+      repository: https://meilisearch.github.io/meilisearch-kubernetes
+      version: 0.15.0
+    description: A Helm chart for Karakeep - AI-powered knowledge management and bookmark
+      organizer
+    digest: 3f8053bf66e13cae2b34b6fcad4423940b09f5a8d2c07328c8c4c673fe7bef3f
+    icon: https://avatars.githubusercontent.com/u/202258986
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: karakeep
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/karakeep-2.3.0/karakeep-2.3.0.tgz
+    version: 2.3.0
+  - apiVersion: v2
+    appVersion: 0.26.0
     created: "2025-10-12T20:57:13.348894873Z"
     dependencies:
     - name: boilerplate
@@ -1250,6 +1277,27 @@ entries:
       artifacthub.io/category: database
     apiVersion: v2
     appVersion: "18.0"
+    created: "2025-10-13T17:25:11.67749798Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.15.1
+    description: Postgres is an object-relational database system that provides reliability
+      and data integrity.
+    digest: ee8f6d3c0ce04beaaf7fbab9a3fb2be2e695fc8322f5887d3bc4ca079f9d73f1
+    icon: https://raw.githubusercontent.com/self-hosters-by-night/helm-charts/refs/heads/main/assets/postgresql.png
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: postgres
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/postgres-0.8.0/postgres-0.8.0.tgz
+    version: 0.8.0
+  - annotations:
+      artifacthub.io/category: database
+    apiVersion: v2
+    appVersion: "18.0"
     created: "2025-10-12T20:12:35.807991197Z"
     dependencies:
     - name: boilerplate
@@ -1412,4 +1460,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.1.0/template-0.1.0.tgz
     version: 0.1.0
-generated: "2025-10-12T21:37:21.515912721Z"
+generated: "2025-10-13T17:25:11.677643111Z"

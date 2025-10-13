@@ -989,6 +989,34 @@ entries:
       artifacthub.io/category: security
     apiVersion: v2
     appVersion: 2.0.22
+    created: "2025-10-13T21:07:37.662169885Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.15.1
+    description: A Helm chart for Eclipse Mosquitto MQTT broker. Provides a secure,
+      lightweight, and reliable messaging solution for IoT and other applications.
+    digest: f6cbdec9f0a1ca48eeabeecf655df93f8f2658cf489abb0852e629e87c1568cc
+    icon: https://raw.githubusercontent.com/docker-library/docs/757578e3a44e5460a8a11d32a81776f8b74231a9/eclipse-mosquitto/logo.png
+    keywords:
+    - mqtt
+    - mosquitto
+    - broker
+    - iot
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: mosquitto
+    sources:
+    - https://github.com/eclipse/mosquitto
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/mosquitto-0.3.0/mosquitto-0.3.0.tgz
+    version: 0.3.0
+  - annotations:
+      artifacthub.io/category: security
+    apiVersion: v2
+    appVersion: 2.0.22
     created: "2025-10-12T20:12:35.699199896Z"
     dependencies:
     - name: boilerplate
@@ -1460,4 +1488,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.1.0/template-0.1.0.tgz
     version: 0.1.0
-generated: "2025-10-13T17:25:11.677643111Z"
+generated: "2025-10-13T21:07:37.66230604Z"

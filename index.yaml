@@ -900,6 +900,29 @@ entries:
       artifacthub.io/category: storage
     apiVersion: v2
     appVersion: 0.78.1
+    created: "2025-10-13T22:12:04.981047351Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.15.1
+    - name: postgres
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.8.0
+    description: Manyfold is a self-hosted digital asset manager for 3d print files.
+    digest: 6cc4e7f16109c233f8734345106541b4d01e251434698df10486ad6c6730da2c
+    icon: https://raw.githubusercontent.com/manyfold3d/manyfold/main/app/assets/images/roundel.svg
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: manyfold
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/manyfold-0.4.0/manyfold-0.4.0.tgz
+    version: 0.4.0
+  - annotations:
+      artifacthub.io/category: storage
+    apiVersion: v2
+    appVersion: 0.78.1
     created: "2025-10-12T20:12:35.578605523Z"
     dependencies:
     - name: boilerplate
@@ -985,6 +1008,34 @@ entries:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/manyfold-0.1.0/manyfold-0.1.0.tgz
     version: 0.1.0
   mosquitto:
+  - annotations:
+      artifacthub.io/category: security
+    apiVersion: v2
+    appVersion: 2.0.22
+    created: "2025-10-13T22:12:05.153258373Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.15.1
+    description: A Helm chart for Eclipse Mosquitto MQTT broker. Provides a secure,
+      lightweight, and reliable messaging solution for IoT and other applications.
+    digest: d57c852ea9d3a72e4140c0e77dfc7c58f608d0e7654030daefc6c17765d036fa
+    icon: https://raw.githubusercontent.com/docker-library/docs/757578e3a44e5460a8a11d32a81776f8b74231a9/eclipse-mosquitto/logo.png
+    keywords:
+    - mqtt
+    - mosquitto
+    - broker
+    - iot
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: mosquitto
+    sources:
+    - https://github.com/eclipse/mosquitto
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/mosquitto-0.4.0/mosquitto-0.4.0.tgz
+    version: 0.4.0
   - annotations:
       artifacthub.io/category: security
     apiVersion: v2
@@ -1305,6 +1356,27 @@ entries:
       artifacthub.io/category: database
     apiVersion: v2
     appVersion: "18.0"
+    created: "2025-10-13T22:12:05.340349251Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.15.1
+    description: Postgres is an object-relational database system that provides reliability
+      and data integrity.
+    digest: d878e81988d22357f63bfac27664d4c5c7f5dc10d61452efcb8a22f9cd10f455
+    icon: https://raw.githubusercontent.com/self-hosters-by-night/helm-charts/refs/heads/main/assets/postgresql.png
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: postgres
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/postgres-0.8.1/postgres-0.8.1.tgz
+    version: 0.8.1
+  - annotations:
+      artifacthub.io/category: database
+    apiVersion: v2
+    appVersion: "18.0"
     created: "2025-10-13T17:25:11.67749798Z"
     dependencies:
     - name: boilerplate
@@ -1417,6 +1489,24 @@ entries:
     version: 0.1.0
   template:
   - apiVersion: v2
+    created: "2025-10-13T22:12:05.539259499Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.15.1
+    description: A template Helm chart to demostrate the usage of the boilerplate
+      library chart.
+    digest: c705a780b951d2d8ca3cf3b1394e45c3835b47e98549f3a4495e388dd675cbaa
+    icon: https://raw.githubusercontent.com/self-hosters-by-night/helm-charts/refs/heads/main/assets/template.png
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: template
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.5.2/template-0.5.2.tgz
+    version: 0.5.2
+  - apiVersion: v2
     created: "2025-10-12T20:53:47.118887136Z"
     dependencies:
     - name: boilerplate
@@ -1488,4 +1578,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.1.0/template-0.1.0.tgz
     version: 0.1.0
-generated: "2025-10-13T21:07:37.66230604Z"
+generated: "2025-10-13T22:12:05.539427734Z"

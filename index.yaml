@@ -851,6 +851,34 @@ entries:
       artifacthub.io/category: security
     apiVersion: v2
     appVersion: "2025-05-19"
+    created: "2025-10-14T17:42:42.693221715Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.15.1
+    - name: postgres
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.9.0
+    description: A Helm chart for LLDAP, a lightweight authentication server that
+      provides an opinionated and simplified LDAP interface for authentication.
+    digest: ce33bd89c9d66d46f3a541780b37c93ec40656c63c61c35c8affb58ca2fc5b23
+    icon: https://raw.githubusercontent.com/self-hosters-by-night/helm-charts/refs/heads/main/assets/lldap.png
+    keywords:
+    - ldap
+    - authentication
+    - directory
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: lldap
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/lldap-0.3.0/lldap-0.3.0.tgz
+    version: 0.3.0
+  - annotations:
+      artifacthub.io/category: security
+    apiVersion: v2
+    appVersion: "2025-05-19"
     created: "2025-08-23T05:08:42.440948474Z"
     dependencies:
     - name: boilerplate
@@ -1008,6 +1036,34 @@ entries:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/manyfold-0.1.0/manyfold-0.1.0.tgz
     version: 0.1.0
   mosquitto:
+  - annotations:
+      artifacthub.io/category: security
+    apiVersion: v2
+    appVersion: 2.0.22
+    created: "2025-10-14T17:42:42.949925651Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.15.1
+    description: A Helm chart for Eclipse Mosquitto MQTT broker. Provides a secure,
+      lightweight, and reliable messaging solution for IoT and other applications.
+    digest: 33a8636ed61cefb862a572139a76447e3f0f7369598569161d6f89595d4d6325
+    icon: https://raw.githubusercontent.com/docker-library/docs/757578e3a44e5460a8a11d32a81776f8b74231a9/eclipse-mosquitto/logo.png
+    keywords:
+    - mqtt
+    - mosquitto
+    - broker
+    - iot
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: mosquitto
+    sources:
+    - https://github.com/eclipse/mosquitto
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/mosquitto-0.5.0/mosquitto-0.5.0.tgz
+    version: 0.5.0
   - annotations:
       artifacthub.io/category: security
     apiVersion: v2
@@ -1599,4 +1655,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.1.0/template-0.1.0.tgz
     version: 0.1.0
-generated: "2025-10-13T22:34:21.840532668Z"
+generated: "2025-10-14T17:42:42.950114242Z"

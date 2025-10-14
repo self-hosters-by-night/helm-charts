@@ -1,3 +1,13 @@
+## @section Global parameters
+## Please, note that this will override the image parameters, including dependencies, configured to use the global value
+global:
+  ## @param global.imageRegistry Global container image registry
+  imageRegistry: ""
+  ## @param global.imagePullSecrets Global container registry secret names as an array
+  imagePullSecrets: []
+  ## @param global.defaultStorageClass Global default StorageClass for Persistent Volume(s)
+  defaultStorageClass: ""
+
 # This is to override the chart name.
 nameOverride: ""
 fullnameOverride: ""

@@ -2,7 +2,7 @@ apiVersion: v2
 name: lldap
 description: A Helm chart for LLDAP, a lightweight authentication server that provides an opinionated and simplified LDAP interface for authentication.
 type: application
-version: 0.2.0
+version: 0.3.0
 appVersion: "2025-05-19"
 icon: https://raw.githubusercontent.com/self-hosters-by-night/helm-charts/refs/heads/main/assets/lldap.png
 annotations:

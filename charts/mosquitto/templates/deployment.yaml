@@ -61,8 +61,19 @@ spec:
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           volumeMounts:
+            - name: config
+              mountPath: /mosquitto/config/mosquitto.conf
+              subPath: mosquitto.conf
+              readOnly: true
             {{- include "boilerplate.storage.extraVolumeMounts" . | nindent 12 }}
       volumes:
+        - name: config
+          configMap:
+            name: {{ include "boilerplate.names.fullname" . }}
+            defaultMode: 0700
+            items:
+              - key: mosquitto.conf
+                path: mosquitto.conf
         {{- include "boilerplate.storage.extraVolumes" . | nindent 8 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

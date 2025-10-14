@@ -5,5 +5,4 @@ metadata:
   labels:
     {{- include "boilerplate.labels.standard" . | nindent 4 }}
 data:
-  mosquitto.conf:
-    {{ .Values.config | indent 4 }}
+  mosquitto.conf: | {{ .Values.config | nindent 4 }}

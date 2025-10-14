@@ -51,6 +51,21 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
+## @param env Environment variables to add to the container
+env:
+  vars:
+    NEXTAUTH_SECRET: "CHANGE-ME-OR-USE-A-SECRET"
+
+  fromConfigMap: {}
+  fromSecret: {}
+
+envFrom:
+  configMaps: []
+  # - name: s3-config
+
+  secrets: []
+  #  - name: s3-config
+
 config:
   # If "" create configMap with Helm values, otherwise specify existing configmap name
   existingConfigMap: ""

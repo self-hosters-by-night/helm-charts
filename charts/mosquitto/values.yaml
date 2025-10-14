@@ -121,9 +121,20 @@ envFrom:
 extraVolumes: []
 # Example:
 # extraVolumes:
-#   - name: mosquitto-config
-#     configMap:
-#       name: mosquitto-config
+#   - name: accounts
+#     secret:
+#       secretName: mosquitto-accounts
+#       defaultMode: 0700
+#       items:
+#         - key: accounts.conf
+#           path: accounts.conf
+#   - name: acls
+#     secret:
+#       name: mosquitto
+#       defaultMode: 0700
+#       items:
+#         - key: acls.conf
+#           path: acls.conf
 #   - name: mosquitto-data
 #     persistentVolumeClaim:
 #       claimName: mosquitto-data-pvc
@@ -132,14 +143,45 @@ extraVolumes: []
 extraVolumeMounts: []
 # Example:
 # extraVolumeMounts:
-#   - name: mosquitto-config
-#     mountPath: /mosquitto/config
+#   - name: accounts
+#     mountPath: /mosquitto/config/accounts.conf
+#     subPath: accounts.conf
+#     readOnly: true
+#   - name: acls
+#     mountPath: /mosquitto/config/acls.conf
+#     subPath: acls.conf
 #     readOnly: true
 #   - name: mosquitto-data
 #     mountPath: /mosquitto/data
 
-# Common annotations applied to all resources
-commonAnnotations: {}
+config: |
+  # Logs
+  log_dest stdout
+  log_type error
+  log_type warning
+  log_type notice
+  log_type information
+
+  # If set to true, client connection and disconnection messages will be included in the log.
+  connection_messages true
+
+  # If set to true, add a timestamp value to each log message.
+  log_timestamp true
+
+  # Storage
+  persistence false
+  persistence_location /mosquitto/data
+
+  # Authentication
+  # password_file /mosquitto/config/accounts.conf
+  # acl_file /mosquitto/config/acls.conf
+  allow_anonymous true
+
+  listener 1883
+  protocol mqtt
+
+  listener 9001
+  protocol websockets
 
 nodeSelector: {}
 

@@ -21,10 +21,12 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+      {{- include "boilerplate.images.pullSecrets"
+        ( dict
+          "globalImagePullSecrets" .Values.global.imagePullSecrets
+          "localImagePullSecrets" .Values.image.pullSecrets
+        ) | nindent 6
+      }}
       {{- with .Values.podSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}

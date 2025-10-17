@@ -90,7 +90,7 @@ readinessProbe:
 
 resources: {}
 
-securityContext:
+podSecurityContext:
   allowPrivilegeEscalation: false
   runAsNonRoot: true
   runAsUser: 65534

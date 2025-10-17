@@ -55,6 +55,7 @@ spec:
               "localPullPolicy" .Values.image.pullPolicy
             ) | nindent 10
           }}
+          command: ["docker-ensure-initdb.sh"]
           {{- include "boilerplate.environment.env" ( dict "env" .Values.env "global" .Values.global ) | nindent 10 }}
           {{- include "boilerplate.environment.envFrom" ( dict "envFrom" .Values.envFrom "global" .Values.global ) | nindent 10 }}
           {{- with .Values.resources }}

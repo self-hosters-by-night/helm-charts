@@ -90,5 +90,8 @@ readinessProbe:
 
 resources: {}
 
+podSecurityContext:
+  fsGroup: 999
+
 securityContext:
   allowPrivilegeEscalation: false

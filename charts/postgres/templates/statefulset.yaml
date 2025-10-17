@@ -67,7 +67,7 @@ spec:
           {{- end }}
           volumeMounts:
             - name: data
-              mountPath: /var/lib/postgresql/{{ include "postgres.majorVersion" . }}/data
+              mountPath: /var/lib/postgresql/{{ include "postgres.majorVersion" . }}/docker
             {{- with .Values.extraVolumeMounts }}
             {{- toYaml . | nindent 12 }}
             {{- end }}

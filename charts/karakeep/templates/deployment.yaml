@@ -79,7 +79,7 @@ spec:
         {{- else }}
         - name: data
           emptyDir: {}
-        {{- end -}}
+        {{- end }}
         {{- include "boilerplate.storage.extraVolumes" . | nindent 8 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

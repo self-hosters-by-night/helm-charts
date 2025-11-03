@@ -14,30 +14,30 @@ image:
   pullSecrets:
     - app-secret # merged with global
 
-# Define environment variables or load specific ones from ConfigMaps and Secrets
-env: []
-  # - name: POSTGRES_USER
-  #   value: "postgres"
+## @param env Define environment variables or load specific ones from ConfigMaps and Secrets
+env:
+  vars:
+    # Useful for development instances only. In production, use secrets.
+    # POSTGRES_USER: "postgres"
+    # POSTGRES_PASSWORD: "password"
+    # POSTGRES_DB: "database"
+  fromConfigMap: {}
+  # POSTGRES_DB:
+  #     from: configmap-name
+  #     key: configmap-key
+  #     optional: false
+  fromSecret: {}
+  # POSTGRES_PASSWORD:
+  #     from: secret-name
+  #     key: secret-key
+  #     optional: false
 
-configMapRefs: []
-# - name: s3-config
+envFrom:
+  configMaps: []
+  # - name: postgres-config
 
-secretRefs: []
-#  - name: s3-config
-
-extraConfigMapRefs: []
-extraSecretRefs: []
-
-# {{ include "boilerplate.images.image" .Values.myapp }}
-myapp:
-  image:
-    registry: docker.io # overridden by global
-    repository: alpine
-    tag: "" # define either tag or digest
-    digest: 6akexk9fo9bj2lcdfbiygd9s895r6znx
-    pullPolicy: IfNotPresent # overridden by global
-    pullSecrets:
-      - app-secret # merged with global
+  secrets: []
+  #  - name: postgres-secret
 
 replicaCount: 1
 

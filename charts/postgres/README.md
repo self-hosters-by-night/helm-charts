@@ -11,3 +11,7 @@ helm repo add self-hosters-by-night https://self-hosters-by-night.github.io/helm
 helm repo update self-hosters-by-night
 helm install postgres self-hosters-by-night/postgres
 ```
+
+## Notes
+
+- `env.vars` values and ConfigMap/Secret references in `env.fromConfigMap`, `env.fromSecret`, and `envFrom` accept Helm templating (e.g., `{{ .Release.Name }}-postgres`).

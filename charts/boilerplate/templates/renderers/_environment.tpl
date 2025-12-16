@@ -1,16 +1,74 @@
 {{/*
 Render environment variables (env section)
 Usage: {{ include "boilerplate.environment.env" ( dict "env" .Values.env "global" .Values.global ) }}
+With templating: {{ include "boilerplate.environment.env" ( dict "root" . "env" .Values.env "global" .Values.global ) }}
 */}}
 {{- define "boilerplate.environment.env" -}}
-{{- include "boilerplate.environment.env.validate" .env }}
-{{- if or .env.vars .env.fromConfigMap .env.fromSecret }}
+{{- $env := .env }}
+{{- $root := .root }}
+
+{{/* If root is provided, render templated values first */}}
+{{- if $root }}
+  {{- $renderedEnv := dict }}
+
+  {{/* Render vars section */}}
+  {{- if $env.vars }}
+    {{- $vars := dict }}
+    {{- range $key, $value := $env.vars }}
+      {{- $rendered := $value }}
+      {{- if kindIs "string" $value }}
+        {{- $rendered = tpl ($value | toString) $root }}
+      {{- end }}
+      {{- $_ := set $vars $key $rendered }}
+    {{- end }}
+    {{- $_ := set $renderedEnv "vars" $vars }}
+  {{- end }}
+
+  {{/* Render fromConfigMap section */}}
+  {{- if $env.fromConfigMap }}
+    {{- $configMaps := dict }}
+    {{- range $key, $config := $env.fromConfigMap }}
+      {{- $name := $config.from }}
+      {{- if $config.from }}
+        {{- $name = tpl ($config.from | toString) $root }}
+      {{- end }}
+      {{- $entry := dict "from" $name "key" $config.key }}
+      {{- if hasKey $config "optional" }}
+        {{- $_ := set $entry "optional" $config.optional }}
+      {{- end }}
+      {{- $_ := set $configMaps $key $entry }}
+    {{- end }}
+    {{- $_ := set $renderedEnv "fromConfigMap" $configMaps }}
+  {{- end }}
+
+  {{/* Render fromSecret section */}}
+  {{- if $env.fromSecret }}
+    {{- $secrets := dict }}
+    {{- range $key, $config := $env.fromSecret }}
+      {{- $name := $config.from }}
+      {{- if $config.from }}
+        {{- $name = tpl ($config.from | toString) $root }}
+      {{- end }}
+      {{- $entry := dict "from" $name "key" $config.key }}
+      {{- if hasKey $config "optional" }}
+        {{- $_ := set $entry "optional" $config.optional }}
+      {{- end }}
+      {{- $_ := set $secrets $key $entry }}
+    {{- end }}
+    {{- $_ := set $renderedEnv "fromSecret" $secrets }}
+  {{- end }}
+
+  {{- $env = $renderedEnv }}
+{{- end }}
+
+{{- include "boilerplate.environment.env.validate" $env }}
+{{- if or $env.vars $env.fromConfigMap $env.fromSecret }}
 env:
-  {{- range $key, $value := .env.vars }}
+  {{- range $key, $value := $env.vars }}
   - name: {{ $key | quote }}
     value: {{ $value | quote }}
   {{- end }}
-  {{- range $key, $config := .env.fromConfigMap }}
+  {{- range $key, $config := $env.fromConfigMap }}
   - name: {{ $key | quote }}
     valueFrom:
       configMapKeyRef:
@@ -20,7 +78,7 @@ env:
         optional: {{ $config.optional }}
         {{- end }}
   {{- end }}
-  {{- range $key, $config := .env.fromSecret }}
+  {{- range $key, $config := $env.fromSecret }}
   - name: {{ $key | quote }}
     valueFrom:
       secretKeyRef:
@@ -36,19 +94,64 @@ env:
 {{/*
 Render environment variables from external sources (envFrom section)
 Usage: {{ include "boilerplate.environment.envFrom" ( dict "envFrom" .Values.envFrom "global" .Values.global ) }}
+With templating: {{ include "boilerplate.environment.envFrom" ( dict "root" . "envFrom" .Values.envFrom "global" .Values.global ) }}
 */}}
 {{- define "boilerplate.environment.envFrom" -}}
-{{- include "boilerplate.environment.envFrom.validate" .envFrom }}
-{{- if or .envFrom.configMaps .envFrom.secrets }}
+{{- $envFrom := .envFrom }}
+{{- $root := .root }}
+
+{{/* If root is provided, render templated values first */}}
+{{- if $root }}
+  {{- $renderedEnvFrom := dict }}
+
+  {{/* Render configMaps section */}}
+  {{- if $envFrom.configMaps }}
+    {{- $configMaps := list }}
+    {{- range $envFrom.configMaps }}
+      {{- $name := .name }}
+      {{- if .name }}
+        {{- $name = tpl (.name | toString) $root }}
+      {{- end }}
+      {{- $entry := dict "name" $name }}
+      {{- if hasKey . "optional" }}
+        {{- $_ := set $entry "optional" .optional }}
+      {{- end }}
+      {{- $configMaps = append $configMaps $entry }}
+    {{- end }}
+    {{- $_ := set $renderedEnvFrom "configMaps" $configMaps }}
+  {{- end }}
+
+  {{/* Render secrets section */}}
+  {{- if $envFrom.secrets }}
+    {{- $secrets := list }}
+    {{- range $envFrom.secrets }}
+      {{- $name := .name }}
+      {{- if .name }}
+        {{- $name = tpl (.name | toString) $root }}
+      {{- end }}
+      {{- $entry := dict "name" $name }}
+      {{- if hasKey . "optional" }}
+        {{- $_ := set $entry "optional" .optional }}
+      {{- end }}
+      {{- $secrets = append $secrets $entry }}
+    {{- end }}
+    {{- $_ := set $renderedEnvFrom "secrets" $secrets }}
+  {{- end }}
+
+  {{- $envFrom = $renderedEnvFrom }}
+{{- end }}
+
+{{- include "boilerplate.environment.envFrom.validate" $envFrom }}
+{{- if or $envFrom.configMaps $envFrom.secrets }}
 envFrom:
-  {{- range .envFrom.configMaps }}
+  {{- range $envFrom.configMaps }}
   - configMapRef:
       name: {{ .name | quote }}
       {{- if .optional }}
       optional: {{ .optional }}
       {{- end }}
   {{- end }}
-  {{- range .envFrom.secrets }}
+  {{- range $envFrom.secrets }}
   - secretRef:
       name: {{ .name | quote }}
       {{- if .optional }}

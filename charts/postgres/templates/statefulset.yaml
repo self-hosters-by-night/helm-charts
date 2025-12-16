@@ -55,10 +55,8 @@ spec:
               "localPullPolicy" .Values.image.pullPolicy
             ) | nindent 10
           }}
-          {{- $renderedEnv := (include "postgres.renderEnv" (dict "root" . "env" .Values.env) | fromYaml) }}
-          {{- include "boilerplate.environment.env" ( dict "env" $renderedEnv "global" .Values.global ) | nindent 10 }}
-          {{- $renderedEnvFrom := (include "postgres.renderEnvFrom" (dict "root" . "envFrom" .Values.envFrom) | fromYaml) }}
-          {{- include "boilerplate.environment.envFrom" ( dict "envFrom" $renderedEnvFrom "global" .Values.global ) | nindent 10 }}
+          {{- include "boilerplate.environment.env" ( dict "root" . "env" .Values.env "global" .Values.global ) | nindent 10 }}
+          {{- include "boilerplate.environment.envFrom" ( dict "root" . "envFrom" .Values.envFrom "global" .Values.global ) | nindent 10 }}
           {{- with .Values.resources }}
           resources:
             {{- toYaml . | nindent 12 }}

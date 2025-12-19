@@ -1,89 +1,34 @@
 {{/*
 Render environment variables (env section)
-Usage: {{ include "boilerplate.environment.env" ( dict "env" .Values.env "global" .Values.global ) }}
-With templating: {{ include "boilerplate.environment.env" ( dict "root" . "env" .Values.env "global" .Values.global ) }}
+Usage: {{ include "boilerplate.environment.env" ( dict "root" . "env" .Values.env ) }}
 */}}
 {{- define "boilerplate.environment.env" -}}
-{{- $env := .env }}
-{{- $root := .root }}
+{{- $root := .root -}}
+{{- $env := .env -}}
 
-{{/* If root is provided, render templated values first */}}
-{{- if $root }}
-  {{- $renderedEnv := dict }}
-
-  {{/* Render vars section */}}
-  {{- if $env.vars }}
-    {{- $vars := dict }}
-    {{- range $key, $value := $env.vars }}
-      {{- $rendered := $value }}
-      {{- if kindIs "string" $value }}
-        {{- $rendered = tpl ($value | toString) $root }}
-      {{- end }}
-      {{- $_ := set $vars $key $rendered }}
-    {{- end }}
-    {{- $_ := set $renderedEnv "vars" $vars }}
-  {{- end }}
-
-  {{/* Render fromConfigMap section */}}
-  {{- if $env.fromConfigMap }}
-    {{- $configMaps := dict }}
-    {{- range $key, $config := $env.fromConfigMap }}
-      {{- $name := $config.from }}
-      {{- if $config.from }}
-        {{- $name = tpl ($config.from | toString) $root }}
-      {{- end }}
-      {{- $entry := dict "from" $name "key" $config.key }}
-      {{- if hasKey $config "optional" }}
-        {{- $_ := set $entry "optional" $config.optional }}
-      {{- end }}
-      {{- $_ := set $configMaps $key $entry }}
-    {{- end }}
-    {{- $_ := set $renderedEnv "fromConfigMap" $configMaps }}
-  {{- end }}
-
-  {{/* Render fromSecret section */}}
-  {{- if $env.fromSecret }}
-    {{- $secrets := dict }}
-    {{- range $key, $config := $env.fromSecret }}
-      {{- $name := $config.from }}
-      {{- if $config.from }}
-        {{- $name = tpl ($config.from | toString) $root }}
-      {{- end }}
-      {{- $entry := dict "from" $name "key" $config.key }}
-      {{- if hasKey $config "optional" }}
-        {{- $_ := set $entry "optional" $config.optional }}
-      {{- end }}
-      {{- $_ := set $secrets $key $entry }}
-    {{- end }}
-    {{- $_ := set $renderedEnv "fromSecret" $secrets }}
-  {{- end }}
-
-  {{- $env = $renderedEnv }}
-{{- end }}
-
-{{- include "boilerplate.environment.env.validate" $env }}
+{{- include "boilerplate.environment.env.validate" .env }}
 {{- if or $env.vars $env.fromConfigMap $env.fromSecret }}
 env:
   {{- range $key, $value := $env.vars }}
-  - name: {{ $key | quote }}
-    value: {{ $value | quote }}
+  - name: {{  tpl ($key | toString) $root | quote }}
+    value: {{ tpl ($value | toString) $root | quote }}
   {{- end }}
   {{- range $key, $config := $env.fromConfigMap }}
-  - name: {{ $key | quote }}
+  - name: {{  tpl ($key | toString) $root | quote }}
     valueFrom:
       configMapKeyRef:
-        name: {{ $config.from | quote }}
-        key: {{ $config.key | quote }}
+        name: {{ tpl ($config.from | toString) $root | quote }}
+        key: {{ tpl ($config.key | toString) $root | quote }}
         {{- if $config.optional }}
         optional: {{ $config.optional }}
         {{- end }}
   {{- end }}
   {{- range $key, $config := $env.fromSecret }}
-  - name: {{ $key | quote }}
+  - name: {{ tpl ($key | toString) $root | quote }}
     valueFrom:
       secretKeyRef:
-        name: {{ $config.from | quote }}
-        key: {{ $config.key | quote }}
+        name: {{ tpl ($config.from | toString) $root | quote }}
+        key: {{ tpl ($config.key | toString) $root | quote }}
         {{- if $config.optional }}
         optional: {{ $config.optional }}
         {{- end }}
@@ -93,67 +38,24 @@ env:
 
 {{/*
 Render environment variables from external sources (envFrom section)
-Usage: {{ include "boilerplate.environment.envFrom" ( dict "envFrom" .Values.envFrom "global" .Values.global ) }}
-With templating: {{ include "boilerplate.environment.envFrom" ( dict "root" . "envFrom" .Values.envFrom "global" .Values.global ) }}
+Usage: {{ include "boilerplate.environment.envFrom" ( dict "root" . "envFrom" .Values.envFrom ) }}
 */}}
 {{- define "boilerplate.environment.envFrom" -}}
-{{- $envFrom := .envFrom }}
-{{- $root := .root }}
+{{- $root := .root -}}
+{{- $envFrom := .envFrom -}}
 
-{{/* If root is provided, render templated values first */}}
-{{- if $root }}
-  {{- $renderedEnvFrom := dict }}
-
-  {{/* Render configMaps section */}}
-  {{- if $envFrom.configMaps }}
-    {{- $configMaps := list }}
-    {{- range $envFrom.configMaps }}
-      {{- $name := .name }}
-      {{- if .name }}
-        {{- $name = tpl (.name | toString) $root }}
-      {{- end }}
-      {{- $entry := dict "name" $name }}
-      {{- if hasKey . "optional" }}
-        {{- $_ := set $entry "optional" .optional }}
-      {{- end }}
-      {{- $configMaps = append $configMaps $entry }}
-    {{- end }}
-    {{- $_ := set $renderedEnvFrom "configMaps" $configMaps }}
-  {{- end }}
-
-  {{/* Render secrets section */}}
-  {{- if $envFrom.secrets }}
-    {{- $secrets := list }}
-    {{- range $envFrom.secrets }}
-      {{- $name := .name }}
-      {{- if .name }}
-        {{- $name = tpl (.name | toString) $root }}
-      {{- end }}
-      {{- $entry := dict "name" $name }}
-      {{- if hasKey . "optional" }}
-        {{- $_ := set $entry "optional" .optional }}
-      {{- end }}
-      {{- $secrets = append $secrets $entry }}
-    {{- end }}
-    {{- $_ := set $renderedEnvFrom "secrets" $secrets }}
-  {{- end }}
-
-  {{- $envFrom = $renderedEnvFrom }}
-{{- end }}
-
-{{- include "boilerplate.environment.envFrom.validate" $envFrom }}
 {{- if or $envFrom.configMaps $envFrom.secrets }}
 envFrom:
   {{- range $envFrom.configMaps }}
   - configMapRef:
-      name: {{ .name | quote }}
+      name: {{ tpl (.name | toString) $root | quote }}
       {{- if .optional }}
       optional: {{ .optional }}
       {{- end }}
   {{- end }}
   {{- range $envFrom.secrets }}
   - secretRef:
-      name: {{ .name | quote }}
+      name: {{ tpl (.name | toString) $root | quote }}
       {{- if .optional }}
       optional: {{ .optional }}
       {{- end }}
@@ -166,7 +68,7 @@ Validate environment variable configuration for env section
 {{ include "boilerplate.environment.env.validate" .Values.env }}
 */}}
 {{- define "boilerplate.environment.env.validate" -}}
-{{- if . }}
+{{- if . -}}
   {{/* Validate that input is a map */}}
   {{- if not (kindIs "map" .) }}
     {{- fail "Environment configuration must be a map/object" }}
@@ -183,16 +85,8 @@ Validate environment variable configuration for env section
       {{- end }}
       {{- if not (kindIs "string" $key) }}
         {{- fail "Environment variable key in 'vars' must be a string" }}
-      {{- end }}
-      {{/* Validate Kubernetes environment variable naming rules */}}
-      {{- if not (regexMatch "^[A-Za-z_][A-Za-z0-9_]*$" $key) }}
-        {{- fail (printf "Environment variable key '%s' is invalid. Must start with letter or underscore and contain only alphanumeric characters and underscores" $key) }}
-      {{- end }}
-      {{/* Check for reserved environment variable names */}}
-      {{- $reservedVars := list "HOSTNAME" "PATH" "HOME" "TERM" }}
-      {{- if has $key $reservedVars }}
-        {{- fail (printf "Environment variable key '%s' is reserved and should not be overridden" $key) }}
-      {{- end }}
+      {{- end -}}
+
       {{/* Validate value is not nil and convert to string if needed */}}
       {{- if eq $value nil }}
         {{- fail (printf "Environment variable '%s' has nil value. Use empty string if needed" $key) }}
@@ -212,9 +106,6 @@ Validate environment variable configuration for env section
       {{- if not (kindIs "string" $key) }}
         {{- fail "Environment variable key in 'fromConfigMap' must be a string" }}
       {{- end }}
-      {{- if not (regexMatch "^[A-Za-z_][A-Za-z0-9_]*$" $key) }}
-        {{- fail (printf "Environment variable key '%s' in fromConfigMap is invalid. Must start with letter or underscore and contain only alphanumeric characters and underscores" $key) }}
-      {{- end }}
       {{- if not (kindIs "map" $config) }}
         {{- fail (printf "fromConfigMap '%s' must be a map with 'from' and 'key' fields" $key) }}
       {{- end }}
@@ -229,11 +120,8 @@ Validate environment variable configuration for env section
       {{- end }}
       {{- if not (kindIs "string" $config.key) }}
         {{- fail (printf "fromConfigMap '%s' 'key' field must be a string" $key) }}
-      {{- end }}
-      {{/* Validate Kubernetes resource name for configMap */}}
-      {{- if not (regexMatch "^[a-z0-9]([a-z0-9\\-]*[a-z0-9])?$" $config.from) }}
-        {{- fail (printf "fromConfigMap '%s' 'from' field '%s' is not a valid Kubernetes resource name" $key $config.from) }}
-      {{- end }}
+      {{- end -}}
+
       {{/* Validate optional field if present */}}
       {{- if hasKey $config "optional" }}
         {{- if not (kindIs "bool" $config.optional) }}
@@ -255,9 +143,6 @@ Validate environment variable configuration for env section
       {{- if not (kindIs "string" $key) }}
         {{- fail "Environment variable key in 'fromSecret' must be a string" }}
       {{- end }}
-      {{- if not (regexMatch "^[A-Za-z_][A-Za-z0-9_]*$" $key) }}
-        {{- fail (printf "Environment variable key '%s' in fromSecret is invalid. Must start with letter or underscore and contain only alphanumeric characters and underscores" $key) }}
-      {{- end }}
       {{- if not (kindIs "map" $config) }}
         {{- fail (printf "fromSecret '%s' must be a map with 'from' and 'key' fields" $key) }}
       {{- end }}
@@ -272,11 +157,8 @@ Validate environment variable configuration for env section
       {{- end }}
       {{- if not (kindIs "string" $config.key) }}
         {{- fail (printf "fromSecret '%s' 'key' field must be a string" $key) }}
-      {{- end }}
-      {{/* Validate Kubernetes resource name for secret */}}
-      {{- if not (regexMatch "^[a-z0-9]([a-z0-9\\-]*[a-z0-9])?$" $config.from) }}
-        {{- fail (printf "fromSecret '%s' 'from' field '%s' is not a valid Kubernetes resource name" $key $config.from) }}
-      {{- end }}
+      {{- end -}}
+
       {{/* Validate optional field if present */}}
       {{- if hasKey $config "optional" }}
         {{- if not (kindIs "bool" $config.optional) }}
@@ -316,8 +198,7 @@ Validate environment variable configuration for env section
     {{- if not (has $field $validFields) }}
       {{- fail (printf "Unknown field '%s' in environment configuration. Valid fields are: %s" $field (join ", " $validFields)) }}
     {{- end }}
-  {{- end -}}
-
+  {{- end }}
 {{- end }}
 {{- end -}}
 
@@ -346,11 +227,8 @@ Validate envFrom configuration
       {{- end }}
       {{- if not (kindIs "string" $configMap.name) }}
         {{- fail (printf "configMap entry at index %d 'name' field must be a string" $index) }}
-      {{- end }}
-      {{/* Validate Kubernetes resource name */}}
-      {{- if not (regexMatch "^[a-z0-9]([a-z0-9\\-]*[a-z0-9])?$" $configMap.name) }}
-        {{- fail (printf "configMap entry at index %d 'name' field '%s' is not a valid Kubernetes resource name" $index $configMap.name) }}
-      {{- end }}
+      {{- end -}}
+
       {{/* Validate optional field if present */}}
       {{- if hasKey $configMap "optional" }}
         {{- if not (kindIs "bool" $configMap.optional) }}
@@ -374,11 +252,8 @@ Validate envFrom configuration
       {{- end }}
       {{- if not (kindIs "string" $secret.name) }}
         {{- fail (printf "secret entry at index %d 'name' field must be a string" $index) }}
-      {{- end }}
-      {{/* Validate Kubernetes resource name */}}
-      {{- if not (regexMatch "^[a-z0-9]([a-z0-9\\-]*[a-z0-9])?$" $secret.name) }}
-        {{- fail (printf "secret entry at index %d 'name' field '%s' is not a valid Kubernetes resource name" $index $secret.name) }}
-      {{- end }}
+      {{- end -}}
+
       {{/* Validate optional field if present */}}
       {{- if hasKey $secret "optional" }}
         {{- if not (kindIs "bool" $secret.optional) }}

@@ -1,0 +1,28 @@
+env:
+  vars:
+    POSTGRES_USER: "postgres"
+    POSTGRES_PASSWORD: "{{ .Release.Name }}-password"
+    "{{ .Release.Name }}_EXTRA_SETTINGS": "some-extra-settings-value"
+  fromConfigMap:
+    POSTGRES_DB_A:
+        from: "{{ .Release.Name }}-config-a"
+        key: "{{ .Release.Name }}-config-key-a"
+        optional: false
+    "{{ .Release.Name }}_EXTRA_SETTINGS_A":
+        from: "{{ .Release.Name }}-config-a"
+        key: "{{ .Release.Name }}-extra-settings-key-a"
+        optional: true
+  fromSecret:
+    POSTGRES_DB_B:
+        from: "{{ .Release.Name }}-secrets-b"
+        key: "{{ .Release.Name }}-secret-key-b"
+        optional: false
+    "{{ .Release.Name }}_EXTRA_SETTINGS_B":
+        from: "{{ .Release.Name }}-secrets-b"
+        key: "{{ .Release.Name }}-extra-secrets-key-b"
+        optional: true
+envFrom:
+  configMaps:
+    - name: "{{ .Release.Name }}-config-b"
+  secrets:
+    - name: "{{ .Release.Name }}-secrets-b"

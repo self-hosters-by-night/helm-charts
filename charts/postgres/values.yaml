@@ -30,7 +30,6 @@ env:
   #     from: configmap-name
   #     key: configmap-key
   #     optional: false
-
   # Example with templating support:
   # POSTGRES_DB:
   #     from: "{{ .Release.Name }}-postgres
@@ -41,7 +40,6 @@ env:
   #     from: secret-name
   #     key: secret-key
   #     optional: false
-
   # Example with templating support:
   # POSTGRES_PASSWORD:
   #     from: "{{ .Release.Name }}-postgres"
@@ -54,7 +52,7 @@ envFrom:
   # - name: "{{ .Release.Name }}-postgres"
 
   secrets: []
-  #  - name: postgres-secret
+  # - name: postgres-secret
   # - name: "{{ .Release.Name }}-postgres-secret"
 
 persistence:

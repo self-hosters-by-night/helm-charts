@@ -55,8 +55,20 @@ spec:
               "localPullPolicy" .Values.image.pullPolicy
             ) | nindent 10
           }}
-          {{- include "boilerplate.environment.env" ( dict "root" . "env" .Values.env "global" .Values.global ) | nindent 10 }}
-          {{- include "boilerplate.environment.envFrom" ( dict "root" . "envFrom" .Values.envFrom "global" .Values.global ) | nindent 10 }}
+          {{- include "boilerplate.environment.env" ( dict "root" . "env" .Values.env ) | indent 10 }}
+          {{- include "boilerplate.environment.envFrom" ( dict "root" . "envFrom" .Values.envFrom ) | indent 10 }}
+          ports:
+            - name: postgres
+              containerPort: 5432
+              protocol: TCP
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           {{- with .Values.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
@@ -71,19 +83,6 @@ spec:
             {{- with .Values.extraVolumeMounts }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
-          ports:
-            - name: postgres
-              containerPort: 5432
-              protocol: TCP
-          {{- with .Values.livenessProbe }}
-          livenessProbe:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- with .Values.readinessProbe }}
-          readinessProbe:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-
       {{- with .Values.podSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}

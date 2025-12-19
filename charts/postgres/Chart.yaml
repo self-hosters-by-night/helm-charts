@@ -2,8 +2,8 @@ apiVersion: v2
 name: postgres
 description: "Postgres is an object-relational database system that provides reliability and data integrity."
 type: application
-version: 0.14.0
-appVersion: "18.0"
+version: 0.13.0
+appVersion: "18.1"
 icon: https://raw.githubusercontent.com/self-hosters-by-night/helm-charts/refs/heads/main/assets/postgresql.png
 annotations:
   artifacthub.io/category: database

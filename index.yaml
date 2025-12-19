@@ -557,6 +557,20 @@ entries:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/chrome-0.1.0/chrome-0.1.0.tgz
     version: 0.1.0
   fission-crds:
+  - annotations:
+      artifacthub.io/category: integration-delivery
+    apiVersion: v2
+    created: "2025-12-19T21:37:54.464244628Z"
+    description: A Helm chart containing the CRDs for the Fission serverless framework.
+    digest: b2c57890b4bce6eeb1f3397d381b5de6375687a21cb3f3e197df8fdd07b9a843
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: fission-crds
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/fission-crds-1.22.0/fission-crds-1.22.0.tgz
+    version: 1.22.0
   - apiVersion: v2
     created: "2025-06-30T20:18:42.946335487Z"
     description: A Helm chart containing the CRDs for the Fission serverless framework.
@@ -1776,4 +1790,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.1.0/template-0.1.0.tgz
     version: 0.1.0
-generated: "2025-12-19T21:26:45.120903179Z"
+generated: "2025-12-19T21:37:54.464398185Z"

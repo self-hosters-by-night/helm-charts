@@ -243,6 +243,16 @@ entries:
     version: 0.1.0
   boilerplate:
   - apiVersion: v2
+    created: "2025-12-19T21:26:44.984947879Z"
+    description: Boilerplate templates
+    digest: faf1822df284c1136933de6315b97b165af768d48fba82d7562b3a4cd9615895
+    icon: https://raw.githubusercontent.com/self-hosters-by-night/helm-charts/refs/heads/main/assets/boilerplate.png
+    name: boilerplate
+    type: library
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/boilerplate-0.16.0/boilerplate-0.16.0.tgz
+    version: 0.16.0
+  - apiVersion: v2
     created: "2025-10-12T19:11:09.018867693Z"
     description: Boilerplate templates
     digest: 1c6769ed8f726896b2d3060c45844e44d7440f61b5f9d465683f055d2f42dfca
@@ -1438,6 +1448,27 @@ entries:
   - annotations:
       artifacthub.io/category: database
     apiVersion: v2
+    appVersion: "18.1"
+    created: "2025-12-19T21:26:45.120637525Z"
+    dependencies:
+    - name: boilerplate
+      repository: file://../boilerplate
+      version: 0.16.0
+    description: Postgres is an object-relational database system that provides reliability
+      and data integrity.
+    digest: f06d699e23b7b02d96779447952030aec237f0c3b59fb43dc523c84699d158de
+    icon: https://raw.githubusercontent.com/self-hosters-by-night/helm-charts/refs/heads/main/assets/postgresql.png
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: postgres
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/postgres-0.13.0/postgres-0.13.0.tgz
+    version: 0.13.0
+  - annotations:
+      artifacthub.io/category: database
+    apiVersion: v2
     appVersion: "18.0"
     created: "2025-10-17T21:30:35.713080168Z"
     dependencies:
@@ -1745,4 +1776,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.1.0/template-0.1.0.tgz
     version: 0.1.0
-generated: "2025-11-03T20:27:54.281021428Z"
+generated: "2025-12-19T21:26:45.120903179Z"

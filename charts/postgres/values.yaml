@@ -22,10 +22,18 @@ env:
     # Useful for development instances only. In production, use secrets.
     # POSTGRES_USER: "postgres"
     # POSTGRES_PASSWORD: "password"
+    # Example with templating support:
+    # POSTGRES_PASSWORD: "{{ .Release.Name }}-postgres-password"
     # POSTGRES_DB: "database"
   fromConfigMap: {}
   # POSTGRES_DB:
   #     from: configmap-name
+  #     key: configmap-key
+  #     optional: false
+
+  # Example with templating support:
+  # POSTGRES_DB:
+  #     from: "{{ .Release.Name }}-postgres
   #     key: configmap-key
   #     optional: false
   fromSecret: {}
@@ -34,12 +42,20 @@ env:
   #     key: secret-key
   #     optional: false
 
+  # Example with templating support:
+  # POSTGRES_PASSWORD:
+  #     from: "{{ .Release.Name }}-postgres"
+  #     key: secret-key
+  #     optional: false
+
 envFrom:
   configMaps: []
   # - name: postgres-config
+  # - name: "{{ .Release.Name }}-postgres"
 
   secrets: []
   #  - name: postgres-secret
+  # - name: "{{ .Release.Name }}-postgres-secret"
 
 persistence:
   enabled: true

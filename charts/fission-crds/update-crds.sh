@@ -22,7 +22,7 @@ echo "Updating CRDs to version $VERSION..."
 rm -rf crds
 mkdir crds
 
-if ! kustomize build "github.com/fission/fission/crds/v1?ref=v${VERSION}" -o crds; then
+if ! kubectl kustomize "github.com/fission/fission/crds/v1?ref=v${VERSION}" -o crds; then
     echo "Error: Failed to build CRDs for version $VERSION" >&2
     exit 1
 fi

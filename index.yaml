@@ -902,6 +902,34 @@ entries:
       artifacthub.io/category: security
     apiVersion: v2
     appVersion: "2025-05-19"
+    created: "2025-12-23T13:01:28.003055288Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.15.1
+    - name: postgres
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.13.0
+    description: A Helm chart for LLDAP, a lightweight authentication server that
+      provides an opinionated and simplified LDAP interface for authentication.
+    digest: 013c1c3e49282c0128a9165ebb9c8a7c8bf0d797fdbaa169507140c82fe96b27
+    icon: https://raw.githubusercontent.com/self-hosters-by-night/helm-charts/refs/heads/main/assets/lldap.png
+    keywords:
+    - ldap
+    - authentication
+    - directory
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: lldap
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/lldap-0.4.0/lldap-0.4.0.tgz
+    version: 0.4.0
+  - annotations:
+      artifacthub.io/category: security
+    apiVersion: v2
+    appVersion: "2025-05-19"
     created: "2025-10-14T17:42:42.693221715Z"
     dependencies:
     - name: boilerplate
@@ -1701,6 +1729,24 @@ entries:
     version: 0.1.0
   template:
   - apiVersion: v2
+    created: "2025-12-23T13:01:28.185011679Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.15.1
+    description: A template Helm chart to demostrate the usage of the boilerplate
+      library chart.
+    digest: fc9b1b55f2068453e0d384b3372dccfe2dfacc973158f983229a95b68c7aef44
+    icon: https://raw.githubusercontent.com/self-hosters-by-night/helm-charts/refs/heads/main/assets/template.png
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: template
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.5.3/template-0.5.3.tgz
+    version: 0.5.3
+  - apiVersion: v2
     created: "2025-10-13T22:12:05.539259499Z"
     dependencies:
     - name: boilerplate
@@ -1790,4 +1836,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.1.0/template-0.1.0.tgz
     version: 0.1.0
-generated: "2025-12-19T21:37:54.464398185Z"
+generated: "2025-12-23T13:01:28.185295016Z"

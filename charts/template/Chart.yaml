@@ -2,7 +2,7 @@ apiVersion: v2
 name: template
 description: A template Helm chart to demostrate the usage of the boilerplate library chart.
 type: application
-version: 0.5.2
+version: 0.5.3
 icon: https://raw.githubusercontent.com/self-hosters-by-night/helm-charts/refs/heads/main/assets/template.png
 maintainers:
   - name: facorazza

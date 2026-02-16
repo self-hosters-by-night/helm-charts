@@ -1116,6 +1116,34 @@ entries:
     version: 0.1.0
   mosquitto:
   - annotations:
+      artifacthub.io/category: streaming-messaging
+    apiVersion: v2
+    appVersion: 2.0.22
+    created: "2026-02-16T19:53:27.248425279Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.16.0
+    description: A Helm chart for Eclipse Mosquitto MQTT broker. Provides a secure,
+      lightweight, and reliable messaging solution for IoT and other applications.
+    digest: 269777684b3fe94d1eb391bb4fe9f9d8b44aeb777a37dd6bfecba7cb239f1cf2
+    icon: https://raw.githubusercontent.com/docker-library/docs/757578e3a44e5460a8a11d32a81776f8b74231a9/eclipse-mosquitto/logo.png
+    keywords:
+    - mqtt
+    - mosquitto
+    - broker
+    - iot
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: mosquitto
+    sources:
+    - https://github.com/eclipse/mosquitto
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/mosquitto-0.5.1/mosquitto-0.5.1.tgz
+    version: 0.5.1
+  - annotations:
       artifacthub.io/category: security
     apiVersion: v2
     appVersion: 2.0.22
@@ -1247,6 +1275,40 @@ entries:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/mosquitto-0.1.0/mosquitto-0.1.0.tgz
     version: 0.1.0
   popeye:
+  - annotations:
+      artifacthub.io/category: security
+      artifacthub.io/screenshots: |
+        - title: Console Output
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/console.png"
+        - title: HTML Output
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/html.png"
+        - title: JSON Output
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/json.png"
+        - title: Dashboard
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/pop-dash.png"
+        - title: Score A
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/score-a.png"
+        - title: Score D
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/score-d.png"
+    apiVersion: v2
+    appVersion: v0.22.1
+    created: "2026-02-16T19:53:27.478617837Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.16.0
+    description: Popeye is a utility that scans live Kubernetes clusters and reports
+      potential issues with deployed resources and configurations.
+    digest: ddd1742ab0045311d805e44bc02f909cafdeba2583526f67bd2dc734b038034d
+    icon: https://raw.githubusercontent.com/derailed/popeye/master/assets/popeye_logo.png
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: popeye
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/popeye-0.6.0/popeye-0.6.0.tgz
+    version: 0.6.0
   - annotations:
       artifacthub.io/category: security
       artifacthub.io/screenshots: |
@@ -1657,6 +1719,26 @@ entries:
     version: 0.7.0
   searxng:
   - apiVersion: v2
+    appVersion: 2026.2.15-da9c0815a
+    created: "2026-02-16T19:53:27.685176049Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.16.0
+    description: A Helm chart SearXNG, a free internet metasearch engine which aggregates
+      results from various search services and databases. Users are neither tracked
+      nor profiled.
+    digest: 57eae14755cece316cb1cbc5ffecb887861f6355e6dbbcb75f4c0fd84725e7b1
+    icon: https://avatars.githubusercontent.com/u/80454229
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: searxng
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/searxng-1.1.0/searxng-1.1.0.tgz
+    version: 1.1.0
+  - apiVersion: v2
     appVersion: 2025.8.20-41a4a3e
     created: "2025-08-22T15:43:49.841065783Z"
     dependencies:
@@ -1729,6 +1811,24 @@ entries:
     version: 0.1.0
   template:
   - apiVersion: v2
+    created: "2026-02-16T19:53:27.930011961Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.16.0
+    description: A template Helm chart to demostrate the usage of the boilerplate
+      library chart.
+    digest: 0aaed63905d45b8fdaeee9b7ce3182cdc06e9e9ab538bcc6e0dc6bbe18c7b6ac
+    icon: https://raw.githubusercontent.com/self-hosters-by-night/helm-charts/refs/heads/main/assets/template.png
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: template
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.6.0/template-0.6.0.tgz
+    version: 0.6.0
+  - apiVersion: v2
     created: "2025-12-23T13:01:28.185011679Z"
     dependencies:
     - name: boilerplate
@@ -1800,4 +1900,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.5.0/template-0.5.0.tgz
     version: 0.5.0
-generated: "2025-12-23T13:01:28.185295016Z"
+generated: "2026-02-16T19:53:27.930623763Z"

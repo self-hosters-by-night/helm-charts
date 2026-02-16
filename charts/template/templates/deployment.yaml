@@ -45,29 +45,8 @@ spec:
               "localPullPolicy" .Values.image.pullPolicy
             ) | nindent 10
           }}
-          {{- with .Values.env }}
-          env:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- if or .Values.configMapRefs .Values.extraConfigMapRefs .Values.secretRefs .Values.extraSecretRefs }}
-          envFrom:
-            {{- range .Values.configMapRefs }}
-            - configMapRef:
-                name: {{ .name }}
-            {{- end }}
-            {{- range .Values.extraConfigMapRefs }}
-            - configMapRef:
-                name: {{ .name }}
-            {{- end }}
-            {{- range .Values.secretRefs }}
-            - secretRef:
-                name: {{ .name }}
-            {{- end }}
-            {{- range .Values.extraSecretRefs }}
-            - secretRef:
-                name: {{ .name }}
-            {{- end }}
-          {{- end }}
+          {{- include "boilerplate.environment.env" ( dict "root" . "env" .Values.env ) | indent 10 }}
+          {{- include "boilerplate.environment.envFrom" ( dict "root" . "envFrom" .Values.envFrom ) | indent 10 }}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
@@ -88,15 +67,13 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+          {{- if .Values.extraVolumeMounts }}
           volumeMounts:
-            {{- include "boilerplate.storage.extraVolumeMounts" . | nindent 12 }}
-          {{- with .Values.volumeMounts }}
-            {{- toYaml . | nindent 12 }}
+            {{- include "boilerplate.storage.extraVolumeMounts" . | indent 12 }}
           {{- end }}
+      {{- if .Values.extraVolumes }}
       volumes:
-        {{- include "boilerplate.storage.extraVolumes" . | nindent 8 }}
-      {{- with .Values.volumes }}
-        {{- toYaml . | nindent 8 }}
+        {{- include "boilerplate.storage.extraVolumes" . | indent 8 }}
       {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

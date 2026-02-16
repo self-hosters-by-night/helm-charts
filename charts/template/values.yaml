@@ -20,10 +20,17 @@ env:
     # Useful for development instances only. In production, use secrets.
     # POSTGRES_USER: "postgres"
     # POSTGRES_PASSWORD: "password"
+    # Example with templating support:
+    # POSTGRES_PASSWORD: "{{ .Release.Name }}-postgres-password"
     # POSTGRES_DB: "database"
   fromConfigMap: {}
   # POSTGRES_DB:
   #     from: configmap-name
+  #     key: configmap-key
+  #     optional: false
+  # Example with templating support:
+  # POSTGRES_DB:
+  #     from: "{{ .Release.Name }}-postgres
   #     key: configmap-key
   #     optional: false
   fromSecret: {}
@@ -31,13 +38,20 @@ env:
   #     from: secret-name
   #     key: secret-key
   #     optional: false
+  # Example with templating support:
+  # POSTGRES_PASSWORD:
+  #     from: "{{ .Release.Name }}-postgres"
+  #     key: secret-key
+  #     optional: false
 
 envFrom:
   configMaps: []
   # - name: postgres-config
+  # - name: "{{ .Release.Name }}-postgres"
 
   secrets: []
-  #  - name: postgres-secret
+  # - name: postgres-secret
+  # - name: "{{ .Release.Name }}-postgres-secret"
 
 replicaCount: 1
 
@@ -202,9 +216,41 @@ configMap:
   # binaryData:
   #   binary-key: base64-encoded-data
 
+# RBAC configuration
+rbac:
+  create: false
+  annotations: {}
+  rules: []
+  # rules:
+  # - apiGroups: [""]
+  #   resources: ["pods"]
+  #   verbs: ["get", "list"]
+  extraSubjects: []
+  # extraSubjects:
+  # - kind: User
+  #   name: system:serviceaccount:default:my-user
+  #   apiGroup: rbac.authorization.k8s.io
+
+# Extra volumes using boilerplate templates
+extraVolumes:
+  - name: config-volume
+    configMap:
+      name: my-config
+
+# Extra volume mounts using boilerplate templates
+extraVolumeMounts:
+  - name: config-volume
+    mountPath: /etc/config
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
 # CronJob configuration
 cronjob:
-  enabled: false
+  enabled: true
   schedule: "0 2 * * *"
   timeZone: ""
   concurrencyPolicy: Allow
@@ -229,55 +275,49 @@ cronjob:
     pullSecrets: []
   command: []
   args: []
-  env: []
+
+  ## @param env Define environment variables or load specific ones from ConfigMaps and Secrets
+  env:
+    vars:
+      # Useful for development instances only. In production, use secrets.
+      # POSTGRES_USER: "postgres"
+      # POSTGRES_PASSWORD: "password"
+      # Example with templating support:
+      # POSTGRES_PASSWORD: "{{ .Release.Name }}-postgres-password"
+      # POSTGRES_DB: "database"
+    fromConfigMap: {}
+    # POSTGRES_DB:
+    #     from: configmap-name
+    #     key: configmap-key
+    #     optional: false
+    # Example with templating support:
+    # POSTGRES_DB:
+    #     from: "{{ .Release.Name }}-postgres
+    #     key: configmap-key
+    #     optional: false
+    fromSecret: {}
+    # POSTGRES_PASSWORD:
+    #     from: secret-name
+    #     key: secret-key
+    #     optional: false
+    # Example with templating support:
+    # POSTGRES_PASSWORD:
+    #     from: "{{ .Release.Name }}-postgres"
+    #     key: secret-key
+    #     optional: false
+
+  envFrom:
+    configMaps: []
+    # - name: postgres-config
+    # - name: "{{ .Release.Name }}-postgres"
+
+    secrets: []
+    # - name: postgres-secret
+    # - name: "{{ .Release.Name }}-postgres-secret"
+
   resources: {}
-  volumeMounts: []
-  volumes: []
+  extraVolumeMounts: []
+  extraVolumes: []
   nodeSelector: {}
   affinity: {}
   tolerations: []
-
-# RBAC configuration
-rbac:
-  create: false
-  annotations: {}
-  rules: []
-  # rules:
-  # - apiGroups: [""]
-  #   resources: ["pods"]
-  #   verbs: ["get", "list"]
-  extraSubjects: []
-  # extraSubjects:
-  # - kind: User
-  #   name: system:serviceaccount:default:my-user
-  #   apiGroup: rbac.authorization.k8s.io
-
-# Additional volumes on the output Deployment definition.
-volumes: []
-# - name: foo
-#   secret:
-#     secretName: mysecret
-#     optional: false
-
-# Additional volumeMounts on the output Deployment definition.
-volumeMounts: []
-# - name: foo
-#   mountPath: "/etc/foo"
-#   readOnly: true
-
-# Extra volumes using boilerplate templates
-extraVolumes: []
-# - name: config-volume
-#   configMap:
-#     name: my-config
-
-# Extra volume mounts using boilerplate templates
-extraVolumeMounts: []
-# - name: config-volume
-#   mountPath: /etc/config
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}

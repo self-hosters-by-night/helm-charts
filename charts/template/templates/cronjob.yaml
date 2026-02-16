@@ -58,25 +58,29 @@ spec:
         spec:
           {{- include "boilerplate.images.pullSecrets" (dict "image" .Values.cronjob.image "global" .Values.global) | nindent 10 }}
           serviceAccountName: {{ include "boilerplate.names.serviceAccountName" . }}
-          {{- with .Values.cronjob.podSecurityContext }}
-          securityContext:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
           restartPolicy: {{ .Values.cronjob.restartPolicy | default "OnFailure" }}
           containers:
             - name: {{ .Chart.Name }}
-              image: {{ include "boilerplate.images.image" (dict "image" .Values.cronjob.image "global" .Values.global "chart" .Chart) }}
-              imagePullPolicy: {{ include "boilerplate.images.pullPolicy" (dict "image" .Values.cronjob.image "global" .Values.global) }}
+              {{- include "boilerplate.images.image"
+                ( dict
+                  "root" .
+                  "image" .Values.cronjob.image
+                ) | nindent 14
+              }}
+              {{- include "boilerplate.images.pullPolicy"
+                ( dict
+                  "globalPullPolicy" .Values.global.imagePullPolicy
+                  "localPullPolicy" .Values.cronjob.image.pullPolicy
+                ) | nindent 14
+              }}
+              {{- include "boilerplate.environment.env" ( dict "root" . "env" .Values.cronjob.env ) | indent 14 }}
+              {{- include "boilerplate.environment.envFrom" ( dict "root" . "envFrom" .Values.cronjob.envFrom ) | indent 14 }}
               {{- with .Values.cronjob.command }}
               command:
                 {{- toYaml . | nindent 16 }}
               {{- end }}
               {{- with .Values.cronjob.args }}
               args:
-                {{- toYaml . | nindent 16 }}
-              {{- end }}
-              {{- with .Values.cronjob.env }}
-              env:
                 {{- toYaml . | nindent 16 }}
               {{- end }}
               {{- with .Values.cronjob.securityContext }}
@@ -87,16 +91,10 @@ spec:
               resources:
                 {{- toYaml . | nindent 16 }}
               {{- end }}
+              {{- if .Values.cronjob.extraVolumeMounts }}
               volumeMounts:
-                {{- include "boilerplate.storage.extraVolumeMounts" . | nindent 16 }}
-              {{- with .Values.cronjob.volumeMounts }}
-                {{- toYaml . | nindent 16 }}
+                {{- include "boilerplate.storage.extraVolumeMounts" . | indent 16 }}
               {{- end }}
-          volumes:
-            {{- include "boilerplate.storage.extraVolumes" . | nindent 12 }}
-          {{- with .Values.cronjob.volumes }}
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
           {{- with .Values.cronjob.nodeSelector }}
           nodeSelector:
             {{- toYaml . | nindent 12 }}
@@ -108,5 +106,13 @@ spec:
           {{- with .Values.cronjob.tolerations }}
           tolerations:
             {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.cronjob.podSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if .Values.cronjob.extraVolumes }}
+          volumes:
+            {{- include "boilerplate.storage.extraVolumes" . | indent 12 }}
           {{- end }}
 {{- end }}

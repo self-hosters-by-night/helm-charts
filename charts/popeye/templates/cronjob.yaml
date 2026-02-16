@@ -34,8 +34,18 @@ spec:
           restartPolicy: Never
           containers:
             - name: {{ .Chart.Name }}
-              image: {{ include "boilerplate.images.image" (dict "image" .Values.image "global" .Values.global "chart" .Chart) }}
-              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              {{- include "boilerplate.images.image"
+                ( dict
+                  "root" .
+                  "image" .Values.image
+                ) | nindent 14
+              }}
+              {{- include "boilerplate.images.pullPolicy"
+                ( dict
+                  "globalPullPolicy" .Values.global.imagePullPolicy
+                  "localPullPolicy" .Values.image.pullPolicy
+                ) | nindent 14
+              }}
               args:
                 {{- if .Values.cronJob.configuration }}
                 - "-f /home/spinach.yml"

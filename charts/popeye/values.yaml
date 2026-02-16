@@ -1,3 +1,9 @@
+# Global configuration that can override local settings
+global:
+  imageRegistry: ""
+  imagePullPolicy: ""
+  imagePullSecrets: []
+
 image:
   registry: docker.io
   repository: derailed/popeye

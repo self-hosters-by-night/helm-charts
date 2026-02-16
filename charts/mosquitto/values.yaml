@@ -3,8 +3,6 @@ global:
   imageRegistry: ""
   imagePullPolicy: ""
   imagePullSecrets: []
-  storageClass: ""
-  nfsServer: ""
 
 replicaCount: 1
 
@@ -115,7 +113,7 @@ envFrom:
   # - name: s3-config
 
   secrets: []
-  #  - name: s3-config
+  # - name: s3-config
 
 # Additional volumes using boilerplate storage templates
 extraVolumes: []

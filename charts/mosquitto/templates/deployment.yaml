@@ -27,8 +27,10 @@ spec:
         ) | nindent 6
       }}
       serviceAccountName: {{ include "boilerplate.names.serviceAccountName" . }}
+      {{- with .Values.podSecurityContext }}
       securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           {{- include "boilerplate.images.image"
@@ -43,8 +45,8 @@ spec:
               "localPullPolicy" .Values.image.pullPolicy
             ) | nindent 10
           }}
-          {{- include "boilerplate.environment.env" ( dict "env" .Values.env "global" .Values.global ) | nindent 10 }}
-          {{- include "boilerplate.environment.envFrom" ( dict "envFrom" .Values.envFrom "global" .Values.global ) | nindent 10 }}
+          {{- include "boilerplate.environment.env" ( dict "env" .Values.env "global" .Values.global ) | indent 10 }}
+          {{- include "boilerplate.environment.envFrom" ( dict "envFrom" .Values.envFrom "global" .Values.global ) | indent 10 }}
           ports:
             - name: mqtt
               containerPort: 1883
@@ -52,20 +54,28 @@ spec:
             - name: websocket
               containerPort: 9001
               protocol: TCP
+          {{- with .Values.livenessProbe }}
           livenessProbe:
-            {{- toYaml .Values.livenessProbe | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
           readinessProbe:
-            {{- toYaml .Values.readinessProbe | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.resources }}
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.securityContext }}
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           volumeMounts:
             - name: config
               mountPath: /mosquitto/config/mosquitto.conf
               subPath: mosquitto.conf
               readOnly: true
-            {{- include "boilerplate.storage.extraVolumeMounts" . | nindent 12 }}
+            {{- include "boilerplate.storage.extraVolumeMounts" . | indent 12 }}
       volumes:
         - name: config
           configMap:
@@ -74,7 +84,7 @@ spec:
             items:
               - key: mosquitto.conf
                 path: mosquitto.conf
-        {{- include "boilerplate.storage.extraVolumes" . | nindent 8 }}
+        {{- include "boilerplate.storage.extraVolumes" . | indent 8 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

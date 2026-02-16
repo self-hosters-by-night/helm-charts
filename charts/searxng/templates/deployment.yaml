@@ -23,22 +23,28 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.podSecurityContext }}
-      securityContext:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+      {{- include "boilerplate.images.pullSecrets"
+        ( dict
+          "globalImagePullSecrets" .Values.global.imagePullSecrets
+          "localImagePullSecrets" .Values.image.pullSecrets
+        ) | nindent 6
+      }}
       containers:
         - name: {{ .Chart.Name }}
-          {{- with .Values.securityContext }}
-          securityContext:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          image: {{ include "boilerplate.images.image" ( dict "image" .Values.image "global" .Values.global "chart" .Chart ) }}
-          imagePullPolicy: {{ include "boilerplate.images.pullPolicy" ( dict "image" .Values.image "global" .Values.global "chart" .Chart ) }}
+          {{- include "boilerplate.images.image"
+            ( dict
+              "root" .
+              "image" .Values.image
+            ) | nindent 10
+          }}
+          {{- include "boilerplate.images.pullPolicy"
+            ( dict
+              "globalPullPolicy" .Values.global.imagePullPolicy
+              "localPullPolicy" .Values.image.pullPolicy
+            ) | nindent 10
+          }}
+          {{- include "boilerplate.environment.env" ( dict "root" . "env" .Values.env ) | indent 10 }}
+          {{- include "boilerplate.environment.envFrom" ( dict "root" . "envFrom" .Values.envFrom ) | indent 10 }}
           ports:
             - name: http
               containerPort: {{ .Values.containerPort | default 8080 }}
@@ -55,6 +61,11 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if or .Values.limiter .Values.extraVolumeMounts }}
           volumeMounts:
             {{- if .Values.limiter }}
             - name: limiter
@@ -62,18 +73,21 @@ spec:
               subPath: limiter.toml
               readOnly: true
             {{- end }}
-            {{- with .Values.volumeMounts }}
-            {{- toYaml . | nindent 12 }}
-            {{- end }}
+            {{- include "boilerplate.storage.extraVolumeMounts" . | indent 12 }}
+          {{- end }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if or .Values.limiter .Values.extraVolumes }}
       volumes:
         {{- if .Values.limiter }}
         - name: limiter
           configMap:
             name: {{ include "boilerplate.names.fullname" . }}-limiter
         {{- end }}
-        {{- with .Values.volumes }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
+        {{- include "boilerplate.storage.extraVolumes" . | indent 8 }}
+      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

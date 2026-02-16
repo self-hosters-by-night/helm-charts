@@ -32,6 +32,45 @@ image:
   pullPolicy: IfNotPresent
   pullSecrets: []
 
+## @param env Define environment variables or load specific ones from ConfigMaps and Secrets
+env:
+  vars:
+    # Useful for development instances only. In production, use secrets.
+    # POSTGRES_USER: "postgres"
+    # POSTGRES_PASSWORD: "password"
+    # Example with templating support:
+    # POSTGRES_PASSWORD: "{{ .Release.Name }}-postgres-password"
+    # POSTGRES_DB: "database"
+  fromConfigMap: {}
+  # POSTGRES_DB:
+  #     from: configmap-name
+  #     key: configmap-key
+  #     optional: false
+  # Example with templating support:
+  # POSTGRES_DB:
+  #     from: "{{ .Release.Name }}-postgres
+  #     key: configmap-key
+  #     optional: false
+  fromSecret: {}
+  # POSTGRES_PASSWORD:
+  #     from: secret-name
+  #     key: secret-key
+  #     optional: false
+  # Example with templating support:
+  # POSTGRES_PASSWORD:
+  #     from: "{{ .Release.Name }}-postgres"
+  #     key: secret-key
+  #     optional: false
+
+envFrom:
+  configMaps: []
+  # - name: postgres-config
+  # - name: "{{ .Release.Name }}-postgres"
+
+  secrets: []
+  # - name: postgres-secret
+  # - name: "{{ .Release.Name }}-postgres-secret"
+
 containerPort: 8080
 
 # This is for setting Kubernetes Annotations to a Pod.
@@ -52,7 +91,7 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 80
+  port: 8080
 
 ingress:
   enabled: false
@@ -120,19 +159,6 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
-# Additional volumes on the output Deployment definition.
-volumes: []
-# - name: foo
-#   secret:
-#     secretName: mysecret
-#     optional: false
-
-# Additional volumeMounts on the output Deployment definition.
-volumeMounts: []
-# - name: foo
-#   mountPath: "/etc/foo"
-#   readOnly: true
-
 #  The defaults are shown here. Just enable what you need by overwriting the defaults
 limiter: |
   [botdetection]
@@ -184,6 +210,19 @@ limiter: |
   # Activate passlist of (hardcoded) IPs from the SearXNG organization,
   # e.g. `check.searx.space`.
   pass_searxng_org = true
+
+# Additional volumes on the output Deployment definition.
+extraVolumes: []
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+# Additional volumeMounts on the output Deployment definition.
+extraVolumeMounts: []
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
 
 ## @section Network Policy parameters
 networkPolicy:

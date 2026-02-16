@@ -363,6 +363,15 @@ entries:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/boilerplate-0.5.0/boilerplate-0.5.0.tgz
     version: 0.5.0
   - apiVersion: v2
+    created: "2025-08-21T08:57:00.680727175Z"
+    description: Boilerplate templates
+    digest: c4ca0af531cfe1a6b49052c88e55ea6521be769c7c394cc108b62ae4602663ba
+    name: boilerplate
+    type: library
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/boilerplate-0.4.0/boilerplate-0.4.0.tgz
+    version: 0.4.0
+  - apiVersion: v2
     created: "2025-08-21T08:29:19.300797169Z"
     description: Boilerplate templates
     digest: 6cf53a43273fb31b45d440e4b03604fdc55f2f7c75f5c9484455706c7bba4bf3
@@ -1791,40 +1800,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.5.0/template-0.5.0.tgz
     version: 0.5.0
-  - apiVersion: v2
-    appVersion: 1.16.0
-    created: "2025-08-21T12:49:18.365862322Z"
-    dependencies:
-    - name: boilerplate
-      repository: https://self-hosters-by-night.github.io/helm-charts
-      version: 0.4.0
-    description: A template Helm chart to demostrate the usage of the boilerplate
-      library chart.
-    digest: 8c25f01fa22eb0cc35901ba16b99daa22ae1f9525a79d0d97affcddf257d9e9d
-    maintainers:
-    - email: git@facorazza.com
-      name: facorazza
-    name: template
-    type: application
-    urls:
-    - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.4.0/template-0.4.0.tgz
-    version: 0.4.0
-  - apiVersion: v2
-    appVersion: 1.16.0
-    created: "2025-08-19T10:20:34.29706248Z"
-    dependencies:
-    - name: boilerplate
-      repository: https://self-hosters-by-night.github.io/helm-charts
-      version: 0.1.0
-    description: A template Helm chart to demostrate the usage of the boilerplate
-      library chart.
-    digest: 5c355655155f2f6517a5994a93673596727cb5e137ed737daa88f9aba06a1535
-    maintainers:
-    - email: git@facorazza.com
-      name: facorazza
-    name: template
-    type: application
-    urls:
-    - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.1.0/template-0.1.0.tgz
-    version: 0.1.0
 generated: "2025-12-23T13:01:28.185295016Z"

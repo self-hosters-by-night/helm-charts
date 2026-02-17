@@ -77,12 +77,22 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+          {{- if or .Values.persistence.enabled .Values.extraVolumeMounts }}
           volumeMounts:
+            {{- $hasDataMount := false }}
+            {{- range .Values.extraVolumeMounts }}
+              {{- if eq .name "data" }}
+                {{- $hasDataMount = true }}
+              {{- end }}
+            {{- end }}
+            {{- if not $hasDataMount }}
             - name: data
               mountPath: /var/lib/postgresql/{{ include "postgres.majorVersion" . }}/docker
+            {{- end }}
             {{- with .Values.extraVolumeMounts }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
+          {{- end }}
       {{- with .Values.podSecurityContext }}
       securityContext:
         {{- toYaml . | nindent 8 }}

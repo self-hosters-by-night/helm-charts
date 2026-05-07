@@ -2,7 +2,7 @@ apiVersion: v2
 name: manyfold
 description: "Manyfold is a self-hosted digital asset manager for 3d print files."
 type: application
-version: 0.6.0
+version: 0.5.0
 appVersion: "0.139.0"
 icon: https://raw.githubusercontent.com/manyfold3d/manyfold/main/app/assets/images/roundel.svg
 annotations:
@@ -17,4 +17,3 @@ dependencies:
   - name: postgres
     version: 0.14.2
     repository: "https://self-hosters-by-night.github.io/helm-charts"
-    

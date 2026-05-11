@@ -1,0 +1,35 @@
+{{- if and .Values.persistence.config.enabled (not .Values.persistence.config.existingClaim) }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ printf "%s-config" (include "boilerplate.names.fullname" .) }}
+  labels:
+    {{- include "boilerplate.labels.standard" . | nindent 4 }}
+spec:
+  {{- if .Values.persistence.config.storageClass }}
+  storageClassName: {{ .Values.persistence.config.storageClass | quote }}
+  {{- end }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.persistence.config.size | default "1Gi" | quote }}
+{{- end }}
+---
+{{- if and .Values.persistence.libraries.enabled (not .Values.persistence.libraries.existingClaim) }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ printf "%s-libraries" (include "boilerplate.names.fullname" .) }}
+  labels:
+    {{- include "boilerplate.labels.standard" . | nindent 4 }}
+spec:
+  {{- if .Values.persistence.libraries.storageClass }}
+  storageClassName: {{ .Values.persistence.libraries.storageClass | quote }}
+  {{- end }}
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.persistence.libraries.size | default "10Gi" | quote }}
+{{- end }}

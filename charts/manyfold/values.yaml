@@ -1,4 +1,3 @@
-
 # Global values for boilerplate compatibility
 global:
   imageRegistry: ""
@@ -62,11 +61,15 @@ persistence:
     name: "config"
     mountPath: "/config"
     existingClaim: ""
+    size: "1Gi"
+    storageClass: ""
   libraries:
     enabled: true
     name: "libraries"
     mountPath: "/libraries"
     existingClaim: ""
+    size: "10Gi"
+    storageClass: ""
 
 service:
   type: ClusterIP
@@ -110,6 +113,39 @@ readinessProbe:
     path: /
     port: http
   initialDelaySeconds: 30
+
+# PostgreSQL dependency configuration
+# When enabled, deploys a PostgreSQL instance and configures Manyfold to use it.
+# Change image.repository to ghcr.io/manyfold3d/manyfold when enabling postgres.
+postgres:
+  enabled: false
+  # Connection details used by the Manyfold app
+  host: "" # Leave empty to auto-detect: <release-name>-postgres
+  databaseName: manyfold
+  databaseUser: manyfold
+  # Existing secret containing DB credentials.
+  # When set, databasePassword is ignored.
+  existingSecret: ""
+  existingSecretKeys:
+    password: "password" # key in the secret holding the DB password
+  # Used only when existingSecret is not set
+  databasePassword: "CHANGE-ME"
+  # PostgreSQL subchart configuration
+  env:
+    vars:
+      POSTGRES_USER: manyfold
+      POSTGRES_DB: manyfold
+      # Set POSTGRES_PASSWORD here when not using existingSecret.
+      # When using existingSecret, configure env.fromSecret instead:
+      # fromSecret:
+      #   POSTGRES_PASSWORD:
+      #     from: <secret-name>
+      #     key: password
+    fromSecret: {}
+  persistence:
+    enabled: true
+    size: "5Gi"
+    storageClass: ""
 
 # Additional volumes on the output Deployment definition.
 extraVolumes: []

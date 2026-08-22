@@ -9,9 +9,9 @@ global:
   defaultStorageClass: ""
 
 ## @section Common parameters
-## @param nameOverride String to partially override karakeep.fullname template
+## @param nameOverride String to partially override searxng.fullname template
 nameOverride: ""
-## @param fullnameOverride String to fully override karakeep.fullname template
+## @param fullnameOverride String to fully override searxng.fullname template
 fullnameOverride: ""
 ## @param nodeSelector Node labels for pod assignment
 nodeSelector: {}
@@ -35,41 +35,31 @@ image:
 ## @param env Define environment variables or load specific ones from ConfigMaps and Secrets
 env:
   vars:
-    # Useful for development instances only. In production, use secrets.
-    # POSTGRES_USER: "postgres"
-    # POSTGRES_PASSWORD: "password"
+    # INSTANCE_NAME: "My SearXNG"
+    # BASE_URL: "https://searxng.example.com/"
+    # AUTOCOMPLETE: "true"
+    # TZ: "Europe/Rome"
     # Example with templating support:
-    # POSTGRES_PASSWORD: "{{ .Release.Name }}-postgres-password"
-    # POSTGRES_DB: "database"
+    # BASE_URL: "https://{{ .Release.Name }}.example.com/"
   fromConfigMap: {}
-  # POSTGRES_DB:
+  # AUTOCOMPLETE:
   #     from: configmap-name
   #     key: configmap-key
   #     optional: false
-  # Example with templating support:
-  # POSTGRES_DB:
-  #     from: "{{ .Release.Name }}-postgres
-  #     key: configmap-key
-  #     optional: false
   fromSecret: {}
-  # POSTGRES_PASSWORD:
+  # Secret key used for server-side encryption of cookies.
+  # Generate one with: openssl rand -hex 32
+  # SEARXNG_SECRET:
   #     from: secret-name
-  #     key: secret-key
-  #     optional: false
-  # Example with templating support:
-  # POSTGRES_PASSWORD:
-  #     from: "{{ .Release.Name }}-postgres"
   #     key: secret-key
   #     optional: false
 
 envFrom:
   configMaps: []
-  # - name: postgres-config
-  # - name: "{{ .Release.Name }}-postgres"
+  # - name: searxng-config
 
   secrets: []
-  # - name: postgres-secret
-  # - name: "{{ .Release.Name }}-postgres-secret"
+  # - name: searxng-secrets
 
 containerPort: 8080
 
@@ -223,6 +213,21 @@ extraVolumeMounts: []
 # - name: foo
 #   mountPath: "/etc/foo"
 #   readOnly: true
+
+## @section Persistence parameters
+persistence:
+  ## @param persistence.enabled Enable persistence for SearXNG config (/etc/searxng) using a Persistent Volume Claim
+  enabled: false
+  ## @param persistence.existingClaim Name of an existing Persistent Volume Claim to use
+  existingClaim: ""
+  ## @param persistence.storageClass Storage class of the Persistent Volume Claim
+  storageClass: ""
+  ## @param persistence.accessMode Persistent Volume Claim access mode
+  accessMode: ReadWriteOnce
+  ## @param persistence.size Size of the Persistent Volume Claim
+  size: 1Gi
+  ## @param persistence.annotations Persistent Volume Claim annotations
+  annotations: {}
 
 ## @section Network Policy parameters
 networkPolicy:

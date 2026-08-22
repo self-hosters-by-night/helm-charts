@@ -65,8 +65,12 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- if or .Values.limiter .Values.extraVolumeMounts }}
+          {{- if or .Values.persistence.enabled .Values.limiter .Values.extraVolumeMounts }}
           volumeMounts:
+            {{- if .Values.persistence.enabled }}
+            - name: data
+              mountPath: /etc/searxng
+            {{- end }}
             {{- if .Values.limiter }}
             - name: limiter
               mountPath: /etc/searxng/limiter.toml
@@ -79,8 +83,13 @@ spec:
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if or .Values.limiter .Values.extraVolumes }}
+      {{- if or .Values.persistence.enabled .Values.limiter .Values.extraVolumes }}
       volumes:
+        {{- if .Values.persistence.enabled }}
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ if .Values.persistence.existingClaim }}{{ .Values.persistence.existingClaim }}{{ else }}{{ include "boilerplate.names.fullname" . }}-data{{ end }}
+        {{- end }}
         {{- if .Values.limiter }}
         - name: limiter
           configMap:

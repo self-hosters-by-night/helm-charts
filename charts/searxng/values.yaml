@@ -149,6 +149,28 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
+## SearXNG settings.yml, rendered into a ConfigMap and mounted into /etc/searxng.
+## The "ultrasecretkey" placeholder is replaced with a random secret on first
+## install; the generated secret is preserved on the persistent volume across
+## restarts and chart upgrades.
+settings: |
+  # Read the documentation before extending the defaults:
+  # https://docs.searxng.org/admin/settings/
+
+  use_default_settings: true
+
+  server:
+    secret_key: "ultrasecretkey"
+    image_proxy: true
+
+  engines:
+    # Onion engines require a Tor SOCKS proxy (outgoing.using_tor_proxy);
+    # without one they fail to load and log ERRORs at startup.
+    - name: ahmia
+      inactive: true
+    - name: torch
+      inactive: true
+
 #  The defaults are shown here. Just enable what you need by overwriting the defaults
 limiter: |
   [botdetection]

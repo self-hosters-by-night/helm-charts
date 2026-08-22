@@ -1759,6 +1759,26 @@ entries:
   searxng:
   - apiVersion: v2
     appVersion: 2026.8.22-9fea41204
+    created: "2026-08-22T09:16:33.726506721Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.16.0
+    description: A Helm chart SearXNG, a free internet metasearch engine which aggregates
+      results from various search services and databases. Users are neither tracked
+      nor profiled.
+    digest: e7fc69a8ea0e43adf6c3d3cce3b3de3361931dccbfe0c17cc56c67e876bed2d6
+    icon: https://avatars.githubusercontent.com/u/80454229
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: searxng
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/searxng-1.2.0/searxng-1.2.0.tgz
+    version: 1.2.0
+  - apiVersion: v2
+    appVersion: 2026.8.22-9fea41204
     created: "2026-08-22T09:05:02.647311115Z"
     dependencies:
     - name: boilerplate
@@ -1905,4 +1925,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.5.0/template-0.5.0.tgz
     version: 0.5.0
-generated: "2026-08-22T09:05:02.647514709Z"
+generated: "2026-08-22T09:16:33.726741991Z"

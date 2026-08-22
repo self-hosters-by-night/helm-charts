@@ -193,16 +193,11 @@ persistence:
   volumeMode: ""
 
 # Secret configuration
+# Secrets are provisioned through the External Secrets Operator from OpenBao.
 secret:
   create: false
-  type: Opaque
   annotations: {}
-  data: {}
-  # data:
-  #   key1: value1
-  stringData: {}
-  # stringData:
-  #   key2: value2
+  # path: "shbn/example"
 
 # ConfigMap configuration
 configMap:
@@ -321,3 +316,14 @@ cronjob:
   nodeSelector: {}
   affinity: {}
   tolerations: []
+
+# Arbitrary extra Kubernetes manifests rendered as part of the release
+# (e.g. a CNPG Cluster, NetworkPolicies). Each list item is a manifest object;
+# Go templating is supported inside items.
+extraManifests: []
+  # - apiVersion: v1
+  #   kind: ConfigMap
+  #   metadata:
+  #     name: example
+  #   data:
+  #     key: value

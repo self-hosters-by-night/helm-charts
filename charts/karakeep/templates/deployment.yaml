@@ -21,6 +21,7 @@ spec:
       labels:
         {{- include "boilerplate.labels.podLabels" . | nindent 8 }}
     spec:
+      serviceAccountName: {{ include "boilerplate.names.serviceAccountName" . }}
       {{- include "boilerplate.images.pullSecrets"
         ( dict
           "globalImagePullSecrets" .Values.global.imagePullSecrets

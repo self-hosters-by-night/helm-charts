@@ -21,6 +21,17 @@ fullnameOverride: ""
 podAnnotations: {}
 podLabels: {}
 
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
 podSecurityContext: {}
   # fsGroup: 2000
 
@@ -33,15 +44,20 @@ securityContext: {}
   # runAsUser: 1000
 
 ## @param env Environment variables to add to the container
+# SECRET_KEY_BASE and the database password are provisioned through the
+# External Secrets Operator from OpenBao (key shbn/manyfold) and injected
+# from the release secret; do not set them here.
 env:
-  vars:
-    SECRET_KEY_BASE: "CHANGE-ME-OR-USE-SECRET"
+  vars: {}
   fromConfigMap: {}
   # ENV_VAR_NAME:
   #     from: configmap-name
   #     key: configmap-key
   #     optional: false
-  fromSecret: {}
+  fromSecret:
+    SECRET_KEY_BASE:
+      from: '{{ include "boilerplate.names.fullname" . }}'
+      key: SECRET_KEY_BASE
   # SECRET_NAME:
   #     from: secret-name
   #     key: secret-key
@@ -124,12 +140,10 @@ postgres:
   databaseName: manyfold
   databaseUser: manyfold
   # Existing secret containing DB credentials.
-  # When set, databasePassword is ignored.
+  # When set, the release secret (key "password") is ignored.
   existingSecret: ""
   existingSecretKeys:
     password: "password" # key in the secret holding the DB password
-  # Used only when existingSecret is not set
-  databasePassword: "CHANGE-ME"
   # PostgreSQL subchart configuration
   env:
     vars:
@@ -159,3 +173,14 @@ extraVolumeMounts: []
 # - name: foo
 #   mountPath: "/etc/foo"
 #   readOnly: true
+
+# Arbitrary extra Kubernetes manifests rendered as part of the release
+# (e.g. a CNPG Cluster, NetworkPolicies). Each list item is a manifest object;
+# Go templating is supported inside items.
+extraManifests: []
+  # - apiVersion: v1
+  #   kind: ConfigMap
+  #   metadata:
+  #     name: example
+  #   data:
+  #     key: value

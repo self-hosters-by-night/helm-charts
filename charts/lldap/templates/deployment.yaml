@@ -21,6 +21,7 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
+      serviceAccountName: {{ include "boilerplate.names.serviceAccountName" . }}
       {{- include "boilerplate.images.pullSecrets"
         ( dict
           "globalImagePullSecrets" .Values.global.imagePullSecrets

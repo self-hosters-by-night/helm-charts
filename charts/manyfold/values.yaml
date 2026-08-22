@@ -130,6 +130,20 @@ readinessProbe:
     port: http
   initialDelaySeconds: 30
 
+# Valkey dependency configuration
+# When enabled, deploys a Valkey instance and configures Manyfold's REDIS_URL
+# to point at it. Required by the standard manyfold3d/manyfold image (Sidekiq);
+# manyfold-solo bundles its own Redis instead.
+valkey:
+  enabled: false
+  host: "" # Leave empty to auto-detect: <release-name>-valkey
+  port: 6379
+  database: 1
+  # Full connection URL overriding host/port/database above.
+  # Needed when the subchart has auth.enabled, e.g.
+  # redis://:password@release-valkey:6379/1
+  url: ""
+
 # PostgreSQL dependency configuration
 # When enabled, deploys a PostgreSQL instance and configures Manyfold to use it.
 # Change image.repository to ghcr.io/manyfold3d/manyfold when enabling postgres.

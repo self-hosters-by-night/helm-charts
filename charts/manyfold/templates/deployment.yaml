@@ -81,7 +81,12 @@ spec:
                   key: "password"
               {{- end }}
           {{- end }}
+          {{- if .Values.valkey.enabled }}
+            - name: "REDIS_URL"
+              value: {{ .Values.valkey.url | default (printf "redis://%s:%d/%d" (.Values.valkey.host | default (printf "%s-valkey" .Release.Name)) (int .Values.valkey.port) (int .Values.valkey.database)) | quote }}
+          {{- end }}
           {{- include "boilerplate.environment.envFrom" ( dict "envFrom" .Values.envFrom "global" .Values.global ) | nindent 10 }}
+
           {{- with .Values.resources }}
           resources:
             {{- toYaml . | nindent 12 }}

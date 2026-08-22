@@ -29,6 +29,31 @@ spec:
           "localImagePullSecrets" .Values.image.pullSecrets
         ) | nindent 6
       }}
+      {{- if .Values.settings }}
+      initContainers:
+        - name: settings-init
+          image: busybox:1.37
+          command: ["/bin/sh", "-ec"]
+          args:
+            - |
+              SRC="/template/settings.yml"
+              DST="/etc/searxng/settings.yml"
+              SECRET=""
+              if [ -f "$DST" ]; then
+                SECRET="$(sed -n 's/^.*secret_key:[[:space:]]*"\([^"]*\)".*$/\1/p' "$DST" | head -n 1)"
+              fi
+              if [ -z "$SECRET" ] || [ "$SECRET" = "ultrasecretkey" ]; then
+                SECRET="$(head -c 24 /dev/urandom | base64 | tr -dc 'a-zA-Z0-9')"
+              fi
+              cp "$SRC" "$DST"
+              sed -i "s/ultrasecretkey/$SECRET/g" "$DST"
+              echo "settings.yml written (existing secret preserved)"
+          volumeMounts:
+            - name: data
+              mountPath: /etc/searxng
+            - name: settings
+              mountPath: /template
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           {{- include "boilerplate.images.image"
@@ -65,12 +90,9 @@ spec:
           securityContext:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- if or .Values.persistence.enabled .Values.limiter .Values.extraVolumeMounts }}
           volumeMounts:
-            {{- if .Values.persistence.enabled }}
             - name: data
               mountPath: /etc/searxng
-            {{- end }}
             {{- if .Values.limiter }}
             - name: limiter
               mountPath: /etc/searxng/limiter.toml
@@ -78,25 +100,6 @@ spec:
               readOnly: true
             {{- end }}
             {{- include "boilerplate.storage.extraVolumeMounts" . | indent 12 }}
-          {{- end }}
-      {{- with .Values.podSecurityContext }}
-      securityContext:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- if or .Values.persistence.enabled .Values.limiter .Values.extraVolumes }}
-      volumes:
-        {{- if .Values.persistence.enabled }}
-        - name: data
-          persistentVolumeClaim:
-            claimName: {{ if .Values.persistence.existingClaim }}{{ .Values.persistence.existingClaim }}{{ else }}{{ include "boilerplate.names.fullname" . }}-data{{ end }}
-        {{- end }}
-        {{- if .Values.limiter }}
-        - name: limiter
-          configMap:
-            name: {{ include "boilerplate.names.fullname" . }}-limiter
-        {{- end }}
-        {{- include "boilerplate.storage.extraVolumes" . | indent 8 }}
-      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -109,3 +112,22 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      volumes:
+        - name: data
+          {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ if .Values.persistence.existingClaim }}{{ .Values.persistence.existingClaim }}{{ else }}{{ include "boilerplate.names.fullname" . }}-data{{ end }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        {{- if .Values.settings }}
+        - name: settings
+          configMap:
+            name: {{ include "boilerplate.names.fullname" . }}-settings
+        {{- end }}
+        {{- if .Values.limiter }}
+        - name: limiter
+          configMap:
+            name: {{ include "boilerplate.names.fullname" . }}-limiter
+        {{- end }}
+        {{- include "boilerplate.storage.extraVolumes" . | indent 8 }}

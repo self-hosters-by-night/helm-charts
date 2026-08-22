@@ -1,4 +1,17 @@
+{{- if .Values.settings }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "boilerplate.names.fullname" . }}-settings
+  labels:
+    {{- include "boilerplate.labels.standard" . | nindent 4 }}
+data:
+  settings.yml: |
+    {{- .Values.settings | nindent 4 }}
+{{- end }}
 {{- if .Values.limiter }}
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:

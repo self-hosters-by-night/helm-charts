@@ -21,6 +21,7 @@ spec:
           {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
+      serviceAccountName: {{ include "boilerplate.names.serviceAccountName" . }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -57,7 +58,7 @@ spec:
               "localPullPolicy" .Values.image.pullPolicy
             ) | nindent 10
           }}
-          {{- include "boilerplate.environment.env" ( dict "env" .Values.env "global" .Values.global ) | nindent 10 }}
+          {{- include "boilerplate.environment.env" ( dict "root" . "env" .Values.env "global" .Values.global ) | nindent 10 }}
           {{- if .Values.postgres.enabled }}
             - name: "DATABASE_ADAPTER"
               value: "postgresql"
@@ -74,7 +75,10 @@ spec:
                   name: {{ .Values.postgres.existingSecret | quote }}
                   key: {{ .Values.postgres.existingSecretKeys.password | default "password" | quote }}
               {{- else }}
-              value: {{ .Values.postgres.databasePassword | default "" | quote }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "boilerplate.names.fullname" . | quote }}
+                  key: "password"
               {{- end }}
           {{- end }}
           {{- include "boilerplate.environment.envFrom" ( dict "envFrom" .Values.envFrom "global" .Values.global ) | nindent 10 }}

@@ -978,6 +978,34 @@ entries:
       artifacthub.io/category: security
     apiVersion: v2
     appVersion: "2025-05-19"
+    created: "2026-08-22T17:54:34.070572677Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.15.1
+    - name: postgres
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.13.0
+    description: A Helm chart for LLDAP, a lightweight authentication server that
+      provides an opinionated and simplified LDAP interface for authentication.
+    digest: 1b9526d8cc781300949860fab361d4a3888d0fdb8956f2d97f601ccc3c6e5bd1
+    icon: https://raw.githubusercontent.com/self-hosters-by-night/helm-charts/refs/heads/main/assets/lldap.png
+    keywords:
+    - ldap
+    - authentication
+    - directory
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: lldap
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/lldap-0.5.2/lldap-0.5.2.tgz
+    version: 0.5.2
+  - annotations:
+      artifacthub.io/category: security
+    apiVersion: v2
+    appVersion: "2025-05-19"
     created: "2026-08-22T13:13:13.966360138Z"
     dependencies:
     - name: boilerplate
@@ -1059,6 +1087,34 @@ entries:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/lldap-0.3.0/lldap-0.3.0.tgz
     version: 0.3.0
   manyfold:
+  - annotations:
+      artifacthub.io/category: storage
+    apiVersion: v2
+    appVersion: 0.147.2
+    created: "2026-08-22T17:54:34.215407306Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.16.0
+    - condition: postgres.enabled
+      name: postgres
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.14.3
+    - condition: valkey.enabled
+      name: valkey
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.1.0
+    description: Manyfold is a self-hosted digital asset manager for 3d print files.
+    digest: 3182259c0eb558672513921286556757c9bbcb0f88924b0e4b09b3187c7f7fc1
+    icon: https://raw.githubusercontent.com/manyfold3d/manyfold/main/app/frontend/images/roundel.svg
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: manyfold
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/manyfold-0.7.3/manyfold-0.7.3.tgz
+    version: 0.7.3
   - annotations:
       artifacthub.io/category: storage
     apiVersion: v2
@@ -2348,4 +2404,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/valkey-0.1.0/valkey-0.1.0.tgz
     version: 0.1.0
-generated: "2026-08-22T16:48:59.131053996Z"
+generated: "2026-08-22T17:54:34.215777038Z"

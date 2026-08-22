@@ -5,6 +5,26 @@ entries:
       artifacthub.io/category: integration-delivery
     apiVersion: v2
     appVersion: 1.8.1
+    created: "2026-08-22T13:13:12.864388219Z"
+    description: Bento is a declarative data streaming service that solves a wide
+      range of data engineering problems with simple, chained, stateless processing
+      steps. It implements transaction based resiliency with back pressure, so when
+      connecting to at-least-once sources and sinks it's able to guarantee at-least-once
+      delivery without needing to persist messages during transit.
+    digest: f93622fe99d3ab185cd690512a9af4933cc32c56ad41b31228890a0b8a72e83b
+    icon: https://raw.githubusercontent.com/warpstreamlabs/bento/main/icon.png
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: bento
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/bento-0.9.1/bento-0.9.1.tgz
+    version: 0.9.1
+  - annotations:
+      artifacthub.io/category: integration-delivery
+    apiVersion: v2
+    appVersion: 1.8.1
     created: "2025-06-23T20:28:42.438088593Z"
     description: Bento is a declarative data streaming service that solves a wide
       range of data engineering problems with simple, chained, stateless processing
@@ -437,6 +457,24 @@ entries:
   chrome:
   - apiVersion: v2
     appVersion: "124"
+    created: "2026-08-22T13:13:13.280365871Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.15.1
+    description: A Helm chart to deploy headless Chrome browser in Kubernetes.
+    digest: ca607aa2b6ba6c66091ba2b428f74f0d88a9b24a9fb16693fd593a4b81edf502
+    icon: https://upload.wikimedia.org/wikipedia/commons/archive/e/e1/20230720031433%21Google_Chrome_icon_%28February_2022%29.svg
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: chrome
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/chrome-0.5.1/chrome-0.5.1.tgz
+    version: 0.5.1
+  - apiVersion: v2
+    appVersion: "124"
     created: "2025-10-12T21:37:21.515782027Z"
     dependencies:
     - name: boilerplate
@@ -590,6 +628,33 @@ entries:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/fission-crds-1.20.5/fission-crds-1.20.5.tgz
     version: 1.20.5
   karakeep:
+  - apiVersion: v2
+    appVersion: 0.27.1
+    created: "2026-08-22T13:13:13.493239459Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.15.1
+    - condition: chrome.enabled
+      name: chrome
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.5.0
+    - condition: meilisearch.enabled
+      name: meilisearch
+      repository: https://meilisearch.github.io/meilisearch-kubernetes
+      version: 0.15.0
+    description: A Helm chart for Karakeep - AI-powered knowledge management and bookmark
+      organizer
+    digest: 27d7446426cd211e26642cc134ab657743958799c34bb8fa0b59f425641467a6
+    icon: https://avatars.githubusercontent.com/u/202258986
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: karakeep
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/karakeep-2.5.1/karakeep-2.5.1.tgz
+    version: 2.5.1
   - apiVersion: v2
     appVersion: 0.27.1
     created: "2025-11-03T20:27:54.086754898Z"
@@ -897,7 +962,46 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/karakeep-0.1.0/karakeep-0.1.0.tgz
     version: 0.1.0
+  keycloak:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2026-08-22T13:13:13.705468795Z"
+    description: A Helm chart for Kubernetes
+    digest: e3a4b06c2cce605f80735b13277405850e46e9ffefd4f60f5c4ae12c21681169
+    name: keycloak
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/keycloak-0.1.1/keycloak-0.1.1.tgz
+    version: 0.1.1
   lldap:
+  - annotations:
+      artifacthub.io/category: security
+    apiVersion: v2
+    appVersion: "2025-05-19"
+    created: "2026-08-22T13:13:13.966360138Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.15.1
+    - name: postgres
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.13.0
+    description: A Helm chart for LLDAP, a lightweight authentication server that
+      provides an opinionated and simplified LDAP interface for authentication.
+    digest: 877c5cc4f94517ce2b62c7a01b4d71e9fb0da9065388fb8177c700cfb520baeb
+    icon: https://raw.githubusercontent.com/self-hosters-by-night/helm-charts/refs/heads/main/assets/lldap.png
+    keywords:
+    - ldap
+    - authentication
+    - directory
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: lldap
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/lldap-0.5.1/lldap-0.5.1.tgz
+    version: 0.5.1
   - annotations:
       artifacthub.io/category: security
     apiVersion: v2
@@ -1143,6 +1247,34 @@ entries:
       artifacthub.io/category: streaming-messaging
     apiVersion: v2
     appVersion: 2.0.22
+    created: "2026-08-22T13:13:14.422908402Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.16.0
+    description: A Helm chart for Eclipse Mosquitto MQTT broker. Provides a secure,
+      lightweight, and reliable messaging solution for IoT and other applications.
+    digest: 10070014a12b08d7ce7912d5069bc74a5f095e3cf72f415276000024a20d51f1
+    icon: https://raw.githubusercontent.com/docker-library/docs/757578e3a44e5460a8a11d32a81776f8b74231a9/eclipse-mosquitto/logo.png
+    keywords:
+    - mqtt
+    - mosquitto
+    - broker
+    - iot
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: mosquitto
+    sources:
+    - https://github.com/eclipse/mosquitto
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/mosquitto-0.5.2/mosquitto-0.5.2.tgz
+    version: 0.5.2
+  - annotations:
+      artifacthub.io/category: streaming-messaging
+    apiVersion: v2
+    appVersion: 2.0.22
     created: "2026-02-16T19:53:27.248425279Z"
     dependencies:
     - name: boilerplate
@@ -1299,6 +1431,40 @@ entries:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/mosquitto-0.1.0/mosquitto-0.1.0.tgz
     version: 0.1.0
   popeye:
+  - annotations:
+      artifacthub.io/category: security
+      artifacthub.io/screenshots: |
+        - title: Console Output
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/console.png"
+        - title: HTML Output
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/html.png"
+        - title: JSON Output
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/json.png"
+        - title: Dashboard
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/pop-dash.png"
+        - title: Score A
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/score-a.png"
+        - title: Score D
+          url: "https://raw.githubusercontent.com/derailed/popeye/refs/heads/master/assets/screens/score-d.png"
+    apiVersion: v2
+    appVersion: v0.22.1
+    created: "2026-08-22T13:13:14.621605526Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.16.0
+    description: Popeye is a utility that scans live Kubernetes clusters and reports
+      potential issues with deployed resources and configurations.
+    digest: a609bfaadeb7e51f37c1bdd7fee38f258eaf9c0b6cf27003d202f2509bb959dd
+    icon: https://raw.githubusercontent.com/derailed/popeye/master/assets/popeye_logo.png
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: popeye
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/popeye-0.6.1/popeye-0.6.1.tgz
+    version: 0.6.1
   - annotations:
       artifacthub.io/category: security
       artifacthub.io/screenshots: |
@@ -1577,6 +1743,27 @@ entries:
       artifacthub.io/category: database
     apiVersion: v2
     appVersion: "18.1"
+    created: "2026-08-22T13:13:14.839590181Z"
+    dependencies:
+    - name: boilerplate
+      repository: file://../boilerplate
+      version: 0.16.0
+    description: Postgres is an object-relational database system that provides reliability
+      and data integrity.
+    digest: 8ca5d4acd7d8220028af5b0a336197be290b47e24d1f1a6776e88bfb1d2dd231
+    icon: https://raw.githubusercontent.com/self-hosters-by-night/helm-charts/refs/heads/main/assets/postgresql.png
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: postgres
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/postgres-0.14.3/postgres-0.14.3.tgz
+    version: 0.14.3
+  - annotations:
+      artifacthub.io/category: database
+    apiVersion: v2
+    appVersion: "18.1"
     created: "2026-02-17T22:57:48.880859667Z"
     dependencies:
     - name: boilerplate
@@ -1807,6 +1994,26 @@ entries:
   searxng:
   - apiVersion: v2
     appVersion: 2026.8.22-9fea41204
+    created: "2026-08-22T13:13:15.050436233Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.16.0
+    description: A Helm chart SearXNG, a free internet metasearch engine which aggregates
+      results from various search services and databases. Users are neither tracked
+      nor profiled.
+    digest: 98d8bbe1e52e06d70b38581410e52a73413969bfc60c62b7f3a859327cd1bb70
+    icon: https://avatars.githubusercontent.com/u/80454229
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: searxng
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/searxng-1.3.1/searxng-1.3.1.tgz
+    version: 1.3.1
+  - apiVersion: v2
+    appVersion: 2026.8.22-9fea41204
     created: "2026-08-22T10:45:28.351437276Z"
     dependencies:
     - name: boilerplate
@@ -1958,6 +2165,24 @@ entries:
     version: 0.1.0
   template:
   - apiVersion: v2
+    created: "2026-08-22T13:13:15.245547096Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.16.0
+    description: A template Helm chart to demostrate the usage of the boilerplate
+      library chart.
+    digest: 363a9ce4eb764a9b70d223b8be08fc8d7ff2ef12b3bc2ce6482aeddb5f5d27fa
+    icon: https://raw.githubusercontent.com/self-hosters-by-night/helm-charts/refs/heads/main/assets/template.png
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: template
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.7.1/template-0.7.1.tgz
+    version: 0.7.1
+  - apiVersion: v2
     created: "2026-02-16T19:53:27.930011961Z"
     dependencies:
     - name: boilerplate
@@ -1993,4 +2218,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.5.0/template-0.5.0.tgz
     version: 0.5.0
-generated: "2026-08-22T10:45:28.351644663Z"
+generated: "2026-08-22T13:13:15.245883585Z"

@@ -958,6 +958,30 @@ entries:
   - annotations:
       artifacthub.io/category: storage
     apiVersion: v2
+    appVersion: 0.139.0
+    created: "2026-08-22T09:05:02.300360584Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.16.0
+    - condition: postgres.enabled
+      name: postgres
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.14.2
+    description: Manyfold is a self-hosted digital asset manager for 3d print files.
+    digest: c6829b1d8806624b41c34436dc31f8ac6dde6b328590a27d877cc65845b91958
+    icon: https://raw.githubusercontent.com/manyfold3d/manyfold/main/app/assets/images/roundel.svg
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: manyfold
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/manyfold-0.5.0/manyfold-0.5.0.tgz
+    version: 0.5.0
+  - annotations:
+      artifacthub.io/category: storage
+    apiVersion: v2
     appVersion: 0.78.1
     created: "2025-10-13T22:12:04.981047351Z"
     dependencies:
@@ -1734,6 +1758,26 @@ entries:
     version: 0.7.0
   searxng:
   - apiVersion: v2
+    appVersion: 2026.8.22-9fea41204
+    created: "2026-08-22T09:05:02.647311115Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.16.0
+    description: A Helm chart SearXNG, a free internet metasearch engine which aggregates
+      results from various search services and databases. Users are neither tracked
+      nor profiled.
+    digest: ae4a0652716b8c1805f8d9889ba626173ee7ab5af777a0e2c0e2863df3baf9d6
+    icon: https://avatars.githubusercontent.com/u/80454229
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: searxng
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/searxng-1.1.1/searxng-1.1.1.tgz
+    version: 1.1.1
+  - apiVersion: v2
     appVersion: 2026.2.15-da9c0815a
     created: "2026-02-16T19:53:27.685176049Z"
     dependencies:
@@ -1861,4 +1905,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.5.0/template-0.5.0.tgz
     version: 0.5.0
-generated: "2026-02-17T22:57:48.881077844Z"
+generated: "2026-08-22T09:05:02.647514709Z"

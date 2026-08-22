@@ -958,6 +958,30 @@ entries:
   - annotations:
       artifacthub.io/category: storage
     apiVersion: v2
+    appVersion: 0.147.2
+    created: "2026-08-22T09:36:01.277545483Z"
+    dependencies:
+    - name: boilerplate
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.16.0
+    - condition: postgres.enabled
+      name: postgres
+      repository: https://self-hosters-by-night.github.io/helm-charts
+      version: 0.14.2
+    description: Manyfold is a self-hosted digital asset manager for 3d print files.
+    digest: 66c27ecb3746c7301bce66cc12967429adf4ad7b739616c8adf3019dddb6f65a
+    icon: https://raw.githubusercontent.com/manyfold3d/manyfold/main/app/frontend/images/roundel.svg
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: manyfold
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/manyfold-0.5.2/manyfold-0.5.2.tgz
+    version: 0.5.2
+  - annotations:
+      artifacthub.io/category: storage
+    apiVersion: v2
     appVersion: 0.139.0
     created: "2026-08-22T09:21:38.794019649Z"
     dependencies:
@@ -1949,4 +1973,4 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.5.0/template-0.5.0.tgz
     version: 0.5.0
-generated: "2026-08-22T09:21:38.794147178Z"
+generated: "2026-08-22T09:36:01.277784441Z"

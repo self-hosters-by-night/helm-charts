@@ -2,7 +2,7 @@ apiVersion: v2
 name: searxng
 description: A Helm chart SearXNG, a free internet metasearch engine which aggregates results from various search services and databases. Users are neither tracked nor profiled.
 type: application
-version: 1.3.0
+version: 1.3.1
 appVersion: 2026.8.22-9fea41204
 icon: https://avatars.githubusercontent.com/u/80454229
 maintainers:

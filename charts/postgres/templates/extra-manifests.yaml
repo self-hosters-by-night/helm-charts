@@ -1,0 +1,5 @@
+{{/*
+Extra user-provided manifests rendered alongside the chart's resources.
+Each item of .Values.extraManifests is a manifest object; Go templating is supported.
+*/}}
+{{- include "boilerplate.render.extraObjects" ( dict "root" . "extraObjects" .Values.extraManifests ) }}

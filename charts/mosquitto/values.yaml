@@ -186,3 +186,14 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+# Arbitrary extra Kubernetes manifests rendered as part of the release
+# (e.g. a CNPG Cluster, NetworkPolicies). Each list item is a manifest object;
+# Go templating is supported inside items.
+extraManifests: []
+  # - apiVersion: v1
+  #   kind: ConfigMap
+  #   metadata:
+  #     name: example
+  #   data:
+  #     key: value

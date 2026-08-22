@@ -119,14 +119,16 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
+# Probe the dedicated /health endpoint; / redirects (single-user auto-login
+# bounce) which kubelet probes cannot follow to completion
 livenessProbe:
   httpGet:
-    path: /
+    path: /health
     port: http
   initialDelaySeconds: 60
 readinessProbe:
   httpGet:
-    path: /
+    path: /health
     port: http
   initialDelaySeconds: 30
 

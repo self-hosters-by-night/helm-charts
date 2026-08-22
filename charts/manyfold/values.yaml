@@ -102,6 +102,22 @@ ingress:
       paths:
         - path: /
           pathType: ImplementationSpecific
+
+httproute:
+  enabled: false
+  annotations: {}
+    # gateway.networking.k8s.io/route-timeout: "30s"
+  parentRefs:
+    - name: http-gateway
+      namespace: kube-system
+  hostnames:
+    - manyfold.local
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+
   tls: []
   #  - secretName: manyfold-tls
   #    hosts:

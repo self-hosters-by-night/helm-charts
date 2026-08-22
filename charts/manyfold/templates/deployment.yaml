@@ -58,6 +58,25 @@ spec:
             ) | nindent 10
           }}
           {{- include "boilerplate.environment.env" ( dict "env" .Values.env "global" .Values.global ) | nindent 10 }}
+          {{- if .Values.postgres.enabled }}
+            - name: "DATABASE_ADAPTER"
+              value: "postgresql"
+            - name: "DATABASE_HOST"
+              value: {{ .Values.postgres.host | default (printf "%s-postgres" .Release.Name) | quote }}
+            - name: "DATABASE_NAME"
+              value: {{ .Values.postgres.databaseName | default "manyfold" | quote }}
+            - name: "DATABASE_USER"
+              value: {{ .Values.postgres.databaseUser | default "manyfold" | quote }}
+            - name: "DATABASE_PASSWORD"
+              {{- if .Values.postgres.existingSecret }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.postgres.existingSecret | quote }}
+                  key: {{ .Values.postgres.existingSecretKeys.password | default "password" | quote }}
+              {{- else }}
+              value: {{ .Values.postgres.databasePassword | default "" | quote }}
+              {{- end }}
+          {{- end }}
           {{- include "boilerplate.environment.envFrom" ( dict "envFrom" .Values.envFrom "global" .Values.global ) | nindent 10 }}
           {{- with .Values.resources }}
           resources:

@@ -2242,4 +2242,26 @@ entries:
     urls:
     - https://github.com/self-hosters-by-night/helm-charts/releases/download/template-0.5.0/template-0.5.0.tgz
     version: 0.5.0
-generated: "2026-08-22T13:15:56.49994232Z"
+  valkey:
+  - annotations:
+      artifacthub.io/category: database
+    apiVersion: v2
+    appVersion: 9.1.1
+    created: "2026-08-22T14:29:10.526067913Z"
+    dependencies:
+    - name: boilerplate
+      repository: file://../boilerplate
+      version: 0.16.0
+    description: Valkey is a high-performance key/value datastore supporting workloads
+      like caching and message queues.
+    digest: 98cb996896e283ab4342a9b417014e5e43ac776e60c3091524d24d4df04eed93
+    icon: https://avatars.githubusercontent.com/u/97776161
+    maintainers:
+    - email: git@facorazza.com
+      name: facorazza
+    name: valkey
+    type: application
+    urls:
+    - https://github.com/self-hosters-by-night/helm-charts/releases/download/valkey-0.1.0/valkey-0.1.0.tgz
+    version: 0.1.0
+generated: "2026-08-22T14:29:10.526182106Z"

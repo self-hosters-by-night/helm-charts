@@ -1,0 +1,60 @@
+{{- if and .Values.networkPolicy.enabled (eq .Values.networkPolicy.flavor "cilium") }}
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: {{ include "boilerplate.names.fullname" . }}
+  labels:
+    {{- include "boilerplate.labels.standard" . | nindent 4 }}
+spec:
+  endpointSelector:
+    matchLabels:
+      {{- include "boilerplate.labels.selectorLabels" . | nindent 6 }}
+  egress:
+    - toEndpoints:
+      - matchLabels:
+          k8s:io.kubernetes.pod.namespace: kube-system
+          k8s:k8s-app: kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: TCP
+            - port: "53"
+              protocol: UDP
+          rules:
+            dns:
+              # Required to resolve external endpoints
+              - matchPattern: "*"
+    - toFQDNs:
+        - matchPattern: "*"
+      toPorts:
+        - ports:
+            - port: "80"
+              protocol: TCP
+            - port: "443"
+              protocol: TCP
+    {{- if .Values.valkey.enabled }}
+    - toEndpoints:
+      - matchLabels:
+          k8s:app.kubernetes.io/name: valkey
+      toPorts:
+        - ports:
+            - port: {{ .Values.valkey.port | quote }}
+              protocol: TCP
+    {{- end }}
+    {{- if .Values.postgres.enabled }}
+    - toEndpoints:
+      - matchLabels:
+          k8s:app.kubernetes.io/name: postgres
+      toPorts:
+        - ports:
+            - port: "5432"
+              protocol: TCP
+    {{- end }}
+  ingress:
+    - fromEntities:
+        - ingress
+      toPorts:
+        - ports:
+            - port: http
+              protocol: TCP
+{{- end }}

@@ -175,6 +175,14 @@ postgres:
     size: "5Gi"
     storageClass: ""
 
+## @section Network Policy parameters
+networkPolicy:
+  ## @param networkPolicy.enabled Enable NetworkPolicy
+  enabled: false
+  ## @param networkPolicy.flavor Network policy flavor (kubernetes or cilium)
+  ## Options: "kubernetes" or "cilium"
+  flavor: "kubernetes"
+
 # Additional volumes on the output Deployment definition.
 extraVolumes: []
 # - name: foo

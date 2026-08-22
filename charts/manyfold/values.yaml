@@ -132,6 +132,27 @@ readinessProbe:
     port: http
   initialDelaySeconds: 30
 
+## @section Network Policy parameters
+networkPolicy:
+  ## @param networkPolicy.enabled Enable NetworkPolicy
+  enabled: false
+  ## @param networkPolicy.flavor Network policy flavor (kubernetes or cilium)
+  ## Options: "kubernetes" or "cilium"
+  flavor: "kubernetes"
+
+# Additional volumes on the output Deployment definition.
+extraVolumes: []
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+# Additional volumeMounts on the output Deployment definition.
+extraVolumeMounts: []
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
+
 # Valkey dependency configuration
 # When enabled, deploys a Valkey instance and configures Manyfold's REDIS_URL
 # to point at it. Required by the standard manyfold3d/manyfold image (Sidekiq);
@@ -176,27 +197,6 @@ postgres:
     enabled: true
     size: "5Gi"
     storageClass: ""
-
-## @section Network Policy parameters
-networkPolicy:
-  ## @param networkPolicy.enabled Enable NetworkPolicy
-  enabled: false
-  ## @param networkPolicy.flavor Network policy flavor (kubernetes or cilium)
-  ## Options: "kubernetes" or "cilium"
-  flavor: "kubernetes"
-
-# Additional volumes on the output Deployment definition.
-extraVolumes: []
-# - name: foo
-#   secret:
-#     secretName: mysecret
-#     optional: false
-
-# Additional volumeMounts on the output Deployment definition.
-extraVolumeMounts: []
-# - name: foo
-#   mountPath: "/etc/foo"
-#   readOnly: true
 
 # Arbitrary extra Kubernetes manifests rendered as part of the release
 # (e.g. a CNPG Cluster, NetworkPolicies). Each list item is a manifest object;

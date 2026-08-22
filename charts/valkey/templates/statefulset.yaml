@@ -1,0 +1,142 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "boilerplate.names.fullname" . }}
+  {{- with .Values.global.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "boilerplate.labels.standard" . | nindent 4 }}
+spec:
+  serviceName: "{{ include "boilerplate.names.name" . }}"
+  replicas: {{ .Values.replicaCount | default 1 }}
+  selector:
+    matchLabels:
+      {{- include "boilerplate.labels.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- if .Values.podAnnotations }}
+      annotations:
+        {{- toYaml .Values.podAnnotations | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "boilerplate.labels.standard" . | nindent 8 }}
+    spec:
+      {{- include "boilerplate.images.pullSecrets"
+        ( dict
+          "globalImagePullSecrets" .Values.global.imagePullSecrets
+          "localImagePullSecrets" .Values.image.pullSecrets
+        ) | nindent 6
+      }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          {{- include "boilerplate.images.image"
+            ( dict
+              "root" .
+              "image" .Values.image
+            ) | nindent 10
+          }}
+          {{- include "boilerplate.images.pullPolicy"
+            ( dict
+              "globalPullPolicy" .Values.global.imagePullPolicy
+              "localPullPolicy" .Values.image.pullPolicy
+            ) | nindent 10
+          }}
+          {{- $env := deepCopy .Values.env -}}
+          {{- if .Values.auth.enabled -}}
+          {{- $_ := set $env "fromSecret"
+              ( merge
+                ( dict
+                  "VALKEY_PASSWORD"
+                  ( dict
+                    "from" (.Values.auth.existingSecret | default (include "boilerplate.names.fullname" .))
+                    "key" (.Values.auth.existingSecretKey | default "password")
+                  )
+                )
+                ($env.fromSecret | default dict)
+              )
+          -}}
+          {{- end -}}
+          {{- include "boilerplate.environment.env" ( dict "root" . "env" $env ) | indent 10 }}
+          {{- include "boilerplate.environment.envFrom" ( dict "root" . "envFrom" .Values.envFrom ) | indent 10 }}
+          args:
+            - "valkey-server"
+            {{- range .Values.extraArgs }}
+            - {{ tpl . $ | quote }}
+            {{- end }}
+            {{- if .Values.auth.enabled }}
+            - "--requirepass"
+            - "$(VALKEY_PASSWORD)"
+            {{- end }}
+          ports:
+            - name: redis
+              containerPort: 6379
+              protocol: TCP
+          {{- with .Values.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if or .Values.persistence.enabled .Values.extraVolumeMounts }}
+          volumeMounts:
+            {{- if .Values.persistence.enabled }}
+            - name: data
+              mountPath: /data
+            {{- end }}
+            {{- range .Values.extraVolumeMounts }}
+            - name: {{ .name }}
+              mountPath: {{ tpl .mountPath $ | quote }}
+            {{- end }}
+          {{- end }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.extraVolumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  {{- if .Values.persistence.enabled }}
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+        {{- with .Values.persistence.annotations }}
+        annotations:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+      spec:
+        {{- with .Values.persistence.storageClass }}
+        storageClassName: {{ . | quote }}
+        {{- end }}
+        accessModes:
+          {{- range .Values.persistence.accessModes }}
+          - {{ . }}
+          {{- end }}
+        resources:
+          requests:
+            storage: {{ .Values.persistence.size }}
+  {{- end }}

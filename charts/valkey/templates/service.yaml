@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "boilerplate.names.fullname" . }}
+  {{- with .Values.global.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  labels:
+    {{- include "boilerplate.labels.standard" . | nindent 4 }}
+spec:
+  selector:
+    {{- include "boilerplate.labels.selectorLabels" . | nindent 4 }}
+  type: {{ .Values.service.type }}
+  ports:
+    - name: redis
+      port: {{ .Values.service.port }}
+      protocol: TCP
+      targetPort: redis

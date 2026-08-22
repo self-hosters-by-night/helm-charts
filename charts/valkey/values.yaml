@@ -1,0 +1,105 @@
+global:
+  annotations: {}
+  labels: {}
+  imagePullSecrets: []
+  imageRegistry: ""
+  imagePullPolicy: ""
+
+nameOverride: ""
+
+replicaCount: 1
+
+image:
+  registry: docker.io
+  repository: valkey/valkey
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+  digest: ""
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+
+## @param extraArgs Additional arguments appended to `valkey-server`
+# e.g. ["--save", "", "--appendonly", "no"] for a cache-only instance.
+extraArgs: []
+
+## Authentication (requirepass).
+## When enabled without existingSecret, `password` is stored in a chart-managed
+## Secret; clients connect with redis://:<password>@<host>:6379.
+auth:
+  enabled: false
+  password: ""
+  existingSecret: ""
+  existingSecretKey: "password"
+
+## @param env Define environment variables or load specific ones from ConfigMaps and Secrets
+env:
+  vars: {}
+  fromConfigMap: {}
+  fromSecret: {}
+
+envFrom:
+  configMaps: []
+  secrets: []
+
+persistence:
+  enabled: true
+  annotations: {}
+  storageClass: ""
+  accessModes:
+    - ReadWriteOnce
+  size: "1Gi"
+
+service:
+  type: ClusterIP
+  port: 6379
+
+# Health checks. The default commands pick up requirepass automatically via
+# the VALKEY_PASSWORD environment variable set when auth is enabled.
+livenessProbe:
+  exec:
+    command:
+      - "/bin/sh"
+      - "-c"
+      - 'if [ -n "$VALKEY_PASSWORD" ]; then valkey-cli -a "$VALKEY_PASSWORD" --no-auth-warning ping; else valkey-cli ping; fi'
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 6
+
+readinessProbe:
+  exec:
+    command:
+      - "/bin/sh"
+      - "-c"
+      - 'if [ -n "$VALKEY_PASSWORD" ]; then valkey-cli -a "$VALKEY_PASSWORD" --no-auth-warning ping; else valkey-cli ping; fi'
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 6
+
+resources: {}
+
+podSecurityContext: {}
+securityContext: {}
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+podAnnotations: {}
+
+# Additional volumes on the output StatefulSet definition.
+extraVolumes: []
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+# Additional volumeMounts on the output StatefulSet definition.
+extraVolumeMounts: []
+# - name: foo
+#   mountPath: "/etc/foo"
+#   readOnly: true
+
+# Arbitrary extra Kubernetes manifests rendered as part of the release.
+extraManifests: []

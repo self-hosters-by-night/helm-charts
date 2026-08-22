@@ -1,0 +1,16 @@
+apiVersion: v2
+name: valkey
+description: "Valkey is a high-performance key/value datastore supporting workloads like caching and message queues."
+type: application
+version: 0.1.0
+appVersion: "9.1.1"
+icon: https://avatars.githubusercontent.com/u/97776161
+annotations:
+  artifacthub.io/category: database
+maintainers:
+  - name: facorazza
+    email: git@facorazza.com
+dependencies:
+  - name: boilerplate
+    version: 0.16.0
+    repository: "file://../boilerplate"

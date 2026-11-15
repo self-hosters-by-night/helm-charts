@@ -10,7 +10,8 @@ image:
   registry: ""
   repository: eclipse-mosquitto
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  # The 2.1.x upstream images are published as "-alpine" only.
+  tag: "2.1.2-alpine"
   digest: ""
   pullPolicy: IfNotPresent
   pullSecrets: []

@@ -17,7 +17,7 @@ replicaCount: 1
 
 image:
   repository: zenika/alpine-chrome
-  tag: "latest"
+  tag: ""
   digest: ""
   pullPolicy: IfNotPresent
   pullSecrets: []

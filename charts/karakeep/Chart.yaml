@@ -2,7 +2,7 @@ apiVersion: v2
 name: karakeep
 description: A Helm chart for Karakeep - AI-powered knowledge management and bookmark organizer
 type: application
-version: 2.5.1
+version: 2.6.0
 appVersion: 0.27.1
 icon: https://avatars.githubusercontent.com/u/202258986
 maintainers:
@@ -10,13 +10,13 @@ maintainers:
     email: git@facorazza.com
 dependencies:
   - name: boilerplate
-    version: 0.15.1
+    version: 0.16.0
     repository: "https://self-hosters-by-night.github.io/helm-charts"
   - name: chrome
-    version: 0.5.0
+    version: 0.5.1
     repository: https://self-hosters-by-night.github.io/helm-charts
     condition: chrome.enabled
   - name: meilisearch
-    version: 0.15.0
+    version: 0.42.0
     repository: https://meilisearch.github.io/meilisearch-kubernetes
     condition: meilisearch.enabled

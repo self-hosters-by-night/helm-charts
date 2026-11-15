@@ -2,8 +2,8 @@ apiVersion: v2
 name: lldap
 description: A Helm chart for LLDAP, a lightweight authentication server that provides an opinionated and simplified LDAP interface for authentication.
 type: application
-version: 0.5.2
-appVersion: "2025-05-19"
+version: 0.6.0
+appVersion: "0.6.3"
 icon: https://raw.githubusercontent.com/self-hosters-by-night/helm-charts/refs/heads/main/assets/lldap.png
 annotations:
   artifacthub.io/category: security
@@ -16,8 +16,8 @@ maintainers:
     email: git@facorazza.com
 dependencies:
   - name: boilerplate
-    version: 0.15.1
+    version: 0.16.0
     repository: "https://self-hosters-by-night.github.io/helm-charts"
   - name: postgres
-    version: 0.13.0
+    version: 0.14.3
     repository: "https://self-hosters-by-night.github.io/helm-charts"

@@ -1,0 +1,15 @@
+config: |
+  logger:
+    level: INFO
+    format: logfmt
+  http:
+    enabled: true
+    address: 0.0.0.0:4195
+  input:
+    label: generate
+    generate:
+      interval: 1s
+      mapping: 'root = "ci"'
+  output:
+    label: stdout
+    stdout: {}

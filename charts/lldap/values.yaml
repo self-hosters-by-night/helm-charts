@@ -17,7 +17,8 @@ image:
   registry: ghcr.io
   repository: lldap/lldap
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  # Upstream publishes version tags with a "v" prefix (e.g. v0.6.3).
+  tag: "v0.6.3"
   # Possible tags:
   #   latest-debian
   #   latest-alpine
@@ -51,16 +52,12 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
-podSecurityContext: {}
-  # fsGroup: 2000
+podSecurityContext:
+  seccompProfile:
+    type: RuntimeDefault
 
-securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+securityContext:
+  allowPrivilegeEscalation: false
 
 ## @param env Environment variables to add to the container
 env:

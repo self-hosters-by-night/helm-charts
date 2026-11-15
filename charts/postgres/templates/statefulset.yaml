@@ -107,7 +107,9 @@ spec:
           {{- toYaml . | nindent 10 }}
         {{- end }}
       spec:
-        storageClassName: {{ .Values.persistence.storageClass | quote }}
+        {{- with .Values.persistence.storageClass }}
+        storageClassName: {{ . | quote }}
+        {{- end }}
         accessModes:
           {{- range .Values.persistence.accessModes }}
           - {{ . }}

@@ -103,6 +103,8 @@ spec:
               mountPath: /bento.yaml
               subPath: bento.yaml
               readOnly: true
+            - name: tmp
+              mountPath: /tmp
             {{- with .Values.extraVolumeMounts }}
               {{- toYaml . | nindent 12 }}
             {{- end }}
@@ -125,6 +127,8 @@ spec:
         - name: bento-config
           configMap:
             name: {{ .Release.Name }}
+        - name: tmp
+          emptyDir: {}
         {{- with .Values.extraVolumes }}
           {{- toYaml . | nindent 8 }}
         {{- end }}

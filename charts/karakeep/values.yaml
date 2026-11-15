@@ -45,16 +45,12 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
-podSecurityContext: {}
-  # fsGroup: 2000
+podSecurityContext:
+  seccompProfile:
+    type: RuntimeDefault
 
-securityContext: {}
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
-  # runAsUser: 1000
+securityContext:
+  allowPrivilegeEscalation: false
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -82,6 +78,10 @@ envFrom:
 
   secrets: []
   #  - name: s3-config
+
+## @param externalSecrets.enabled Create the OpenBao SecretStore used to sync application secrets
+externalSecrets:
+  enabled: true
 
 ## @section configuration
 ## Karakeep configuration

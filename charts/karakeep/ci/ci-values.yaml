@@ -1,0 +1,5 @@
+externalSecrets:
+  enabled: false
+env:
+  vars:
+    NEXTAUTH_SECRET: chart-testing-secret
